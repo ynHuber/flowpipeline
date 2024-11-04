@@ -16,7 +16,6 @@ import (
 	"github.com/Shopify/sarama"
 	"github.com/bwNetFlow/flowpipeline/pb"
 	"github.com/bwNetFlow/flowpipeline/segments"
-	"google.golang.org/protobuf/proto"
 )
 
 // All configuration parameters are the same as in the kafkaconsumer segment,
@@ -163,7 +162,9 @@ func (segment *KafkaProducer) Run(wg *sync.WaitGroup) {
 	for msg := range segment.In {
 		segment.Out <- msg
 		var binary []byte
-		if binary, err = proto.Marshal(msg); err != nil {
+		protoProducerMessage := pb.ProtoProducerMessage{}
+		protoProducerMessage.EnrichedFlow = *msg
+		if binary, err = protoProducerMessage.MarshalBinary(); err != nil {
 			log.Printf("[error] KafkaProducer: Error encoding protobuf. %s", err)
 			continue
 		}
