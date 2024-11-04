@@ -1,12 +1,14 @@
 package kafkaconsumer
 
 import (
+	"bytes"
 	"context"
 	"log"
+	"log/slog"
 
 	"github.com/Shopify/sarama"
 	"github.com/bwNetFlow/flowpipeline/pb"
-	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/encoding/protodelim"
 )
 
 // Handler represents a Sarama consumer group consumer
@@ -33,17 +35,17 @@ func (h *Handler) Cleanup(sarama.ConsumerGroupSession) error {
 }
 
 // ConsumeClaim must start a consumer loop of ConsumerGroupClaim's Messages().
+
 func (h *Handler) ConsumeClaim(session sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim) error {
 	for {
 		select {
 		case message := <-claim.Messages():
-			session.MarkMessage(message, "")
-			flowMsg := new(pb.EnrichedFlow)
-			if err := proto.Unmarshal(message.Value, flowMsg); err == nil {
-				h.flows <- flowMsg
-			} else {
-				log.Printf("[warning] KafkaConsumer: Error decoding flow, this might be due to the use of Goflow custom fields. Original error:\n  %s", err)
+			var msg pb.ProtoProducerMessage
+			if err := protodelim.UnmarshalFrom(bytes.NewReader(message.Value), &msg); err != nil {
+				slog.Error("error unmarshalling message", slog.String("error", err.Error()))
+				continue
 			}
+			h.flows <- &msg.EnrichedFlow
 		case <-session.Context().Done():
 			return nil
 		}
