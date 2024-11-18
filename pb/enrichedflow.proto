@@ -158,6 +158,9 @@ message EnrichedFlow {
   AnonymizedType SamplerAddrAnon = 1164;
   uint32 SamplerAddrAnonPreservedPrefixLen = 1165;
 
+  AnonymizedType NextHopAnon = 2166;
+  uint32 NextHopAnonPreservedPrefixLen = 2167;
+
   // modify/bgp
   // as done by a number of Netflow implementations, these refer to the destination
   repeated uint32 ASPath = 1171;
