@@ -16,16 +16,18 @@ message EnrichedFlow {
   FlowType type = 1;
 
   uint64 time_received = 2;
+  uint64 time_received_ns = 110;
   uint32 sequence_num = 4;
   uint64 sampling_rate = 3;
 
   uint32 flow_direction = 42;
+  uint64 time_flow_start_ns = 111;
+  uint64 time_flow_end_ns = 112;
 
   // Sampler information
   bytes sampler_address = 11;
 
   // Found inside packet
-  uint64 time_flow_start = 38;
   uint64 time_flow_end = 5;
   uint64 time_flow_start_ms = 63;
   uint64 time_flow_end_ms = 64;
@@ -70,6 +72,7 @@ message EnrichedFlow {
   uint32 ip_tos = 23;
   uint32 forwarding_status = 24;
   uint32 ip_ttl = 25;
+  uint32 ip_flags = 38;
   uint32 tcp_flags = 26;
   uint32 icmp_type = 31;
   uint32 icmp_code = 32;
@@ -96,6 +99,9 @@ message EnrichedFlow {
   repeated uint32 as_path = 102;
 
   // MPLS information
+  repeated uint32 mpls_ttl = 80;
+  repeated uint32 mpls_label = 81;
+  repeated bytes mpls_ip = 82;
   bool has_mpls = 53;
   uint32 mpls_count = 54;
   uint32 mpls_1_ttl = 55; // First TTL
@@ -113,6 +119,31 @@ message EnrichedFlow {
 
   string src_country = 1000;
   string dst_country = 1001;
+
+  // Encapsulation
+  enum LayerStack {
+    Ethernet = 0;
+    IPv4 = 1;
+    IPv6 = 2;
+    TCP = 3;
+    UDP = 4;
+    MPLS = 5;
+    Dot1Q = 6;
+    ICMP = 7;
+    ICMPv6 = 8;
+    GRE = 9;
+    IPv6HeaderRouting = 10;
+    IPv6HeaderFragment = 11;
+    Geneve = 12;
+    Teredo = 13;
+    Custom = 99;
+    // todo: add nsh
+  }
+  repeated LayerStack layer_stack = 103;
+  repeated uint32 layer_size = 104;
+
+  repeated bytes ipv6_routing_header_addresses = 105; // SRv6
+  uint32 ipv6_routing_header_seg_left = 106; // SRv6
 
   // bwNET custom fields:
 
@@ -242,6 +273,7 @@ uint32 IngressVrfIDBW = 2539;
 uint32 EgressVrfIDBW = 2540;
 
 // Replaced by ns values
-//  uint64 TimeFlowStart = 2538;
+uint64 TimeFlowStart = 2538;
 //  uint64 TimeFlowEnd = 2505;
+// Kept for legacy support
 }

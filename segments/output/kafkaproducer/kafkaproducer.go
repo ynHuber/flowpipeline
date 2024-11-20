@@ -177,7 +177,8 @@ func (segment *KafkaProducer) Run(wg *sync.WaitGroup) {
 		segment.Out <- msg
 		var binary []byte
 		if segment.Legacy {
-			if binary, err = proto.Marshal(msg); err != nil {
+			legacyFlow := msg.ConvertToLegacyEnrichedFlow()
+			if binary, err = proto.Marshal(legacyFlow); err != nil {
 				log.Printf("[error] KafkaProducer: Error encoding protobuf. %s", err)
 				continue
 			}
