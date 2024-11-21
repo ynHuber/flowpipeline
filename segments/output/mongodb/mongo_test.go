@@ -22,6 +22,9 @@ func TestSegment_Mongodb_passthrough(t *testing.T) {
 	// 	t.Error("Segment Mongodb is not passing through flows.")
 	// }
 	segment := Mongodb{}.New(map[string]string{"mongodb_uri": "mongodb://localhost:27017/", "database": "testing"})
+	if segment == nil {
+		t.Skip()
+	}
 
 	in, out := make(chan *pb.EnrichedFlow), make(chan *pb.EnrichedFlow)
 	segment.Rewire(in, out)
@@ -43,6 +46,9 @@ func BenchmarkMongodb_1000(b *testing.B) {
 	os.Stdout, _ = os.Open(os.DevNull)
 
 	segment := Mongodb{}.New(map[string]string{"mongodb_uri": "mongodb://localhost:27017/", "database": "testing"})
+	if segment == nil {
+		b.Skip()
+	}
 
 	in, out := make(chan *pb.EnrichedFlow), make(chan *pb.EnrichedFlow)
 	segment.Rewire(in, out)
@@ -64,6 +70,9 @@ func BenchmarkMongodb_10000(b *testing.B) {
 	os.Stdout, _ = os.Open(os.DevNull)
 
 	segment := Mongodb{}.New(map[string]string{"mongodb_uri": "mongodb://localhost:27017/", "database": "testing", "batchsize": "10000"})
+	if segment == nil {
+		b.Skip()
+	}
 
 	in, out := make(chan *pb.EnrichedFlow), make(chan *pb.EnrichedFlow)
 	segment.Rewire(in, out)
@@ -85,6 +94,9 @@ func BenchmarkMongodb_100000(b *testing.B) {
 	os.Stdout, _ = os.Open(os.DevNull)
 
 	segment := Mongodb{}.New(map[string]string{"mongodb_uri": "mongodb://localhost:27017/", "database": "testing", "batchsize": "100000"})
+	if segment == nil {
+		b.Skip()
+	}
 
 	in, out := make(chan *pb.EnrichedFlow), make(chan *pb.EnrichedFlow)
 	segment.Rewire(in, out)
@@ -106,6 +118,9 @@ func BenchmarkMongodb_100000_with_storage_limit(b *testing.B) {
 	os.Stdout, _ = os.Open(os.DevNull)
 
 	segment := Mongodb{}.New(map[string]string{"mongodb_uri": "mongodb://localhost:27017/", "database": "testing", "batchsize": "100000", "max_disk_usage": "100 MB"})
+	if segment == nil {
+		b.Skip()
+	}
 
 	in, out := make(chan *pb.EnrichedFlow), make(chan *pb.EnrichedFlow)
 	segment.Rewire(in, out)
