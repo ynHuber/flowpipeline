@@ -109,6 +109,7 @@ require (
 	github.com/subosito/gotenv v1.4.2 // indirect
 	github.com/vishvananda/netlink v1.2.1 // indirect
 	github.com/vishvananda/netns v0.0.4 // indirect
+	go.mongodb.org/mongo-driver v1.17.1
 	go.opentelemetry.io/otel v1.13.0 // indirect
 	go.opentelemetry.io/otel/trace v1.13.0 // indirect
 	golang.org/x/crypto v0.26.0 // indirect
