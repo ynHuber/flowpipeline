@@ -491,6 +491,8 @@ type EnrichedFlow struct {
 	DstAddrPreservedLen               uint32                      `protobuf:"varint,2163,opt,name=DstAddrPreservedLen,proto3" json:"DstAddrPreservedLen,omitempty"`
 	SamplerAddrAnon                   EnrichedFlow_AnonymizedType `protobuf:"varint,2164,opt,name=SamplerAddrAnon,proto3,enum=flowpb.EnrichedFlow_AnonymizedType" json:"SamplerAddrAnon,omitempty"`
 	SamplerAddrAnonPreservedPrefixLen uint32                      `protobuf:"varint,2165,opt,name=SamplerAddrAnonPreservedPrefixLen,proto3" json:"SamplerAddrAnonPreservedPrefixLen,omitempty"`
+	NextHopAnon                       EnrichedFlow_AnonymizedType `protobuf:"varint,2166,opt,name=NextHopAnon,proto3,enum=flowpb.EnrichedFlow_AnonymizedType" json:"NextHopAnon,omitempty"`
+	NextHopAnonPreservedPrefixLen     uint32                      `protobuf:"varint,2167,opt,name=NextHopAnonPreservedPrefixLen,proto3" json:"NextHopAnonPreservedPrefixLen,omitempty"`
 	// modify/bgp
 	// as done by a number of Netflow implementations, these refer to the destination
 	Med              uint32                            `protobuf:"varint,2172,opt,name=Med,proto3" json:"Med,omitempty"`
@@ -1310,6 +1312,20 @@ func (x *EnrichedFlow) GetSamplerAddrAnon() EnrichedFlow_AnonymizedType {
 func (x *EnrichedFlow) GetSamplerAddrAnonPreservedPrefixLen() uint32 {
 	if x != nil {
 		return x.SamplerAddrAnonPreservedPrefixLen
+	}
+	return 0
+}
+
+func (x *EnrichedFlow) GetNextHopAnon() EnrichedFlow_AnonymizedType {
+	if x != nil {
+		return x.NextHopAnon
+	}
+	return EnrichedFlow_NotAnonymized
+}
+
+func (x *EnrichedFlow) GetNextHopAnonPreservedPrefixLen() uint32 {
+	if x != nil {
+		return x.NextHopAnonPreservedPrefixLen
 	}
 	return 0
 }
