@@ -183,10 +183,16 @@ func (segment *KafkaProducer) Run(wg *sync.WaitGroup) {
 				continue
 			}
 		} else {
-			protoProducerMessage := pb.ProtoProducerMessage{}
-			protoProducerMessage.EnrichedFlow = *msg
-			if binary, err = protoProducerMessage.MarshalBinary(); err != nil {
-				log.Printf("[error] KafkaProducer: Error encoding protobuf. %s", err)
+			if msg != nil {
+				protoProducerMessage := pb.ProtoProducerMessage{}
+				msg.SyncMissingTimeStamps()
+				protoProducerMessage.EnrichedFlow = *msg
+				if binary, err = protoProducerMessage.MarshalBinary(); err != nil {
+					log.Printf("[error] KafkaProducer: Error encoding protobuf. %s", err)
+					continue
+				}
+			} else {
+				log.Printf("[error] KafkaProducer: Empty message")
 				continue
 			}
 		}
