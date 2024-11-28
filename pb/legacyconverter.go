@@ -187,7 +187,7 @@ func (flow *EnrichedFlow) ConvertToLegacyEnrichedFlow() *LegacyEnrichedFlow {
 		DstCountry:       flow.DstCountry,
 
 		TimeFlowStart: flow.TimeFlowStart,
-		TimeFlowEnd:   flow.TimeFlowStart,
+		TimeFlowEnd:   flow.TimeFlowEnd,
 
 		ASPath:                            flow.AsPath,
 		sizeCache:                         flow.sizeCache,
