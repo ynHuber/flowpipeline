@@ -19,6 +19,7 @@ require (
 	github.com/google/gopacket v1.1.19
 	github.com/hashicorp/logutils v1.0.0
 	github.com/influxdata/influxdb-client-go/v2 v2.12.2
+	github.com/klauspost/compress v1.15.15
 	github.com/mattn/go-sqlite3 v1.14.16
 	github.com/netsampler/goflow2 v1.1.1
 	github.com/oschwald/maxminddb-golang v1.10.0
@@ -64,7 +65,6 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/k-sone/critbitgo v1.4.0 // indirect
 	github.com/kaorimatz/go-mrt v0.0.0-20210326003454-aa11f3646f93 // indirect
-	github.com/klauspost/compress v1.15.15 // indirect
 	github.com/libp2p/go-reuseport v0.2.0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
