@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments"
 	"github.com/rs/dnscache"
 )
 

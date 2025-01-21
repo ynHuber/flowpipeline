@@ -16,7 +16,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments"
 	"github.com/bwNetFlow/ip_prefix_trie"
 )
 

@@ -14,8 +14,8 @@ import (
 	"time"
 
 	"github.com/Shopify/sarama"
-	"github.com/bwNetFlow/flowpipeline/pb"
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/segments"
 )
 
 // FIXME: clean up those todos

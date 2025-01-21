@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments"
 )
 
 // This is a short example on how to write custom segments and load them as a plugin.

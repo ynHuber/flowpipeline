@@ -9,7 +9,7 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/bwNetFlow/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/pb"
 )
 
 var (

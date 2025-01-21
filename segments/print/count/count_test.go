@@ -3,8 +3,8 @@ package count
 import (
 	"testing"
 
-	"github.com/bwNetFlow/flowpipeline/pb"
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/segments"
 )
 
 // Count Segment test, passthrough test only

@@ -15,7 +15,7 @@ even input or output segments can be chained to one another or be placed in the
 middle of a pipeline.
 
 A list of full configuration examples with their own explanations can be found
-[here](https://github.com/bwNetFlow/flowpipeline/tree/master/examples).
+[here](https://github.com/BelWue/flowpipeline/tree/master/examples).
 
 ## Variable Expansion
 
@@ -47,7 +47,7 @@ config:
 
 In addition to this section the detailed godoc can be used to get an overview
 of available segments by going
-[here](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline#section-directories)
+[here](https://pkg.go.dev/github.com/BelWue/flowpipeline#section-directories)
 and clicking `Expand all` in the bottom right.
 
 ### Alert Group
@@ -67,7 +67,7 @@ conditional, limiting payload data, and multiple receivers.
     url: https://example.com/postable-endpoint
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/alert/http)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/alert/http)
 [examples using this segment](https://github.com/search?q=%22segment%3A+http%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 ### Analysis Group
@@ -116,7 +116,7 @@ can be used multiple times in one pipeline without metrics getting mixed up.
     relevantaddress: "destination"
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/analysis/toptalkers-metrics)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/analysis/toptalkers-metrics)
 [examples using this segment](https://github.com/search?q=%22segment%3A+toptalkers-metrics%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 ### Controlflow Group
@@ -169,7 +169,7 @@ ones in a sqlite export:
     filename: tcponly.sqlite
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/controlflow/branch)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/controlflow/branch)
 [examples using this segment](https://github.com/search?q=%22segment%3A+branch%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 
@@ -196,8 +196,8 @@ condition.
     invert: false
 ```
 
-[flowfilter syntax](https://github.com/bwNetFlow/flowfilter)
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/controlflow/skip)
+[flowfilter syntax](https://github.com/BelWue/flowfilter)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/controlflow/skip)
 [examples using this segment](https://github.com/search?q=%22segment%3A+skip%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 ### Export Group
@@ -210,7 +210,7 @@ among others.
 #### influx
 The `influx` segment provides a way to write into an Influxdb instance.
 The `tags` parameter allows any field to be used as a tag and takes a comma-separated list from any
-field available in the [protobuf definition](https://github.com/bwNetFlow/flowpipeline/blob/master/pb/flow.proto).
+field available in the [protobuf definition](https://github.com/BelWue/flowpipeline/blob/master/pb/flow.proto).
 The `fields` works in the exact same way, except that these protobuf fields won't be indexed by InfluxDB.
 
 Note that some of the above fields might not be present depending on the method
@@ -229,7 +229,7 @@ in front of this export segment.
     fields: "Bytes,Packets"
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/export/prometheus)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/export/prometheus)
 [examples using this segment](https://github.com/search?q=%22segment%3A+prometheus%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 
@@ -237,7 +237,7 @@ in front of this export segment.
 The `prometheus` segment provides a standard prometheus exporter, exporting its
 own monitoring info at `:8080/metrics` and its flow data at `:8080/flowdata` by
 default. The label set included with each metric is freely configurable with a
-comma-separated list from any field available in the [protobuf definition](https://github.com/bwNetFlow/flowpipeline/blob/master/pb/flow.proto).
+comma-separated list from any field available in the [protobuf definition](https://github.com/BelWue/flowpipeline/blob/master/pb/flow.proto).
 
 Note that some of the above fields might not be present depending on the method
 of flow export, the input segment used in this pipeline, or the modify segments
@@ -253,7 +253,7 @@ in front of this export segment.
     flowdatapath: "/flowdata"
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/export/prometheus)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/export/prometheus)
 [examples using this segment](https://github.com/search?q=%22segment%3A+prometheus%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 ### Filter Group
@@ -269,7 +269,7 @@ pipeline after it. In conjunction with `skip`, this can act as a `flowfilter`.
 - segment: drop
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/filter/drop)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/filter/drop)
 [examples using this segment](https://github.com/search?q=%22segment%3A+drop%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### elephant
@@ -294,12 +294,12 @@ The ramp up time defults to 0 (disabled), but can be configured to wait for anal
     rampuptime: 0
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/elephant)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/elephant)
 [examples using this segment](https://github.com/search?q=%22segment%3A+elephant%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### flowfilter
 The `flowfilter` segment uses
-[flowfilter syntax](https://github.com/bwNetFlow/flowfilter) to drop flows
+[flowfilter syntax](https://github.com/BelWue/flowfilter) to drop flows
 based on the evaluation value of the provided filter conditional against any
 flow passing through this segment.
 
@@ -309,8 +309,8 @@ flow passing through this segment.
     filter: "proto tcp"
 ```
 
-[flowfilter syntax](https://github.com/bwNetFlow/flowfilter)
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/filter)
+[flowfilter syntax](https://github.com/BelWue/flowfilter)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/filter)
 [examples using this segment](https://github.com/search?q=%22segment%3A+flowfilter%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 ### Input Group
@@ -347,7 +347,7 @@ Roadmap:
     buffersize: 65536
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/input/bpf)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/input/bpf)
 [examples using this segment](https://github.com/search?q=%22segment%3A+bpf%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### goflow
@@ -369,7 +369,7 @@ exporters, for instance your network devices.
 ```
 
 [goflow2 fields](https://github.com/netsampler/goflow2/blob/main/docs/protocols.md)
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/input/goflow)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/input/goflow)
 [examples using this segment](https://github.com/search?q=%22segment%3A+goflow%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### kafkaconsumer
@@ -402,7 +402,7 @@ state for this specific user/topic/consumergroup combination.
     timeout: 15s
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/input/kafkaconsumer)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/input/kafkaconsumer)
 [examples using this segment](https://github.com/search?q=%22segment%3A+kafkaconsumer%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 ##### BelWü-connected Entities
@@ -447,7 +447,7 @@ The filter parameter available for some methods will filter packets before they 
 	inactivetimeout: 15s
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/packet/bpf)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/packet/bpf)
 [examples using this segment](https://github.com/search?q=%22segment%3A+packet%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### stdin
@@ -465,7 +465,7 @@ The `eofcloses` parameter can therefore be used to gracefully terminate the pipe
     eofcloses: false
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/input/stdin)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/input/stdin)
 [examples using this segment](https://github.com/search?q=%22segment%3A+stdin%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 ### Modify Group
@@ -507,7 +507,7 @@ Roadmap:
     matchboth: false
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/modify/addcid)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/modify/addcid)
 [examples using this segment](https://github.com/search?q=%22segment%3A+addcid%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### addrstrings
@@ -529,7 +529,7 @@ to remove the original fields.
 - segment: addrstrings
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/modify/addrstrings)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/modify/addrstrings)
 
 #### aslookup
 The `aslookup` segment can add AS numbers to flows using route collector dumps.
@@ -549,7 +549,7 @@ however this is not recommended since this will significantly slow down lookup t
 ```
 [MRT specification](https://datatracker.ietf.org/doc/html/rfc6396)
 [asnlookup](https://github.com/banviktor/asnlookup)
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/modify/aslookup)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/modify/aslookup)
 [examples using this segment](https://github.com/search?q=%22segment%3A+aslookup%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### bgp
@@ -592,7 +592,7 @@ three are possibly overwritten from the original router export.
     usefallbackonly: 0
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/modify/bgp)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/modify/bgp)
 [examples using this segment](https://github.com/search?q=%22segment%3A+bgp%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### anonymize
@@ -612,7 +612,7 @@ Supported Fields for anonymization are `SrcAddr,DstAddr,SamplerAddress,NextHop`
 ```
 
 [CryptoPan module](https://github.com/Yawning/cryptopan)
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/modify/anonymize)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/modify/anonymize)
 [examples using this segment](https://github.com/search?q=%22segment%3A+anonymize%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### dropfields
@@ -631,7 +631,7 @@ fields parameter. For a list of fields, check our
     fields: "SrcAddr,DstAddr"
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/modify/dropfields)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/modify/dropfields)
 [examples using this segment](https://github.com/search?q=%22segment%3A+dropfields%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### geolocation
@@ -656,7 +656,7 @@ be dropped.
     matchboth: false
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/modify/geolocation)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/modify/geolocation)
 [examples using this segment](https://github.com/search?q=%22segment%3A+geolocation%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### normalize
@@ -676,7 +676,7 @@ Roadmap:
     fallback: 0
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/modify/normalize)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/modify/normalize)
 [examples using this segment](https://github.com/search?q=%22segment%3A+normalize%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### protomap
@@ -689,14 +689,14 @@ and storage size.
 - segment: protomap
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/modify/protomap)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/modify/protomap)
 [examples using this segment](https://github.com/search?q=%22segment%3A+protomap%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### remoteaddress
 The `remoteaddress` segment determines any given flows remote address and sets
 the RemoteAddress field up to indicate either SrcAddr or DstAddr as the remote
 address. This is done by different policies, see
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/modify/remoteaddress)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/modify/remoteaddress)
 for a detailed explanation.
 
 The short version is:
@@ -726,7 +726,7 @@ Any optional parameters relate to the `cidr` policy only and behave as in the
     dropunmatched: false
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/modify/remoteaddress)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/modify/remoteaddress)
 [examples using this segment](https://github.com/search?q=%22segment%3A+remoteaddress%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### reversedns
@@ -743,7 +743,7 @@ refresh interval setting pertains to the internal cache only.
     refreshinterval: 5m
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/modify/reversedns)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/modify/reversedns)
 [examples using this segment](https://github.com/search?q=%22segment%3A+reversedns%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### snmpinterface
@@ -790,7 +790,7 @@ Roadmap:
 
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/modify/snmp)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/modify/snmp)
 [examples using this segment](https://github.com/search?q=%22segment%3A+snmp%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 ### Output Group
@@ -814,7 +814,7 @@ By default all fields are exported. To reduce them, use a valid comma seperated 
     fields: ""
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/output/csv)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/output/csv)
 [examples using this segment](https://github.com/search?q=%22segment%3A+csv%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 
@@ -849,7 +849,7 @@ number of other things.
     topicsuffix: ""
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/output/kafkaproducer)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/output/kafkaproducer)
 [examples using this segment](https://github.com/search?q=%22segment%3A+kafkaproducer%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### sqlite
@@ -876,7 +876,7 @@ throughput when setting this parameter.
     batchsize: 1000
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/output/sqlite)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/output/sqlite)
 [examples using this segment](https://github.com/search?q=%22segment%3A+sqlite%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### json
@@ -900,7 +900,7 @@ Simply use `zstdcat` to decompress the archive and remove the last line (`| head
     zstd: 0
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/output/json)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/output/json)
 [examples using this segment](https://github.com/search?q=%22segment%3A+json%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### lumberjack (elastic beats)
@@ -969,7 +969,7 @@ strings and [strconv.ParseBool](https://pkg.go.dev/strconv#ParseBool) for allowe
     queuestatusinterval: "0s"
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/output/lumberjack)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/output/lumberjack)
 
 ### Print Group
 Segments in this group serve to print flows immediately to the user. This is intended for ad-hoc applications and instant feedback use cases.
@@ -990,7 +990,7 @@ The result is printed upon termination of the flowpipeline.
     prefix: ""
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/print/count)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/print/count)
 [examples using this segment](https://github.com/search?q=%22segment%3A+count%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### printdots
@@ -1006,7 +1006,7 @@ necessary.
     flowsperdot: 5000
 ```
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/print/printdots)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/print/printdots)
 [examples using this segment](https://github.com/search?q=%22segment%3A+printdots%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### printflowdump
@@ -1034,7 +1034,7 @@ flowpipeline invocation's first argument as a filter.
 The parameter `verbose` changes some output elements, it will for instance add
 the decoded forwarding status (Cisco-style) in a human-readable manner. The
 `highlight` parameter causes the output of this segment to be printed in red,
-see the [relevant example](https://github.com/bwNetFlow/flowpipeline/tree/master/examples/highlighted_flowdump)
+see the [relevant example](https://github.com/BelWue/flowpipeline/tree/master/examples/highlighted_flowdump)
 for an application.
 
 ```yaml
@@ -1046,7 +1046,7 @@ for an application.
     highlight: false
 
 ```
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/print/printflowdump)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/print/printflowdump)
 [examples using this segment](https://github.com/search?q=%22segment%3A+printflowdump%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 #### toptalkers
@@ -1081,7 +1081,7 @@ second are under their thresholds.
     thresholdpps: 0
     topn: 10
 ```
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/print/toptalkers)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/print/toptalkers)
 [examples using this segment](https://github.com/search?q=%22segment%3A+toptalkers%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
 ### Ungrouped
@@ -1106,5 +1106,5 @@ Roadmap:
 ```
 
 [any additional links](https://bwnet.belwue.de)
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline/segments/pass)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/pass)
 [examples using this segment](https://github.com/search?q=%22segment%3A+pass%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)

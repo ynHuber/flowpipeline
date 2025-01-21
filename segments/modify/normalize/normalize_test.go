@@ -7,8 +7,8 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/bwNetFlow/flowpipeline/pb"
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/segments"
 )
 
 // Normalize Segment test, in-flow SampleingRate test

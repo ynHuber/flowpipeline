@@ -11,7 +11,7 @@ import (
 
 	"github.com/bwNetFlow/bpf_flowexport/flowexport"
 	"github.com/bwNetFlow/bpf_flowexport/packetdump"
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments"
 )
 
 // FIXME: the bpf_flowexport projects needs to adopt the new flowmsg too

@@ -17,8 +17,8 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/bwNetFlow/flowpipeline/pb"
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/segments"
 )
 
 type Sqlite struct {

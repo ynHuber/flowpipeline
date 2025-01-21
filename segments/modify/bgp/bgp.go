@@ -9,8 +9,8 @@ import (
 	"sync"
 
 	"github.com/BelWue/bgp_routeinfo/routeinfo"
-	"github.com/bwNetFlow/flowpipeline/pb"
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/segments"
 	"gopkg.in/yaml.v2"
 )
 

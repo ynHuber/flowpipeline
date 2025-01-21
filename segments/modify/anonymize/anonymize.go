@@ -9,7 +9,7 @@ import (
 	"sync"
 
 	cryptopan "github.com/Yawning/cryptopan"
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments"
 )
 
 type Anonymize struct {

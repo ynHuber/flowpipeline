@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/bwNetFlow/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/pb"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 	"github.com/influxdata/influxdb-client-go/v2/api/write"
 )

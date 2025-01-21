@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bwNetFlow/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/pb"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
 	"google.golang.org/protobuf/proto"

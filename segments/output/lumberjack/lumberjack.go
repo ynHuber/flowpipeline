@@ -2,8 +2,8 @@
 package lumberjack
 
 import (
-	"github.com/bwNetFlow/flowpipeline/pb"
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/segments"
 	"log"
 	"net/url"
 	"runtime"

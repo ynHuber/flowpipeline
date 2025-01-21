@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments"
 	maxmind "github.com/oschwald/maxminddb-golang"
 )
 

@@ -1,4 +1,4 @@
-module github.com/bwNetFlow/flowpipeline
+module github.com/BelWue/flowpipeline
 
 go 1.20
 
@@ -11,7 +11,7 @@ require (
 	github.com/asecurityteam/rolling v2.0.4+incompatible
 	github.com/banviktor/asnlookup v0.1.0
 	github.com/bwNetFlow/bpf_flowexport v0.0.0-20220515112212-cd8128615c05
-	github.com/bwNetFlow/flowfilter v0.0.0-20221025122858-60746fa15915
+	github.com/BelWue/flowfilter v0.0.0-20221025122858-60746fa15915
 	github.com/bwNetFlow/ip_prefix_trie v0.0.0-20210830112018-b360b7b65c04
 	github.com/bwNetFlow/protobuf/go v0.0.0-20211004083441-61e193b4b342
 	github.com/dustin/go-humanize v1.0.1

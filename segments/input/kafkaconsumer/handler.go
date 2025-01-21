@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/Shopify/sarama"
-	"github.com/bwNetFlow/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/pb"
 	"google.golang.org/protobuf/proto"
 )
 
