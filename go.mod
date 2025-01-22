@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/BelWue/bgp_routeinfo v0.0.0-20221004100427-d8095fc566dd
+	github.com/BelWue/flowfilter v0.0.0-20250121212806-5b5bd3ad70be
 	github.com/ClickHouse/clickhouse-go/v2 v2.6.3
 	github.com/Shopify/sarama v1.38.1
 	github.com/Yawning/cryptopan v0.0.0-20170504040949-65bca51288fe
@@ -11,7 +12,6 @@ require (
 	github.com/asecurityteam/rolling v2.0.4+incompatible
 	github.com/banviktor/asnlookup v0.1.0
 	github.com/bwNetFlow/bpf_flowexport v0.0.0-20220515112212-cd8128615c05
-	github.com/BelWue/flowfilter v0.0.0-20221025122858-60746fa15915
 	github.com/bwNetFlow/ip_prefix_trie v0.0.0-20210830112018-b360b7b65c04
 	github.com/bwNetFlow/protobuf/go v0.0.0-20211004083441-61e193b4b342
 	github.com/dustin/go-humanize v1.0.1
@@ -37,6 +37,7 @@ require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
+	github.com/bwNetFlow/flowpipeline v0.9.3-beta // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/cilium/ebpf v0.10.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -73,7 +74,6 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/osrg/gobgp/v3 v3.11.0 // indirect
 	github.com/paulmach/orb v0.9.0 // indirect
-	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/pierrec/lz4/v4 v4.1.17 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
