@@ -3,23 +3,24 @@
 package filegate
 
 import (
-	"sync"
-	"log"
 	"errors"
+	"log"
 	"os"
+	"sync"
 	"time"
-	"github.com/bwNetFlow/flowpipeline/segments"
+
+	"github.com/BelWue/flowpipeline/segments"
 )
 
 type Filegate struct {
 	segments.BaseSegment // always embed this, no need to repeat I/O chan code
-	filename	string
+	filename             string
 }
 
 // Every Segment must implement a New method, even if there isn't any config
 // it is interested in.
 func (segment *Filegate) New(config map[string]string) segments.Segment {
-	var()
+	var ()
 	if config["filename"] != "" {
 		segment.filename = config["filename"]
 		log.Printf("[info] Filegate: gate file is %s", segment.filename)

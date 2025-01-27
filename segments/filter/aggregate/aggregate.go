@@ -3,7 +3,7 @@ package aggregate
 import (
 	"sync"
 
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments"
 )
 
 type Aggregate struct {

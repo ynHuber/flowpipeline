@@ -6,8 +6,8 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/bwNetFlow/flowpipeline/segments"
-	"github.com/bwNetFlow/flowpipeline/segments/controlflow/branch"
+	"github.com/BelWue/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments/controlflow/branch"
 	"gopkg.in/yaml.v2"
 )
 

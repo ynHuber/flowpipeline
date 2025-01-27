@@ -15,8 +15,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/bwNetFlow/flowpipeline/pb"
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/segments"
 	"google.golang.org/protobuf/proto"
 
 	_ "github.com/netsampler/goflow2/v2/format/binary"

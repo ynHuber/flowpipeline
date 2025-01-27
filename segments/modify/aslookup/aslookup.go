@@ -6,8 +6,8 @@ import (
 	"os"
 	"sync"
 
+	"github.com/BelWue/flowpipeline/segments"
 	"github.com/banviktor/asnlookup/pkg/database"
-	"github.com/bwNetFlow/flowpipeline/segments"
 )
 
 type AsLookup struct {

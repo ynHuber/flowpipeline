@@ -4,8 +4,8 @@ import (
 	"log"
 	"sync"
 
-	"github.com/bwNetFlow/flowpipeline/pb"
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/segments"
 )
 
 // This mirrors the proper implementation in the pipeline package. This

@@ -6,8 +6,8 @@ import (
 	"log"
 	"log/slog"
 
+	"github.com/BelWue/flowpipeline/pb"
 	"github.com/IBM/sarama"
-	"github.com/bwNetFlow/flowpipeline/pb"
 	"google.golang.org/protobuf/encoding/protodelim"
 	"google.golang.org/protobuf/proto"
 )

@@ -3,7 +3,7 @@ package lumberjack
 import (
 	"crypto/tls"
 	"encoding/json"
-	"github.com/bwNetFlow/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/pb"
 	lumber "github.com/elastic/go-lumber/client/v2"
 	"google.golang.org/protobuf/encoding/protojson"
 	"io"

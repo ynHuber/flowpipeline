@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"sync"
 
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 

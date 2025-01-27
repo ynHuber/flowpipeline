@@ -12,9 +12,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bwNetFlow/flowpipeline/pb"
-	"github.com/bwNetFlow/flowpipeline/segments"
-	"github.com/bwNetFlow/flowpipeline/segments/modify/protomap"
+	"github.com/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments/modify/protomap"
 	"github.com/dustin/go-humanize"
 )
 

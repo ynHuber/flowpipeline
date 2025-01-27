@@ -1,6 +1,6 @@
 # Flow Pipeline
 
-[godoc](https://pkg.go.dev/github.com/bwNetFlow/flowpipeline)
+[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline)
 
 ## About The Project
 
@@ -17,10 +17,10 @@ processing stack into a single piece of software which can be configured to
 serve any function:
 
 * accepting raw Netflow (using [goflow2](https://github.com/netsampler/goflow2))
-* enriching the resulting flow messages ([examples/enricher](https://github.com/bwNetFlow/flowpipeline/tree/master/examples/enricher))
-* writing to and reading from Kafka ([examples/localkafka](https://github.com/bwNetFlow/flowpipeline/tree/master/examples/localkafka))
-* dumping flows to cli (e.g. [flowdump](https://github.com/bwNetFlow/flowpipeline/tree/master/examples/flowdump))
-* providing metrics and insights ([examples/prometheus](https://github.com/bwNetFlow/flowpipeline/tree/master/examples/prometheus))
+* enriching the resulting flow messages ([examples/enricher](https://github.com/BelWue/flowpipeline/tree/master/examples/enricher))
+* writing to and reading from Kafka ([examples/localkafka](https://github.com/BelWue/flowpipeline/tree/master/examples/localkafka))
+* dumping flows to cli (e.g. [flowdump](https://github.com/BelWue/flowpipeline/tree/master/examples/flowdump))
+* providing metrics and insights ([examples/prometheus](https://github.com/BelWue/flowpipeline/tree/master/examples/prometheus))
 * and many more...
 
 ## Getting Started
@@ -35,7 +35,7 @@ you'll either want to create one or call it from any example directory (and
 maybe follow the instructions there).
 
 ### Binary Releases
-Download our [latest release](https://github.com/bwNetFlow/flowpipeline/releases)
+Download our [latest release](https://github.com/BelWue/flowpipeline/releases)
 and run it, same as if you compiled it yourself.
 
 The default, dynamically linked version requires a reasonably recent system
@@ -43,11 +43,11 @@ The default, dynamically linked version requires a reasonably recent system
 As a fallback option, the static binaries will work in older environments
 (CentOS 7, Debian 10, ...), but come without the segments that require
 CGO/dynamically linked code (`bpf`, `sqlite`, and plugin support, check
-[CONFIGURATION.md](https://github.com/bwNetFlow/flowpipeline/blob/master/CONFIGURATION.md)).
+[CONFIGURATION.md](https://github.com/BelWue/flowpipeline/blob/master/CONFIGURATION.md)).
 
 ### Container Releases
 A ready to use container is provided as `bwnetflow/flowpipeline`, you can check
-it out on [GitHub container registry](https://github.com/bwNetFlow/flowpipeline/pkgs/container/flowpipeline).
+it out on [GitHub container registry](https://github.com/BelWue/flowpipeline/pkgs/container/flowpipeline).
 
 Configurations referencing other files (geolocation databases for instance)
 will work in a container without extra edits. This is because the volume
@@ -62,7 +62,7 @@ docker run -v ./examples/xy:/config flowpipeline
 
 ## Configuration
 
-Refer to [CONFIGURATION.md](https://github.com/bwNetFlow/flowpipeline/blob/master/CONFIGURATION.md)
+Refer to [CONFIGURATION.md](https://github.com/BelWue/flowpipeline/blob/master/CONFIGURATION.md)
 for the full guide. Other than that, looking at the examples should give you a
 good idea what the config looks like in detail and what the possible
 applications are. For sake of completeness, here's another minimal example
@@ -85,7 +85,7 @@ If you find that the existing segments lack some functionality or you require
 some very specific behaviour, it is possible to include segments as a plugin.
 This is done using the `-p yourplugin.so` commandline option and your own
 custom module. See
-[examples/plugin](https://github.com/bwNetFlow/flowpipeline/tree/master/examples/plugin)
+[examples/plugin](https://github.com/BelWue/flowpipeline/tree/master/examples/plugin)
 for a basic example and instructions on how to compile your plugin.
 
 Note that this requires CGO and thus will not work using the static binary

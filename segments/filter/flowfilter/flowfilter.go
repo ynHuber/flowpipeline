@@ -1,14 +1,14 @@
 // Runs flows through a filter and forwards only matching flows. Reuses our own
-// https://github.com/bwNetFlow/flowfilter project, see the docs there.
+// https://github.com/BelWue/flowfilter project, see the docs there.
 package flowfilter
 
 import (
 	"log"
 	"sync"
 
-	"github.com/bwNetFlow/flowfilter/parser"
-	"github.com/bwNetFlow/flowpipeline/pb"
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowfilter/parser"
+	"github.com/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/segments"
 )
 
 // FIXME: the flowfilter project needs to be updated to new protobuf too

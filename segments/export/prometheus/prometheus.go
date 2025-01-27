@@ -25,8 +25,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bwNetFlow/flowpipeline/pb"
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/segments"
 	"github.com/go-co-op/gocron/v2"
 )
 
@@ -144,14 +144,14 @@ func (segment *Prometheus) initializeExporter(exporter *Exporter) {
 func (segment *Prometheus) AddVacuumCronJob(promExporter *Exporter) {
 	scheduler, err := gocron.NewScheduler()
 	if err != nil {
-		log.Printf("[Error] Failed inizialiozing prometheus exporter vacuum job: " + err.Error())
+		log.Printf("%s", "[Error] Failed inizialiozing prometheus exporter vacuum job: "+err.Error())
 	}
 	_, err = scheduler.NewJob(
 		gocron.DurationJob(*segment.VacuumInterval),
 		gocron.NewTask(promExporter.ResetCounter),
 	)
 	if err != nil {
-		log.Printf("[Error] Failed inizialiozing prometheus exporter vacuum job: " + err.Error())
+		log.Printf("%s", "[Error] Failed inizialiozing prometheus exporter vacuum job: "+err.Error())
 	}
 	// start the scheduler
 	scheduler.Start()

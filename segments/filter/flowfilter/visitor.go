@@ -1,4 +1,4 @@
-// FROM https://github.com/bwNetFlow/flowfilter/
+// FROM https://github.com/BelWue/flowfilter/
 package flowfilter
 
 import (
@@ -6,8 +6,8 @@ import (
 	"net"
 	"strings"
 
-	"github.com/bwNetFlow/flowfilter/parser"
-	"github.com/bwNetFlow/flowpipeline/pb"
+	"github.com/BelWue/flowfilter/parser"
+	"github.com/BelWue/flowpipeline/pb"
 )
 
 type Filter struct {

@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments"
 )
 
 type Bpf struct {

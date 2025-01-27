@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/asecurityteam/rolling"
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments"
 	"github.com/dustin/go-humanize"
 )
 

@@ -13,9 +13,9 @@ import (
 	"sync"
 	"time"
 
+	"github.com/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/segments"
 	"github.com/IBM/sarama"
-	"github.com/bwNetFlow/flowpipeline/pb"
-	"github.com/bwNetFlow/flowpipeline/segments"
 	"google.golang.org/protobuf/proto"
 )
 

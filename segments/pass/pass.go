@@ -5,7 +5,7 @@ package pass
 import (
 	"sync"
 
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments"
 )
 
 // The Pass Segment is considered a template for any additional Segments, as it

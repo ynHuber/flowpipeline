@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bwNetFlow/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/pb"
 )
 
 type FlowKey struct {

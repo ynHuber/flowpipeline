@@ -7,8 +7,8 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/bwNetFlow/flowpipeline/pb"
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/segments"
 	"google.golang.org/protobuf/encoding/protojson"
 
 	"os"
