@@ -36,7 +36,7 @@ type Prometheus struct {
 	MetricsPath    string         // optional, default is "/metrics"
 	FlowdataPath   string         // optional, default is "/flowdata"
 	Labels         []string       // optional, list of labels to be exported
-	VacuumInterval *time.Duration // optional, intervall in which counters should be reset
+	VacuumInterval *time.Duration // optional, intervall in which counters should be reset (can lead to dataloss)
 }
 
 func (segment Prometheus) New(config map[string]string) segments.Segment {
@@ -62,8 +62,9 @@ func (segment Prometheus) New(config map[string]string) segments.Segment {
 	if config["vacuum_interval"] != "" {
 		vacuumIntervalDuration, err := time.ParseDuration(config["vacuum_interval"])
 		if err != nil {
-			log.Println("[info] prometheus: Missing configuration parameter 'flowdatapath'. Using default path \"/flowdata\"")
+			log.Println("[warning] prometheus: Failed to parse vacuum intervall \"" + config["vacuum_interval"] + "\" - continuing without vacuum interval")
 		} else {
+			log.Println("[info] prometheus: Setting prometheus vacuum interval to " + config["vacuum_interval"] + " this will lead to data loss of up to one scraping intervall!")
 			vacuumInterval = &vacuumIntervalDuration
 		}
 	}
