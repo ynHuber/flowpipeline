@@ -14,8 +14,9 @@ import (
 // A config representation of a segment. It is intended to look like this:
 //   - segment: pass
 //     config:
-//       key: value
-//       foo: bar
+//     key: value
+//     foo: bar
+//
 // This struct has the appropriate yaml tags inline.
 type SegmentRepr struct {
 	Name   string            `yaml:"segment"`             // to be looked up with a registry
