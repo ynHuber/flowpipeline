@@ -2,8 +2,6 @@
 package lumberjack
 
 import (
-	"github.com/bwNetFlow/flowpipeline/pb"
-	"github.com/bwNetFlow/flowpipeline/segments"
 	"log"
 	"net/url"
 	"runtime"
@@ -11,6 +9,9 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/bwNetFlow/flowpipeline/pb"
+	"github.com/bwNetFlow/flowpipeline/segments"
 )
 
 const (
@@ -225,6 +226,7 @@ func (segment *Lumberjack) Run(wg *sync.WaitGroup) {
 
 	defer func() {
 		close(segment.Out)
+		writerWG.Wait()
 		wg.Done()
 		log.Println("[info] Lumberjack: All writer functions have stopped, exiting…")
 	}()
@@ -247,6 +249,7 @@ func (segment *Lumberjack) Run(wg *sync.WaitGroup) {
 		options := options
 		for i := 0; i < options.Parallism; i++ {
 			go func(server string, numServer int) {
+				defer writerWG.Done()
 				// connect to lumberjack server
 				client := NewResilientClient(server, options, segment.ReconnectWait)
 				defer client.Close()
@@ -328,6 +331,7 @@ func (segment *Lumberjack) Run(wg *sync.WaitGroup) {
 		segment.LumberjackOut <- msg
 		segment.Out <- msg
 	}
+	close(segment.LumberjackOut)
 }
 
 // register segment
