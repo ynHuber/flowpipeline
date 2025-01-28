@@ -11,7 +11,6 @@ import (
 	"github.com/BelWue/flowpipeline/segments"
 )
 
-// FIXME: the flowfilter project needs to be updated to new protobuf too
 type FlowFilter struct {
 	segments.BaseFilterSegment
 	Filter string // optional, default is empty

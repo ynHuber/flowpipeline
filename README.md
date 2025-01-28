@@ -1,4 +1,4 @@
-# Flow Pipeline
+# Flow PipelineSrcAS
 
 [godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline)
 

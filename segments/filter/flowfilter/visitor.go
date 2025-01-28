@@ -47,7 +47,7 @@ func (f *Filter) Visit(n parser.Node, next func() error) error {
 	case *parser.IcmpMatch:
 	case *parser.IfSpeedRangeMatch:
 	case *parser.InterfaceMatch:
-	case *parser.IPTosRangeMatch:
+	case *parser.IpTosRangeMatch:
 	case *parser.MedRangeMatch:
 	case *parser.LocalPrefRangeMatch:
 	case *parser.NetsizeRangeMatch:
@@ -162,8 +162,8 @@ func (f *Filter) Visit(n parser.Node, next func() error) error {
 			(*node).EvalResult = node.Status.EvalResult
 		case node.TcpFlags != nil:
 			(*node).EvalResult = node.TcpFlags.EvalResult
-		case node.IPTos != nil:
-			(*node).EvalResult = node.IPTos.EvalResult
+		case node.IpTos != nil:
+			(*node).EvalResult = node.IpTos.EvalResult
 		case node.LocalPref != nil:
 			(*node).EvalResult = node.LocalPref.EvalResult
 		case node.Med != nil:
@@ -330,7 +330,7 @@ func (f *Filter) Visit(n parser.Node, next func() error) error {
 			(*node).EvalResultSrc = node.Speed.EvalResultSrc
 			(*node).EvalResultDst = node.Speed.EvalResultDst
 		}
-	case *parser.IPTosRangeMatch:
+	case *parser.IpTosRangeMatch:
 		(*node).EvalResult, err = processNumericRange(node.NumericRange, uint64(f.flowmsg.IpTos))
 		if err != nil {
 			return fmt.Errorf("Bad iptos range, lower %d > upper %d",

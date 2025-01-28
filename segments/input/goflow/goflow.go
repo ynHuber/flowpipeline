@@ -155,9 +155,6 @@ func (d *myProtobufDriver) Format(data interface{}) ([]byte, []byte, error) {
 	return nil, b, err
 }
 
-func (d *myProtobufDriver) Prepare() error             { return nil }
-func (d *myProtobufDriver) Init(context.Context) error { return nil }
-
 func (segment *Goflow) startGoFlow(transport transport.TransportInterface) {
 	formatter := &myProtobufDriver{}
 	var pipes []utils.FlowPipe
@@ -232,4 +229,9 @@ func (segment *Goflow) startGoFlow(transport transport.TransportInterface) {
 
 		}(listenAddrUrl)
 	}
+}
+
+func init() {
+	segment := &Goflow{}
+	segments.RegisterSegment("goflow", segment)
 }

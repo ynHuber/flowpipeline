@@ -1,14 +1,12 @@
 module github.com/BelWue/flowpipeline
 
-go 1.22.7
+go 1.23.2
 
-toolchain go1.23.2
-
-replace github.com/BelWue/flowpipeline => .
+replace github.com/BelWue/flowpipeline => github.com/BelWue/flowpipeline v1.3.1-0.20250127122013-c865e669d527
 
 require (
 	github.com/BelWue/bgp_routeinfo v0.0.0-20221004100427-d8095fc566dd
-	github.com/BelWue/flowfilter v0.0.0-20250121212806-5b5bd3ad70be
+	github.com/BelWue/flowfilter v0.0.0-20250128090728-6c516c872577
 	github.com/ClickHouse/clickhouse-go/v2 v2.30.1
 	github.com/IBM/sarama v1.45.0
 	github.com/Yawning/cryptopan v0.0.0-20170504040949-65bca51288fe
@@ -35,12 +33,14 @@ require (
 
 require (
 	github.com/Shopify/sarama v1.38.1 // indirect
+	github.com/alecthomas/participle/v2 v2.1.1 // indirect
 	github.com/banviktor/go-mrt v0.0.0-20230515165434-0ce2ad0d8984 // indirect
 	github.com/jonboulle/clockwork v0.5.0 // indirect
 	github.com/montanaflynn/stats v0.7.1 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/oapi-codegen/runtime v1.1.1 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
+	github.com/rogpeppe/go-internal v1.13.1 // indirect
 	github.com/sagikazarmark/locafero v0.7.0 // indirect
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
@@ -55,7 +55,6 @@ require (
 
 require (
 	github.com/ClickHouse/ch-go v0.63.1 // indirect
-	github.com/alecthomas/participle/v2 v2.1.1 // indirect
 	github.com/alouca/gologger v0.0.0-20120904114645-7d4b7291de9c // indirect
 	github.com/andybalholm/brotli v1.1.1 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
