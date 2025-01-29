@@ -6,7 +6,7 @@ replace github.com/BelWue/flowpipeline => github.com/BelWue/flowpipeline v1.3.1-
 
 require (
 	github.com/BelWue/bgp_routeinfo v0.0.0-20221004100427-d8095fc566dd
-	github.com/BelWue/flowfilter v0.0.0-20250128090728-6c516c872577
+	github.com/BelWue/flowfilter v0.0.0-20250129140213-b11ce00e4643
 	github.com/ClickHouse/clickhouse-go/v2 v2.30.1
 	github.com/IBM/sarama v1.45.0
 	github.com/Yawning/cryptopan v0.0.0-20170504040949-65bca51288fe
@@ -49,8 +49,8 @@ require (
 	github.com/xdg-go/stringprep v1.0.4 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/exp v0.0.0-20250106191152-7588d65b2ba8 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250124145028-65684f501c47 // indirect
+	golang.org/x/exp v0.0.0-20250128182459-e0ece0dbea4c // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250127172529-29210b9bc287 // indirect
 )
 
 require (
@@ -60,7 +60,7 @@ require (
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/cilium/ebpf v0.17.1
+	github.com/cilium/ebpf v0.17.2
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/dgryski/go-farm v0.0.0-20240924180020-3414d57e47da // indirect
 	github.com/eapache/channels v1.1.0 // indirect
