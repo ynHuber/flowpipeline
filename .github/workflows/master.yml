@@ -40,6 +40,7 @@ jobs:
       with:
         name: flowpipeline-${{ matrix.goos }}
         path: ./flowpipeline
+        merge-multiple: true
 
     - name: build statically linked
       run: go build -o flowpipeline-static -ldflags "-X main.Version=${{ github.sha }}" .
@@ -51,3 +52,4 @@ jobs:
       with:
         name: flowpipeline-${{ matrix.goos }}-static
         path: ./flowpipeline-static
+        merge-multiple: true
