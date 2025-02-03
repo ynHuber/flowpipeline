@@ -8,8 +8,8 @@ import (
 	"testing"
 
 	cryptopan "github.com/Yawning/cryptopan"
-	"github.com/bwNetFlow/flowpipeline/pb"
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/segments"
 )
 
 // Influx Segment test, passthrough test only

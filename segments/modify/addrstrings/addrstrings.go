@@ -1,7 +1,7 @@
 package addrstrings
 
 import (
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments"
 	"sync"
 )
 

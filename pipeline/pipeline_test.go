@@ -3,14 +3,14 @@ package pipeline
 import (
 	"testing"
 
-	"github.com/bwNetFlow/flowpipeline/pb"
-	"github.com/bwNetFlow/flowpipeline/segments"
-	"github.com/bwNetFlow/flowpipeline/segments/pass"
+	"github.com/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments/pass"
 
-	_ "github.com/bwNetFlow/flowpipeline/segments/filter/drop"
-	_ "github.com/bwNetFlow/flowpipeline/segments/filter/flowfilter"
-	_ "github.com/bwNetFlow/flowpipeline/segments/modify/dropfields"
-	_ "github.com/bwNetFlow/flowpipeline/segments/testing/generator"
+	_ "github.com/BelWue/flowpipeline/segments/filter/drop"
+	_ "github.com/BelWue/flowpipeline/segments/filter/flowfilter"
+	_ "github.com/BelWue/flowpipeline/segments/modify/dropfields"
+	_ "github.com/BelWue/flowpipeline/segments/testing/generator"
 )
 
 func TestPipelineBuild(t *testing.T) {

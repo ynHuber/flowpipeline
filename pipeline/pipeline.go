@@ -5,12 +5,12 @@ import (
 	"log"
 	"sync"
 
-	"github.com/bwNetFlow/flowpipeline/pb"
-	"github.com/bwNetFlow/flowpipeline/segments"
-	"github.com/bwNetFlow/flowpipeline/segments/filter/drop"
-	"github.com/bwNetFlow/flowpipeline/segments/filter/elephant"
-	"github.com/bwNetFlow/flowpipeline/segments/filter/flowfilter"
-	"github.com/bwNetFlow/flowpipeline/segments/pass"
+	"github.com/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments/filter/drop"
+	"github.com/BelWue/flowpipeline/segments/filter/elephant"
+	"github.com/BelWue/flowpipeline/segments/filter/flowfilter"
+	"github.com/BelWue/flowpipeline/segments/pass"
 )
 
 // Basically a list of segments. It further exposes the In and Out channels of

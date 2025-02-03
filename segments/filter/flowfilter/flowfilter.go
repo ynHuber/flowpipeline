@@ -1,18 +1,16 @@
 // Runs flows through a filter and forwards only matching flows. Reuses our own
-// https://github.com/bwNetFlow/flowfilter project, see the docs there.
+// https://github.com/BelWue/flowfilter project, see the docs there.
 package flowfilter
 
 import (
 	"log"
 	"sync"
 
-	"github.com/bwNetFlow/flowfilter/parser"
-	"github.com/bwNetFlow/flowfilter/visitors"
-	"github.com/bwNetFlow/flowpipeline/pb"
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowfilter/parser"
+	"github.com/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/segments"
 )
 
-// FIXME: the flowfilter project needs to be updated to new protobuf too
 type FlowFilter struct {
 	segments.BaseFilterSegment
 	Filter string // optional, default is empty
@@ -32,7 +30,7 @@ func (segment FlowFilter) New(config map[string]string) segments.Segment {
 		log.Printf("[error] FlowFilter: Syntax error in filter expression: %v", err)
 		return nil
 	}
-	filter := &visitors.Filter{}
+	filter := &Filter{}
 	if _, err := filter.CheckFlow(newSegment.expression, &pb.EnrichedFlow{}); err != nil {
 		log.Printf("[error] FlowFilter: Semantic error in filter expression: %v", err)
 		return nil
@@ -48,7 +46,7 @@ func (segment *FlowFilter) Run(wg *sync.WaitGroup) {
 
 	log.Printf("[info] FlowFilter: Using filter expression: %s", segment.Filter)
 
-	filter := &visitors.Filter{}
+	filter := &Filter{}
 	for msg := range segment.In {
 		if match, _ := filter.CheckFlow(segment.expression, msg); match {
 			segment.Out <- msg

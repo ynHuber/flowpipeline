@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/asecurityteam/rolling"
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments"
 )
 
 type Elephant struct {

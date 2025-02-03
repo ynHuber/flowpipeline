@@ -12,8 +12,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bwNetFlow/flowpipeline/segments"
-	"github.com/bwNetFlow/flowpipeline/segments/filter/aggregate"
+	"github.com/BelWue/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments/filter/aggregate"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcapgo"

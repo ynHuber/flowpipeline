@@ -11,8 +11,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bwNetFlow/flowpipeline/pb"
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowpipeline/segments"
 
 	_ "github.com/ClickHouse/clickhouse-go/v2"
 )
@@ -185,9 +185,9 @@ func (segment Clickhouse) bulkInsertFlowhouse(unsavedFlows []*pb.EnrichedFlow) e
 			dstPfx,
 			uint8(msg.DstNet),
 			net.IP(msg.NextHop),
-			msg.NextHopAS,
-			msg.SrcAS,
-			msg.DstAS,
+			msg.NextHopAs,
+			msg.SrcAs,
+			msg.DstAs,
 			uint8(msg.Proto),
 			uint16(msg.SrcPort),
 			uint16(msg.DstPort),

@@ -6,16 +6,17 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/bwNetFlow/flowpipeline/segments"
-	"github.com/bwNetFlow/flowpipeline/segments/controlflow/branch"
+	"github.com/BelWue/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments/controlflow/branch"
 	"gopkg.in/yaml.v2"
 )
 
 // A config representation of a segment. It is intended to look like this:
 //   - segment: pass
 //     config:
-//       key: value
-//       foo: bar
+//     key: value
+//     foo: bar
+//
 // This struct has the appropriate yaml tags inline.
 type SegmentRepr struct {
 	Name   string            `yaml:"segment"`             // to be looked up with a registry

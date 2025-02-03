@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/alouca/gosnmp"
-	"github.com/bwNetFlow/flowpipeline/segments"
+	"github.com/BelWue/flowpipeline/segments"
 	cache "github.com/patrickmn/go-cache"
 )
 
