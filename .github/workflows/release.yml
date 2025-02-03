@@ -39,10 +39,11 @@ jobs:
         CGO_ENABLED: 0
 
     - name: save statically linked binary
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4.6.0
       with:
         name: flowpipeline
         path: ./flowpipeline-*
+        overwrite: true
 
 
   release:
