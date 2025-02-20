@@ -1,6 +1,13 @@
-# Flow PipelineSrcAS
+# Flowpipeline
+A [goflow2](https://github.com/netsampler/goflow2)-compatible flow message processing toolkit
 
 [godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline)
+
+----------
+
+![Flowpipeline](https://github.com/user-attachments/assets/63c5ac84-b50d-442e-9641-c32fe95b58f4)
+
+----------
 
 ## About The Project
 
