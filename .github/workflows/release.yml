@@ -9,6 +9,7 @@ jobs:
     permissions:
       contents: read
       checks: write
+      attestations: write 
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -52,7 +53,8 @@ jobs:
   release:
     permissions:
       contents: read
-      attestations: write 
+      attestations: read 
+      contents: write
     runs-on: ubuntu-latest
     needs: build
     steps:
