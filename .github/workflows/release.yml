@@ -9,6 +9,7 @@ jobs:
     permissions:
       contents: read
       checks: write
+      attestations: write 
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
