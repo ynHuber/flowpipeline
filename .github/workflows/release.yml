@@ -45,7 +45,7 @@ jobs:
     - name: save statically linked binary
       uses: actions/upload-artifact@v4.6.0
       with:
-        name: flowpipeline
+        name: flowpipeline-${{ matrix.goos }}
         path: ./flowpipeline-*
         overwrite: true
 
@@ -70,4 +70,4 @@ jobs:
       with:
         generate_release_notes: true
         prerelease: ${{ endsWith(github.ref, '-alpha') || endsWith(github.ref, '-beta') }}
-        files: "flowpipeline/flowpipeline-*"
+        files: "flowpipeline-*/flowpipeline-*"
