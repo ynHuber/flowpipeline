@@ -7,6 +7,7 @@ import (
 	"context"
 	"crypto/tls"
 	"crypto/x509"
+	"os"
 	"strconv"
 	"strings"
 	"sync"
@@ -22,16 +23,17 @@ import (
 // FIXME: clean up those todos
 type KafkaConsumer struct {
 	segments.BaseSegment
-	Server  string        // required
-	Topic   string        // required
-	Group   string        // required
-	User    string        // required if auth is true
-	Pass    string        // required if auth is true
-	Tls     bool          // optional, default is true
-	Auth    bool          // optional, default is true
-	StartAt string        // optional, one of "oldest" or "newest", default is "newest"
-	Timeout time.Duration // optional, default is 15s, any parsable duration
-	Legacy  bool          //optional, default is false
+	Server       string        // required
+	Topic        string        // required
+	Group        string        // required
+	User         string        // required if auth is true
+	Pass         string        // required if auth is true
+	Tls          bool          // optional, default is true
+	Auth         bool          // optional, default is true
+	StartAt      string        // optional, one of "oldest" or "newest", default is "newest"
+	Timeout      time.Duration // optional, default is 15s, any parsable duration
+	Legacy       bool          //optional, default is false
+	KafkaVersion string        //optional, default is 3.8.0
 
 	startingOffset int64
 	saramaConfig   *sarama.Config
@@ -42,6 +44,11 @@ func (segment KafkaConsumer) New(config map[string]string) segments.Segment {
 	var err error
 	newsegment := &KafkaConsumer{}
 	newsegment.saramaConfig = sarama.NewConfig()
+	newsegment.saramaConfig.ClientID, err = os.Hostname()
+	if err != nil {
+		log.Warn().Err(err).Msg("KafkaConsumer: failed to fetch hostname")
+		newsegment.saramaConfig.ClientID = "unknown"
+	}
 	newsegment.shutdown = make(chan bool)
 
 	if config["server"] == "" || config["topic"] == "" || config["group"] == "" {
@@ -69,10 +76,15 @@ func (segment KafkaConsumer) New(config map[string]string) segments.Segment {
 	// newsegment.saramaConfig.Consumer.Group.Rebalance.Strategy = sarama.BalanceStrategySticky
 	newsegment.saramaConfig.Consumer.Group.Rebalance.GroupStrategies = []sarama.BalanceStrategy{sarama.BalanceStrategySticky}
 
-	// TODO: parse and set kafka version
-	newsegment.saramaConfig.Version, err = sarama.ParseKafkaVersion("2.4.0")
-	if err != nil {
-		log.Panic().Err(err).Msg("Error parsing Kafka version: ")
+	if config["kafka-version"] != "" {
+		newsegment.saramaConfig.Version, err = sarama.ParseKafkaVersion(config["kafka-version"])
+		if err != nil {
+			log.Warn().Err(err).Msgf("KafkaConsumer:Error parsing Kafka version %s - using default %s", newsegment.KafkaVersion, sarama.V3_8_0_0.String())
+		} else {
+			newsegment.KafkaVersion = config["kafka-version"]
+		}
+	} else {
+		log.Info().Msgf("KafkaConsumer: Using default kafka-version %s", sarama.V3_8_0_0.String())
 	}
 
 	// parse config and setup TLS
@@ -216,7 +228,7 @@ func (segment *KafkaConsumer) Run(wg *sync.WaitGroup) {
 						retries, maxRetries, retryInterval)
 					select {
 					case <-time.After(retryInterval):
-						continue
+						continue connectionRetryLoop
 					case <-segment.shutdown:
 						log.Info().Msg("KafkaConsumer: Aborting connection attempt")
 						handler.ready <- false
@@ -250,6 +262,12 @@ func (segment *KafkaConsumer) Run(wg *sync.WaitGroup) {
 		return
 	}
 	log.Info().Msg("KafkaConsumer: Connected and operational.")
+	go func() {
+		kafkaErr := <-client.Errors()
+		if kafkaErr != nil {
+			log.Warn().Err(kafkaErr).Msg("KafaConsumer: kafka error")
+		}
+	}()
 
 	// receive flows in a loop
 	for {
@@ -270,7 +288,7 @@ func (segment *KafkaConsumer) Run(wg *sync.WaitGroup) {
 		case <-segment.shutdown:
 			log.Info().Msg("KafkaConsumer: Closing connection")
 			handlerCancel()
-			log.Trace().Msg("KafkaConsumer: finished handlerCancel")
+			log.Info().Msg("KafkaConsumer: Connection Closed")
 			return
 		}
 	}

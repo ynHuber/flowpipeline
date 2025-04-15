@@ -34,14 +34,15 @@ import (
 // FIXME: use sarama directly here
 type KafkaProducer struct {
 	segments.BaseSegment
-	Server      string // required
-	Topic       string // required
-	TopicSuffix string // optional, default is empty
-	User        string // required if auth is true
-	Pass        string // required if auth is true
-	Tls         bool   // optional, default is true
-	Auth        bool   // optional, default is true
-	Legacy      bool   // optional, default is false
+	Server       string // required
+	Topic        string // required
+	TopicSuffix  string // optional, default is empty
+	User         string // required if auth is true
+	Pass         string // required if auth is true
+	Tls          bool   // optional, default is true
+	Auth         bool   // optional, default is true
+	Legacy       bool   // optional, default is false
+	KafkaVersion string //optional, default is 3.8.0
 
 	saramaConfig *sarama.Config
 }
@@ -78,10 +79,15 @@ func (segment KafkaProducer) New(config map[string]string) segments.Segment {
 	newsegment.saramaConfig.Producer.Return.Successes = false                 // this would block until we've read the ACK, just don't
 	newsegment.saramaConfig.Producer.Return.Errors = false                    // this would block until we've read the error, but we wouldn't retry anyways
 
-	// TODO: parse and set kafka version
-	newsegment.saramaConfig.Version, err = sarama.ParseKafkaVersion("2.4.0")
-	if err != nil {
-		log.Panic().Err(err).Msg("Error parsing Kafka version: ")
+	if config["kafka-version"] != "" {
+		newsegment.saramaConfig.Version, err = sarama.ParseKafkaVersion(config["kafka-version"])
+		if err != nil {
+			log.Warn().Err(err).Msgf("KafkaProducer:Error parsing Kafka version %s - using default %s", newsegment.KafkaVersion, sarama.V3_8_0_0.String())
+		} else {
+			newsegment.KafkaVersion = config["kafka-version"]
+		}
+	} else {
+		log.Info().Msgf("KafkaProducer: Using default kafka-version %s", sarama.V3_8_0_0.String())
 	}
 
 	// parse config and setup TLS

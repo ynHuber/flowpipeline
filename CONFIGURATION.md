@@ -434,6 +434,7 @@ state for this specific user/topic/consumergroup combination.
     tls: true
     auth: true
     startat: newest
+    kafka-version: 3.8.0
     timeout: 15s
 ```
 
@@ -907,6 +908,7 @@ number of other things.
     # the lines below are optional and set to default
     tls: true
     auth: true
+    kafka-version: 3.8.0
     topicsuffix: ""
 ```
 
