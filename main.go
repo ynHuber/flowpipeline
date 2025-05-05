@@ -40,6 +40,8 @@ import (
 	_ "github.com/BelWue/flowpipeline/segments/input/packet"
 	_ "github.com/BelWue/flowpipeline/segments/input/stdin"
 
+	_ "github.com/BelWue/flowpipeline/segments/meta/monitoring"
+
 	_ "github.com/BelWue/flowpipeline/segments/modify/addcid"
 	_ "github.com/BelWue/flowpipeline/segments/modify/addrstrings"
 	_ "github.com/BelWue/flowpipeline/segments/modify/anonymize"
