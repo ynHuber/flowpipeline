@@ -52,6 +52,7 @@ import (
 	_ "github.com/BelWue/flowpipeline/segments/modify/remoteaddress"
 	_ "github.com/BelWue/flowpipeline/segments/modify/reversedns"
 	_ "github.com/BelWue/flowpipeline/segments/modify/snmp"
+	_ "github.com/BelWue/flowpipeline/segments/modify/sync_timestamps"
 
 	_ "github.com/BelWue/flowpipeline/segments/pass"
 

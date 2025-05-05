@@ -860,6 +860,22 @@ Roadmap:
 [godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/modify/snmp)
 [examples using this segment](https://github.com/search?q=%22segment%3A+snmp%22+extension%3Ayml+repo%3AbwNetFlow%2Fflowpipeline%2Fexamples&type=Code)
 
+#### Sync Timestamps
+The segment `sync_timestamps` tries to fill empty time fields using existing ones.
+It works on the following fields:
+ - TimeFlowStart:
+  - TimeFlowStart
+  - TimeFlowStartMs
+  - TimeFlowStartNs
+ - TimeFlowEnd:
+  - TimeFlowEnd
+  - TimeFlowEndMs
+  - TimeFlowEndNs
+ - TimeReceived:
+  - TimeReceived
+  - TimeReceivedNs
+  
+
 ### Output Group
 Segments in this group export flows, usually while keeping all information
 unless instructed otherwise. As all other segments do, these still forward
