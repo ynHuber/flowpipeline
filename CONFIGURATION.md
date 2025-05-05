@@ -875,6 +875,22 @@ It works on the following fields:
   - TimeReceived
   - TimeReceivedNs
   
+### Meta Group
+Segments in this group are used for exporting meta data about the flowpipeline itself
+
+#### Delay Monitoring
+The `delay_monitoring` segment measures how old the processed flows are and publishs the delay using a prometheus server.
+The the delay is calculated using a exponential window moving average. The alpha value can be set using `alpha`.
+To reduce load, a sampling intervall can be set using `samplingRate`.
+
+```yaml
+- segment: delay_monitoring
+  # the lines below are optional and set to default
+  config:
+    endpoint: ":8080"
+    samplingRate: 1000
+    alpha: 0.2
+```
 
 ### Output Group
 Segments in this group export flows, usually while keeping all information
