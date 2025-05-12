@@ -19,7 +19,7 @@ type DelayMonitoring struct {
 	toptalkers_metrics.PrometheusParams
 
 	SamplingRate int     // flow samplingrate fpr calculating delay - default 100
-	Alpha        float64 //alpha used for the exponential window moving average?
+	Alpha        float64 // alpha used for the exponential window moving average?
 	Endpoint     string  // optional, default value is ":8080"
 
 	msgCounter                   int
@@ -85,7 +85,7 @@ func (segment *DelayMonitoring) Run(wg *sync.WaitGroup) {
 	//start timers
 	promExporter.ServeEndpoints(segment.Endpoint)
 
-	log.Info().Msgf("Delay Monitoring: Prometheus runing on %s", segment.Endpoint)
+	log.Info().Msgf("Delay Monitoring: Prometheus running on %s", segment.Endpoint)
 	for msg := range segment.In {
 		segment.updateWindow(msg, &promExporter)
 		segment.Out <- msg
