@@ -2,6 +2,7 @@ package monitoring
 
 import (
 	"net/http"
+	"strconv"
 	"sync"
 	"time"
 
@@ -18,7 +19,7 @@ type DelayMonitoring struct {
 	toptalkers_metrics.PrometheusParams
 
 	SamplingRate int     // flow samplingrate fpr calculating delay - default 100
-	Alpha        float64 //alpha used for the exponential window moving average?
+	Alpha        float64 // alpha used for the exponential window moving average?
 	Endpoint     string  // optional, default value is ":8080"
 
 	msgCounter                   int
@@ -54,6 +55,22 @@ func (segment DelayMonitoring) New(config map[string]string) segments.Segment {
 		newSegment.Endpoint = config["endpoint"]
 	}
 
+	var err error
+	if config["samplingRate"] != "" {
+		newSegment.SamplingRate, err = strconv.Atoi(config["samplingRate"])
+		if err != nil {
+			log.Error().Err(err)
+		}
+	}
+
+	if config["alpha"] != "" {
+		alpha, err := strconv.Atoi(config["alpha"])
+		newSegment.Alpha = float64(alpha)
+		if err != nil {
+			log.Error().Err(err)
+		}
+	}
+
 	return &newSegment
 }
 
@@ -68,7 +85,7 @@ func (segment *DelayMonitoring) Run(wg *sync.WaitGroup) {
 	//start timers
 	promExporter.ServeEndpoints(segment.Endpoint)
 
-	log.Info().Msgf("Threshold Metric Report runing on %s", segment.Endpoint)
+	log.Info().Msgf("Delay Monitoring: Prometheus running on %s", segment.Endpoint)
 	for msg := range segment.In {
 		segment.updateWindow(msg, &promExporter)
 		segment.Out <- msg
@@ -100,7 +117,7 @@ func (segment *DelayMonitoring) updateWindow(msg *pb.EnrichedFlow, promExporter 
 	if segment.msgCounter >= segment.SamplingRate {
 		promExporter.KafkaMessageCount.Inc()
 		if msg.TimeFlowEnd == 0 {
-			log.Error().Msg("Empty field `TimeReceived` for flowmessage - consider using segment `sync_timestamps` if your flow collector only fills TimeReceivedMs or TimeReceivedNs")
+			log.Error().Msg("Delay Monitoring: Empty field `TimeFlowEnd` for flow message - consider using segment `sync_timestamps` if your flow collector only fills TimeReceivedMs or TimeReceivedNs")
 		}
 		timeNow := uint64(time.Now().Unix())
 		timeDiffProcessing := timeNow - msg.TimeReceived
@@ -108,7 +125,7 @@ func (segment *DelayMonitoring) updateWindow(msg *pb.EnrichedFlow, promExporter 
 
 		segment.movingAverageProcessingDelay = (segment.Alpha * float64(timeDiffProcessing)) + (1.0-segment.Alpha)*segment.movingAverageProcessingDelay
 		segment.movingAverageTotalDelay = (segment.Alpha * float64(timeDiffTotal)) + (1.0-segment.Alpha)*segment.movingAverageProcessingDelay
-		segment.msgCounter = 0
+		segment.msgCounter = 1
 	} else {
 		segment.msgCounter += 1
 	}
@@ -158,10 +175,10 @@ func (e *PrometheusExporter) ServeEndpoints(endpoint string) {
 	go func() {
 		err := http.ListenAndServe(endpoint, mux)
 		if err != nil {
-			log.Error().Err(err).Msgf("Prometheus Exporter: Failed to start https endpoint on port %s", endpoint)
+			log.Error().Err(err).Msgf("Delay monitoring: Failed to start https endpoint on port %s", endpoint)
 		}
 	}()
-	log.Info().Msgf("Enabled delay metrics on /metrics and /delay, listening at %s.", endpoint)
+	log.Info().Msgf("Delay Monitoring: Enabled delay metrics on /metrics and /delay, listening at %s.", endpoint)
 }
 
 func init() {
