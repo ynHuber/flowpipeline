@@ -34,11 +34,15 @@ import (
 
 type Prometheus struct {
 	segments.BaseSegment
-	Endpoint       string         // optional, default value is ":8080"
-	MetricsPath    string         // optional, default is "/metrics"
-	FlowdataPath   string         // optional, default is "/flowdata"
-	Labels         []string       // optional, list of labels to be exported
-	VacuumInterval *time.Duration // optional, intervall in which counters should be reset (can lead to dataloss)
+	Endpoint          string         // optional, default value is ":8080"
+	MetricsPath       string         // optional, default is "/metrics"
+	FlowdataPath      string         // optional, default is "/flowdata"
+	Labels            []string       // optional, list of labels to be exported
+	VacuumInterval    *time.Duration // optional, intervall in which counters should be reset (can lead to dataloss)
+	ExportASPathPairs bool           // optional, if true, as path pairs will be exported
+	ExportASPaths     bool           // optional, if true, as paths will be exported
+
+	PromExporter *Exporter
 }
 
 func (segment Prometheus) New(config map[string]string) segments.Segment {
@@ -70,12 +74,29 @@ func (segment Prometheus) New(config map[string]string) segments.Segment {
 			vacuumInterval = &vacuumIntervalDuration
 		}
 	}
+	var exportASPathPairs bool = false
+	if config["export_as_pairs"] == "" {
+		log.Info().Msg("prometheus: Missing configuration parameter 'export_as_pairs'. Using default value 'false'")
+	} else if strings.ToLower(config["export_as_pairs"]) == "true" {
+		log.Info().Msg("prometheus: Export of AS path pairs is enabled")
+		exportASPathPairs = true
+	}
+
+	var exportASPaths bool = false
+	if config["export_as_paths"] == "" {
+		log.Info().Msg("prometheus: Missing configuration parameter 'export_as_paths'. Using default value 'false'")
+	} else if strings.ToLower(config["export_as_paths"]) == "true" {
+		log.Info().Msg("prometheus: Export of AS paths is enabled")
+		exportASPaths = true
+	}
 
 	newsegment := &Prometheus{
-		Endpoint:       endpoint,
-		MetricsPath:    metricsPath,
-		FlowdataPath:   flowdataPath,
-		VacuumInterval: vacuumInterval,
+		Endpoint:          endpoint,
+		MetricsPath:       metricsPath,
+		FlowdataPath:      flowdataPath,
+		VacuumInterval:    vacuumInterval,
+		ExportASPathPairs: exportASPathPairs,
+		ExportASPaths:     exportASPaths,
 	}
 
 	// set default labels if not configured
@@ -105,10 +126,10 @@ func (segment *Prometheus) Run(wg *sync.WaitGroup) {
 		wg.Done()
 	}()
 
-	var promExporter = Exporter{}
-	segment.initializeExporter(&promExporter)
+	segment.PromExporter = &Exporter{}
+	segment.initializeExporter(segment.PromExporter)
 	if segment.VacuumInterval != nil {
-		segment.AddVacuumCronJob(&promExporter)
+		segment.AddVacuumCronJob(segment.PromExporter)
 	}
 
 	for msg := range segment.In {
@@ -133,7 +154,15 @@ func (segment *Prometheus) Run(wg *sync.WaitGroup) {
 				labelset[fieldname] = fmt.Sprint(value)
 			}
 		}
-		promExporter.Increment(msg.Bytes, msg.Packets, labelset)
+		segment.PromExporter.Increment(msg.Bytes, msg.Packets, labelset)
+
+		if segment.ExportASPathPairs && segment.PromExporter != nil {
+			segment.PromExporter.ExportASPathPairsWithDirection(msg.SrcAsPath, "Source", msg)
+			segment.PromExporter.ExportASPathPairsWithDirection(msg.DstAsPath, "Destination", msg)
+		}
+		if segment.ExportASPaths {
+			segment.PromExporter.ExportASPaths(msg)
+		}
 		segment.Out <- msg
 	}
 }
@@ -157,6 +186,56 @@ func (segment *Prometheus) AddVacuumCronJob(promExporter *Exporter) {
 	}
 	// start the scheduler
 	scheduler.Start()
+}
+
+func (e *Exporter) ExportASPaths(flow *pb.EnrichedFlow) {
+	asPath := DedupConsecutiveASNs(flow.AsPath)
+	if len(asPath) < 2 {
+		return
+	}
+	e.flowAsPathBytes.WithLabelValues(fmt.Sprint(asPath)).Add(float64(flow.Bytes))
+}
+
+func (e *Exporter) ExportASPathPairsWithDirection(asPath []uint32, direction string, flow *pb.EnrichedFlow) {
+	asPath = DedupConsecutiveASNs(asPath)
+	if len(asPath) < 2 {
+		return
+	}
+
+	if direction == "Source" {
+		start := fmt.Sprint(asPath[0])
+		e.flowAsPairsBytes.WithLabelValues(start, start, direction).Add(float64(flow.Bytes))
+
+		for i := 0; i < len(asPath)-1; i++ {
+			from := fmt.Sprint(asPath[i])
+			to := fmt.Sprint(asPath[i+1])
+			e.flowAsPairsBytes.WithLabelValues(from, to, direction).Add(float64(flow.Bytes))
+		}
+	}
+
+	if direction == "Destination" {
+		for i := 0; i < len(asPath)-1; i++ {
+			from := fmt.Sprint(asPath[i])
+			to := fmt.Sprint(asPath[i+1])
+			e.flowAsPairsBytes.WithLabelValues(from, to, direction).Add(float64(flow.Bytes))
+		}
+
+		end := fmt.Sprint(asPath[len(asPath)-1])
+		e.flowAsPairsBytes.WithLabelValues(end, end, direction).Add(float64(flow.Bytes))
+	}
+}
+
+func DedupConsecutiveASNs(asPath []uint32) []uint32 {
+	if len(asPath) == 0 {
+		return nil
+	}
+	deduped := []uint32{asPath[0]}
+	for _, asn := range asPath[1:] {
+		if asn != deduped[len(deduped)-1] {
+			deduped = append(deduped, asn)
+		}
+	}
+	return deduped
 }
 
 func init() {
