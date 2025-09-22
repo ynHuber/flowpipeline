@@ -35,15 +35,14 @@ type AutonomousSystem struct {
 }
 
 type ECSSourceOrDest struct {
-	Address          string `json:"address,omitempty"`
-	Bytes            uint64 `json:"bytes,omitempty"`
-	Domain           string `json:"domain,omitempty"`
-	IP               string `json:"ip,omitempty"`
-	MAC              string `json:"mac,omitempty"`
-	Packets          uint64 `json:"packets,omitempty"`
-	Port             uint32 `json:"port,omitempty"`
-	RegisteredDomain string `json:"registered_domain,omitempty"`
-	//Subdomain        string            `json:"subdomain,omitempty"`
+	Address          string            `json:"address,omitempty"`
+	Bytes            uint64            `json:"bytes,omitempty"`
+	Domain           string            `json:"domain,omitempty"`
+	IP               string            `json:"ip,omitempty"`
+	MAC              string            `json:"mac,omitempty"`
+	Packets          uint64            `json:"packets,omitempty"`
+	Port             uint32            `json:"port,omitempty"`
+	RegisteredDomain string            `json:"registered_domain,omitempty"`
 	TopLevelDomain   string            `json:"top_level_domain,omitempty"`
-	AutonomousSystem *AutonomousSystem `json:"autonomous_system,omitempty"`
+	AutonomousSystem *AutonomousSystem `json:"as,omitempty"`
 }
