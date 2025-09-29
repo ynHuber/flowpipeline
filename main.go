@@ -64,6 +64,7 @@ import (
 	_ "github.com/BelWue/flowpipeline/segments/output/kafkaproducer"
 	_ "github.com/BelWue/flowpipeline/segments/output/lumberjack"
 	_ "github.com/BelWue/flowpipeline/segments/output/mongodb"
+	_ "github.com/BelWue/flowpipeline/segments/output/parquet"
 	_ "github.com/BelWue/flowpipeline/segments/output/prometheus"
 	_ "github.com/BelWue/flowpipeline/segments/output/sqlite"
 
