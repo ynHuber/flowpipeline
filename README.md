@@ -42,7 +42,7 @@ you'll either want to create one or call it from any example directory (and
 maybe follow the instructions there).
 
 ### Binary Releases
-Download our [latest release](https://github.com/BelWue/flowpipeline/releases)
+Download our [latest release](https://codeberg.org/BelWue/flowpipeline/releases)
 and run it, same as if you compiled it yourself.
 The flowpipeline releases contain executables for MacOS (`flowpipeline-darwin`) and for linux (`flowpipeline-linux`).
 
