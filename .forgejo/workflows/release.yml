@@ -14,20 +14,20 @@ jobs:
     strategy:
       matrix:
         include:
-        - os: ubuntu-latest
+        - os: codeberg-small
           goos: linux
-        - os: macos-latest
-          goos: darwin
+        #- os: macos-latest
+          #goos: darwin
     steps:
     - name: checkout
-      uses: actions/checkout@v3
+      uses: https://code.forgejo.org/actions/checkout@v4
 
     - name: install libpcap
-      if: matrix.os == 'ubuntu-latest'
-      run: sudo apt-get install -y libpcap-dev
+      if: matrix.goos == 'linux'
+      run: sudo apt-get update && sudo apt-get install -y libpcap-dev
 
     - name: setup go
-      uses: actions/setup-go@v5.3.0
+      uses: https://code.forgejo.org/actions/setup-go@v5.3.0
       with:
         go-version: '1.24.0'
 
@@ -35,15 +35,15 @@ jobs:
       run: go test ./...
 
     - name: build binary
-      run: go build -o flowpipeline-${{ matrix.goos }} -ldflags "-X main.Version=${{ github.ref_name }}" .
+      run: go build -o flowpipeline-${{ matrix.goos }} -ldflags "-X main.Version=${{ forge.ref_name }}" .
 
     - name: build statically linked
-      run: go build -o flowpipeline-${{ matrix.goos }}-static -ldflags "-X main.Version=${{ github.ref_name }}" .
+      run: go build -o flowpipeline-${{ matrix.goos }}-static -ldflags "-X main.Version=${{ forge.ref_name }}" .
       env:
         CGO_ENABLED: 0
 
     - name: save statically linked binary
-      uses: actions/upload-artifact@v4.6.0
+      uses: https://code.forgejo.org/forgejo/upload-artifact/@v4
       with:
         name: flowpipeline-${{ matrix.goos }}
         path: ./flowpipeline-*
@@ -54,20 +54,20 @@ jobs:
     permissions:
       attestations: read 
       contents: write
-    runs-on: ubuntu-latest
+    runs-on: codeberg-small
     needs: build
     steps:
     - name: setup go
-      uses: actions/setup-go@v3
+      uses: https://code.forgejo.org/actions/setup-go@v3
       with:
         go-version: '1.24.0'
     - name: get binaries from previous job
-      uses: actions/download-artifact@v4.1.8
+      uses: https://code.forgejo.org/forgejo/download-artifact/@v4
     - name: display downloaded files
       run: ls -R
     - name: release with binaries
-      uses: softprops/action-gh-release@v1
+      uses: https://github.com/softprops/action-gh-release@v1
       with:
         generate_release_notes: true
-        prerelease: ${{ endsWith(github.ref, '-alpha') || endsWith(github.ref, '-beta') }}
+        prerelease: ${{ endsWith(forge.ref, '-alpha') || endsWith(forge.ref, '-beta') }}
         files: "flowpipeline-*/flowpipeline-*"
