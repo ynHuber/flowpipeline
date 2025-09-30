@@ -66,7 +66,7 @@
 //
 // ```
 //
-// [godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline/segments/output/lumberjack)
+// [godoc](https://pkg.go.dev/codeberg.org/BelWue/flowpipeline/segments/output/lumberjack)
 package lumberjack
 
 import (
