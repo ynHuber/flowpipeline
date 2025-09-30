@@ -10,9 +10,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/BelWue/flowpipeline/pb"
-	"github.com/BelWue/flowpipeline/segments"
-	"github.com/BelWue/flowpipeline/segments/analysis/toptalkers_metrics"
+	"codeberg.org/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/analysis/toptalkers_metrics"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/zerolog/log"

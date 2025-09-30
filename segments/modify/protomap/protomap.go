@@ -7,8 +7,8 @@ package protomap
 import (
 	"sync"
 
-	"github.com/BelWue/flowpipeline/segments"
-	"github.com/BelWue/flowpipeline/utils"
+	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/utils"
 )
 
 type Protomap struct {

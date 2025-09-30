@@ -7,7 +7,7 @@ import (
 	"net"
 	"time"
 
-	"github.com/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/pb"
 	lumber "github.com/elastic/go-lumber/client/v2"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/protobuf/encoding/protojson"

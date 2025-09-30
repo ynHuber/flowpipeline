@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/BelWue/flowfilter/parser"
-	"github.com/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/pb"
 )
 
 type Filter struct {

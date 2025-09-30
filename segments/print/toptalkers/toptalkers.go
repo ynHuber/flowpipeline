@@ -28,7 +28,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments"
 	"github.com/asecurityteam/rolling"
 	"github.com/dustin/go-humanize"
 )

@@ -18,8 +18,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/BelWue/flowpipeline/pb"
-	"github.com/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/segments"
 	"github.com/rs/zerolog/log"
 )
 

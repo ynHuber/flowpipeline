@@ -53,10 +53,10 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/BelWue/flowpipeline/pb"
-	"github.com/BelWue/flowpipeline/pipeline"
-	"github.com/BelWue/flowpipeline/pipeline/config"
-	"github.com/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/pipeline"
+	"codeberg.org/BelWue/flowpipeline/pipeline/config"
+	"codeberg.org/BelWue/flowpipeline/segments"
 )
 
 // This mirrors the proper implementation in the pipeline package. This

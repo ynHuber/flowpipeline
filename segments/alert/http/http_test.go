@@ -3,8 +3,8 @@ package http
 import (
 	"testing"
 
-	"github.com/BelWue/flowpipeline/pb"
-	"github.com/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/segments"
 )
 
 // Http Segment test, passthrough test

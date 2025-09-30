@@ -1,7 +1,7 @@
 // The `prometheus` segment provides a standard prometheus exporter, exporting its
 // own monitoring info at `:8080/metrics` and its flow data at `:8080/flowdata` by
 // default. The label set included with each metric is freely configurable with a
-// comma-separated list from any field available in the [protobuf definition](https://github.com/BelWue/flowpipeline/blob/master/pb/flow.proto).
+// comma-separated list from any field available in the [protobuf definition](https://codeberg.org/BelWue/flowpipeline/src/branch/master/pb/flow.proto).
 //
 // Note that some of the above fields might not be present depending on the method
 // of flow export, the input segment used in this pipeline, or the modify segments
@@ -19,8 +19,8 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/BelWue/flowpipeline/pb"
-	"github.com/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/segments"
 	"github.com/go-co-op/gocron/v2"
 )
 

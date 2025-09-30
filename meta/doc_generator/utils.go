@@ -12,7 +12,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-const FlowPipelineRepo = "https://github.com/BelWue/flowpipeline"
+const FlowPipelineRepo = "https://codeberg.org/BelWue/flowpipeline"
 const FlowPipelineFilesBase = FlowPipelineRepo + "/tree/master/"
 const FlowPipelineCommitBase = FlowPipelineRepo + "/commit/"
 

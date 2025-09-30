@@ -5,7 +5,7 @@ package drop
 import (
 	"sync"
 
-	"github.com/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments"
 )
 
 type Drop struct {

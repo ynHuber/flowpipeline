@@ -7,7 +7,7 @@ package segments
 import (
 	"sync"
 
-	"github.com/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/pb"
 )
 
 // Wrapper allowing multiple parallel instances of a segment by wiring in/out/drops-channels to all contained segments

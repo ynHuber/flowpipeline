@@ -5,7 +5,7 @@
 package segments
 
 import (
-	"github.com/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/pb"
 )
 
 type FilterSegment interface {

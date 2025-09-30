@@ -22,7 +22,7 @@
 // The parameter `verbose` changes some output elements, it will for instance add
 // the decoded forwarding status (Cisco-style) in a human-readable manner. The
 // `highlight` parameter causes the output of this segment to be printed in red,
-// see the [relevant example](https://github.com/BelWue/flowpipeline/tree/master/examples/configuration/highlighted_flowdump)
+// see the [relevant example](https://codeberg.org/BelWue/flowpipeline/src/branch/master/examples/configurations/flowdump/highlight.yml)
 // for an application. The parameter `filename`can be used to redirect the output to a file instead of printing it to stdout.
 package printflowdump
 
@@ -33,11 +33,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/BelWue/flowpipeline/utils"
+	"codeberg.org/BelWue/flowpipeline/utils"
 	"github.com/rs/zerolog/log"
 
-	"github.com/BelWue/flowpipeline/pb"
-	"github.com/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/segments"
 	"github.com/dustin/go-humanize"
 )
 

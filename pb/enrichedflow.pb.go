@@ -1846,7 +1846,7 @@ const file_pb_enrichedflow_proto_rawDesc = "" +
 	"\x0eRemoteAddrType\x12\v\n" +
 	"\aNeither\x10\x00\x12\a\n" +
 	"\x03Src\x10\x01\x12\a\n" +
-	"\x03Dst\x10\x02B$Z\"github.com/BelWue/flowpipeline/pb;b\x06proto3"
+	"\x03Dst\x10\x02B$Z\"codeberg.org/BelWue/flowpipeline/pb;b\x06proto3"
 
 var (
 	file_pb_enrichedflow_proto_rawDescOnce sync.Once

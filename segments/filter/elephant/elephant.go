@@ -17,7 +17,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments"
 	"github.com/rs/zerolog/log"
 
 	"github.com/asecurityteam/rolling"
