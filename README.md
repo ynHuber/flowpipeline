@@ -51,7 +51,7 @@ The default, dynamically linked version requires a reasonably recent system
 As a fallback option, the static binaries will work in older environments
 (Rocky Linux 8, Debian 11, ...), but come without the segments that require
 CGO/dynamically linked code (`bpf`, `sqlite`, `mongodb` and plugin support, check
-[CONFIGURATION.md](https://github.com/BelWue/flowpipeline/blob/master/CONFIGURATION.md)).
+[CONFIGURATION.md](https://codeberg.org/BelWue/flowpipeline/src/branch/master/CONFIGURATION.md)).
 
 ### Container Releases
 #### Flowpipeline standalone container
@@ -86,7 +86,7 @@ docker run -p 3000:3000 -p 2055:2055/udp -p 6343:6343 -p 9090:9090 /udp ghcr.io/
 The corresponding configuration files are available in `/examples/visualization`
 ## Configuration
 
-Refer to [CONFIGURATION.md](https://github.com/BelWue/flowpipeline/blob/master/CONFIGURATION.md)
+Refer to [CONFIGURATION.md](https://codeberg.org/BelWue/flowpipeline/src/branch/master/CONFIGURATION.md)
 for the full guide. Other than that, looking at the examples should give you a
 good idea what the config looks like in detail and what the possible
 applications are. 
