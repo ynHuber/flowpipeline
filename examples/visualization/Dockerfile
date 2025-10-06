@@ -1,4 +1,4 @@
-FROM docker.io/library/golang:tip-alpine AS builder
+FROM docker.io/library/golang:1.24.0-alpine AS builder
 # add local repo into the builder
 ADD . /opt/build
 WORKDIR /opt/build
