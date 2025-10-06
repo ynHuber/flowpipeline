@@ -1,4 +1,4 @@
-FROM docker.io/library/golang:1.24.0-alpine AS builder
+FROM public.ecr.aws/docker/library/golang:1.24.0-alpine AS builder
 # add local repo into the builder
 ADD . /opt/build
 WORKDIR /opt/build
@@ -13,7 +13,7 @@ FROM quay.io/prometheus/prometheus AS prometheus
 FROM docker.io/grafana/grafana AS grafana
 
 # begin new container
-FROM docker.io/library/alpine
+FROM public.ecr.aws/docker/library/alpine:latest
 
 RUN apk add --no-cache supervisor
 

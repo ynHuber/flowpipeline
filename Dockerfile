@@ -1,4 +1,4 @@
-FROM docker.io/library/golang:1.24.0-alpine AS builder
+FROM public.ecr.aws/docker/library/golang:1.24.0-alpine AS builder
 
 # add local repo into the builder
 ADD . /opt/build
@@ -8,7 +8,7 @@ WORKDIR /opt/build
 RUN CGO_ENABLED=0 go build -tags container -o fpl
 
 # begin new container
-FROM docker.io/library/alpine
+FROM public.ecr.aws/docker/library/alpine:latest
 WORKDIR /
 
 # add some tools
