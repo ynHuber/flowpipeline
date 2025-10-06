@@ -1,19 +1,18 @@
-FROM golang:1.24.0 AS builder
-RUN apt-get update
+FROM public.ecr.aws/docker/library/golang:1.24.0-alpine AS builder
 
 # add local repo into the builder
 ADD . /opt/build
 WORKDIR /opt/build
 
 # build the binary there
-RUN CGO_ENABLED=0 go build -tags container -o fpl -v
+RUN CGO_ENABLED=0 go build -tags container -o fpl
 
 # begin new container
-FROM alpine
+FROM public.ecr.aws/docker/library/alpine:latest
 WORKDIR /
 
 # add some tools
-RUN apk add -U coreutils
+RUN apk add --no-cache coreutils
 
 # copy binary from builder to your desired location
 COPY --from=builder /opt/build/fpl .

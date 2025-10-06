@@ -16,6 +16,7 @@ on:
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: codeberg.org
+  IMAGE_NAME: ${{ forge.repository }}
 
 
 jobs:
@@ -27,12 +28,6 @@ jobs:
       packages: write
 
     steps:
-      # The container image name absolutely needs to be lowercase to successfully upload it.
-      # The ${var,,} syntax uses a bash feature to convert it to lowercase.
-      - name: Lowercase repository name
-        run: |
-          echo IMAGE_NAME="${FORGEJO_REPOSITORY,,}" | tee -a "$FORGEJO_ENV"
-
       - name: Checkout repository
         uses: https://code.forgejo.org/actions/checkout@v5
           
