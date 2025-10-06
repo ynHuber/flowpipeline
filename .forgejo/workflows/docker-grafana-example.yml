@@ -50,3 +50,4 @@ jobs:
           credentials: ${{ env.REGISTRY }}=${{ forge.repository_owner }}:${{ secrets.CODEBERG_PACKAGE_REPOSITORY_TOKEN }}
           destinations: ${{ steps.meta.outputs.tags }}
           push: ${{ forge.event_name != 'pull_request' }}
+          extra_args: '--compressed-caching=false'
