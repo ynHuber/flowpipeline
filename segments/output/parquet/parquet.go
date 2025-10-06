@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"github.com/rs/zerolog/log"
 )
 
 type Parquet struct {
