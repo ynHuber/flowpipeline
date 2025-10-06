@@ -1,0 +1,52 @@
+name: container build and publish
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+on:
+  push:
+    branches: [ master ]
+    # Publish semver tags as releases.
+    tags: [ 'v*.*.*' ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: codeberg.org
+
+
+jobs:
+  build:
+
+    runs-on: codeberg-small
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      # The container image name absolutely needs to be lowercase to successfully upload it.
+      # The ${var,,} syntax uses a bash feature to convert it to lowercase.
+      - name: Lowercase repository name
+        run: |
+          echo IMAGE_NAME="${FORGEJO_REPOSITORY,,}" | tee -a "$FORGEJO_ENV"
+
+      - name: Checkout repository
+        uses: https://code.forgejo.org/actions/checkout@v5
+          
+      # Extract metadata (tags, labels) for Docker
+      - name: Extract Docker metadata
+        id: meta
+        uses: https://code.forgejo.org/docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      # Build and push Docker image with Kaniko (don't push on PR)
+      - name: Build and push Docker image
+        uses: https://codeberg.org/umglurf/kaniko-action@v1.4.3
+        with:
+          credentials: ${{ env.REGISTRY }}=${{ forge.repository_owner }}:${{ secrets.CODEBERG_PACKAGE_REPOSITORY_TOKEN }}
+          destinations: ${{ steps.meta.outputs.tags }}
+          push: ${{ forge.event_name != 'pull_request' }}

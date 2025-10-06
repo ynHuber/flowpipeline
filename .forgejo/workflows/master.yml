@@ -15,20 +15,20 @@ jobs:
     strategy:
       matrix:
         include:
-        - os: ubuntu-latest
+        - os: codeberg-small
           goos: linux
-        - os: macos-latest
-          goos: darwin
+        #- os: macos-latest
+          #goos: darwin
     steps:
     - name: checkout
-      uses: actions/checkout@v3
+      uses: https://code.forgejo.org/actions/checkout@v5
 
     - name: install libpcap
-      if: matrix.os == 'ubuntu-latest'
-      run: sudo apt-get install -y libpcap-dev
+      if: matrix.goos == 'linux'
+      run: sudo apt-get update && sudo apt-get install -y libpcap-dev
 
     - name: setup go
-      uses: actions/setup-go@v5.3.0
+      uses: https://code.forgejo.org/actions/setup-go@v5
       with:
         go-version: '1.24.0'
 
@@ -36,22 +36,22 @@ jobs:
       run: go test ./...
 
     - name: build
-      run: go build -o flowpipeline -ldflags "-X main.Version=${{ github.sha }}" .
+      run: go build -o flowpipeline -ldflags "-X main.Version=${{ forge.sha }}" .
 
     - name: save binary
-      uses: actions/upload-artifact@v4.6.0
+      uses: https://code.forgejo.org/forgejo/upload-artifact/@v4
       with:
         name: flowpipeline-${{ matrix.goos }}
         path: ./flowpipeline
         overwrite: true
 
     - name: build statically linked
-      run: go build -o flowpipeline-static -ldflags "-X main.Version=${{ github.sha }}" .
+      run: go build -o flowpipeline-static -ldflags "-X main.Version=${{ forge.sha }}" .
       env:
         CGO_ENABLED: 0
 
     - name: save statically linked binary
-      uses: actions/upload-artifact@v4.6.0
+      uses: https://code.forgejo.org/forgejo/upload-artifact/@v4
       with:
         name: flowpipeline-${{ matrix.goos }}-static
         path: ./flowpipeline-static
