@@ -56,7 +56,7 @@ CGO/dynamically linked code (`bpf`, `sqlite`, `mongodb` and plugin support, chec
 ### Container Releases
 #### Flowpipeline standalone container
 A ready to use container is provided as `belwue/flowpipeline`, you can check
-it out on [GitHub container registry](https://github.com/BelWue/flowpipeline/pkgs/container/flowpipeline).
+it out on our [Codeberg container registry](https://codeberg.org/BelWue/-/packages/container/flowpipeline/master).
 
 Configurations referencing other files (geolocation databases for instance)
 will work in a container without extra edits. This is because the volume
