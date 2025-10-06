@@ -19,8 +19,8 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/BelWue/flowpipeline/pb"
-	"github.com/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/segments"
 	"google.golang.org/protobuf/encoding/protodelim"
 
 	"github.com/netsampler/goflow2/v2/utils/debug"

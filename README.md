@@ -1,7 +1,7 @@
 # Flowpipeline
 A [goflow2](https://github.com/netsampler/goflow2)-compatible flow message processing toolkit
 
-[godoc](https://pkg.go.dev/github.com/BelWue/flowpipeline)
+[godoc](https://pkg.go.dev/codeberg.org/BelWue/flowpipeline)
 
 ----------
 
@@ -24,10 +24,10 @@ processing stack into a single piece of software which can be configured to
 serve any function:
 
 * accepting raw Netflow (using [goflow2](https://github.com/netsampler/goflow2))
-* enriching the resulting flow messages ([examples/configurations/enricher](https://github.com/BelWue/flowpipeline/tree/master/examples/configurations/enricher))
-* writing to and reading from Kafka ([examples/localkafka](https://github.com/BelWue/flowpipeline/tree/master/examples/configuration/localkafka))
-* dumping flows to cli (e.g. [flowdump](https://github.com/BelWue/flowpipeline/tree/master/examples/configuration/flowdump))
-* providing metrics and insights ([examples/prometheus](https://github.com/BelWue/flowpipeline/tree/master/examples/configuration/prometheus))
+* enriching the resulting flow messages ([examples/configurations/enricher](https://codeberg.org/BelWue/flowpipeline/src/branch/master/examples/configurations/enricher))
+* writing to and reading from Kafka ([examples/localkafka](https://codeberg.org/BelWue/flowpipeline/src/branch/master/examples/configurations/localkafka))
+* dumping flows to cli (e.g. [flowdump](https://codeberg.org/BelWue/flowpipeline/src/branch/master/examples/configurations/flowdump))
+* providing metrics and insights ([examples/prometheus](https://codeberg.org/BelWue/flowpipeline/src/branch/master/examples/configurations/export/prometheus_export.yml))
 * and many more...
 
 ## Getting Started
@@ -42,7 +42,7 @@ you'll either want to create one or call it from any example directory (and
 maybe follow the instructions there).
 
 ### Binary Releases
-Download our [latest release](https://github.com/BelWue/flowpipeline/releases)
+Download our [latest release](https://codeberg.org/BelWue/flowpipeline/releases)
 and run it, same as if you compiled it yourself.
 The flowpipeline releases contain executables for MacOS (`flowpipeline-darwin`) and for linux (`flowpipeline-linux`).
 
@@ -51,12 +51,12 @@ The default, dynamically linked version requires a reasonably recent system
 As a fallback option, the static binaries will work in older environments
 (Rocky Linux 8, Debian 11, ...), but come without the segments that require
 CGO/dynamically linked code (`bpf`, `sqlite`, `mongodb` and plugin support, check
-[CONFIGURATION.md](https://github.com/BelWue/flowpipeline/blob/master/CONFIGURATION.md)).
+[CONFIGURATION.md](https://codeberg.org/BelWue/flowpipeline/src/branch/master/CONFIGURATION.md)).
 
 ### Container Releases
 #### Flowpipeline standalone container
 A ready to use container is provided as `belwue/flowpipeline`, you can check
-it out on [GitHub container registry](https://github.com/BelWue/flowpipeline/pkgs/container/flowpipeline).
+it out on our [Codeberg container registry](https://codeberg.org/BelWue/-/packages/container/flowpipeline).
 
 Configurations referencing other files (geolocation databases for instance)
 will work in a container without extra edits. This is because the volume
@@ -86,7 +86,7 @@ docker run -p 3000:3000 -p 2055:2055/udp -p 6343:6343 -p 9090:9090 /udp ghcr.io/
 The corresponding configuration files are available in `/examples/visualization`
 ## Configuration
 
-Refer to [CONFIGURATION.md](https://github.com/BelWue/flowpipeline/blob/master/CONFIGURATION.md)
+Refer to [CONFIGURATION.md](https://codeberg.org/BelWue/flowpipeline/src/branch/master/CONFIGURATION.md)
 for the full guide. Other than that, looking at the examples should give you a
 good idea what the config looks like in detail and what the possible
 applications are. 
@@ -128,7 +128,7 @@ If you find that the existing segments lack some functionality or you require
 some very specific behaviour, it is possible to include segments as a plugin.
 This is done using the `-p yourplugin.so` commandline option and your own
 custom module. See
-[examples/plugin](https://github.com/BelWue/flowpipeline/tree/master/examples/configuration/plugin)
+[examples/plugin](https://codeberg.org/BelWue/flowpipeline/src/branch/master/examples/plugin)
 for a basic example and instructions on how to compile your plugin.
 
 Note that this requires CGO and thus will not work using the static binary

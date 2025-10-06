@@ -8,9 +8,9 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/pb"
 	"github.com/rs/zerolog"
-	// "github.com/BelWue/flowpipeline/segments"
+	// "codeberg.org/BelWue/flowpipeline/segments"
 )
 
 // Mongodb Segment test, passthrough test only

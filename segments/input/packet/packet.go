@@ -31,8 +31,8 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/BelWue/flowpipeline/segments"
-	"github.com/BelWue/flowpipeline/segments/filter/aggregate"
+	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/filter/aggregate"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcapgo"

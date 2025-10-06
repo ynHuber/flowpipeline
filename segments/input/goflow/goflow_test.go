@@ -3,8 +3,8 @@ package goflow
 import (
 	"testing"
 
-	"github.com/BelWue/flowpipeline/pb"
-	"github.com/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/segments"
 )
 
 // Goflow Segment test, passthrough test only, functionality is tested by Goflow package

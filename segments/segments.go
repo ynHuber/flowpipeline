@@ -9,8 +9,8 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/BelWue/flowpipeline/pb"
-	"github.com/BelWue/flowpipeline/pipeline/config"
+	"codeberg.org/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/pipeline/config"
 	"github.com/rs/zerolog/log"
 )
 

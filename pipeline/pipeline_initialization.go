@@ -1,8 +1,8 @@
 package pipeline
 
 import (
-	"github.com/BelWue/flowpipeline/pipeline/config"
-	"github.com/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/pipeline/config"
+	"codeberg.org/BelWue/flowpipeline/segments"
 	"github.com/rs/zerolog/log"
 	"gopkg.in/yaml.v2"
 )

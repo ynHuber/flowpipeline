@@ -1,8 +1,8 @@
 package lumberjack
 
 import (
-	"github.com/BelWue/flowpipeline/pb"
-	"github.com/BelWue/flowpipeline/utils"
+	"codeberg.org/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/utils"
 
 	//"golang.org/x/net/publicsuffix"
 	"net/netip"

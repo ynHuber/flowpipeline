@@ -6,9 +6,9 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/BelWue/flowpipeline/pb"
-	"github.com/BelWue/flowpipeline/segments"
-	"github.com/BelWue/flowpipeline/segments/pass"
+	"codeberg.org/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/pass"
 )
 
 // Basically a list of segments. It further exposes the In and Out channels of

@@ -9,7 +9,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/pb"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
 	"google.golang.org/protobuf/proto"

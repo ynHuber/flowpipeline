@@ -11,7 +11,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/pb"
 )
 
 type FlowKey struct {

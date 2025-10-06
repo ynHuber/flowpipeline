@@ -1,6 +1,6 @@
 // The `influx` segment provides a way to write into an Influxdb instance.
 // The `tags` parameter allows any field to be used as a tag and takes a comma-separated list from any
-// field available in the [protobuf definition](https://github.com/BelWue/flowpipeline/blob/master/pb/flow.proto).
+// field available in the [protobuf definition](https://codeberg.org/BelWue/flowpipeline/src/branch/master/pb/flow.proto).
 // The `fields` works in the exact same way, except that these protobuf fields won't be indexed by InfluxDB.
 //
 // Note that some of the above fields might not be present depending on the method
@@ -16,8 +16,8 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/BelWue/flowpipeline/pb"
-	"github.com/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/segments"
 )
 
 type Influx struct {

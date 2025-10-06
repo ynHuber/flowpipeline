@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments"
 	"github.com/bwNetFlow/ip_prefix_trie"
 	"github.com/rs/zerolog/log"
 )

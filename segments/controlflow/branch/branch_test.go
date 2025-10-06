@@ -3,13 +3,13 @@ package branch
 import (
 	"testing"
 
-	"github.com/BelWue/flowpipeline/pb"
-	"github.com/BelWue/flowpipeline/pipeline"
+	"codeberg.org/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/pipeline"
 
-	_ "github.com/BelWue/flowpipeline/segments/filter/drop"
-	_ "github.com/BelWue/flowpipeline/segments/filter/flowfilter"
-	_ "github.com/BelWue/flowpipeline/segments/modify/dropfields"
-	_ "github.com/BelWue/flowpipeline/segments/testing/generator"
+	_ "codeberg.org/BelWue/flowpipeline/segments/filter/drop"
+	_ "codeberg.org/BelWue/flowpipeline/segments/filter/flowfilter"
+	_ "codeberg.org/BelWue/flowpipeline/segments/modify/dropfields"
+	_ "codeberg.org/BelWue/flowpipeline/segments/testing/generator"
 )
 
 func Test_Branch_passthrough(t *testing.T) {

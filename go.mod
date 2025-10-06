@@ -1,8 +1,8 @@
-module github.com/BelWue/flowpipeline
+module codeberg.org/BelWue/flowpipeline
 
 go 1.24.0
 
-replace github.com/BelWue/flowpipeline => github.com/BelWue/flowpipeline v1.3.1-0.20250127122013-c865e669d527
+replace codeberg.org/BelWue/flowpipeline => codeberg.org/BelWue/flowpipeline v1.3.1-0.20250127122013-c865e669d527
 
 require (
 	github.com/BelWue/bgp_routeinfo v0.0.0-20221004100427-d8095fc566dd

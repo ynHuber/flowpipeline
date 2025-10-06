@@ -27,7 +27,7 @@ package toptalkers_metrics
 import (
 	"sync"
 
-	"github.com/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments"
 	"github.com/rs/zerolog/log"
 )
 
