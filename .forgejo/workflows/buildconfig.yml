@@ -5,10 +5,9 @@ on:
     types: [closed]
     branches:
       - master
-  push:
 
 env:
-  CONFIG_FILE: "CONFIGURATION.md"
+  CONFIG_FILE: "Configuration.md"
   GO_VERSION: "1.24"
   GENERATOR_EXEC: "./generator"
 
@@ -16,7 +15,7 @@ jobs:
   build-and-commit:
     permissions:
       contents: write
-    # if: forge.event.pull_request.merged == true
+    if: forge.event.pull_request.merged == true
     runs-on: codeberg-small
     steps:
       - name: Checkout Code
