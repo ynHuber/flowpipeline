@@ -20,7 +20,7 @@ on:
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: codeberg.org
-  IMAGE_NAME: ${{ forge.repository }}
+  IMAGE_NAME: ${{ forge.repository }}-grafana
 
 jobs:
   build:
