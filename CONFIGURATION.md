@@ -1,6 +1,6 @@
 # flowpipeline Configuration and User Guide
 
-_This document was generated from '[meta/doc_generator/main.go](https://github.com/BelWue/flowpipeline/tree/master/meta/doc_generator/main.go)', based on commit '[22d84cd932be9141cde483d6472ee52bdf49c4b5](https://github.com/BelWue/flowpipeline/commit/22d84cd932be9141cde483d6472ee52bdf49c4b5)'._
+_This document was generated from '[meta/doc_generator/main.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/meta/doc_generator/main.go)', based on commit '[3ea509c19b5f7df33f26db4b89c38461c400859f](https://codeberg.org/BelWue/flowpipeline/commit/3ea509c19b5f7df33f26db4b89c38461c400859f)'._
 
 Any flowpipeline is configured in a single yaml file which is either located in
 the default `config.yml` or specified using the `-c` option when calling the
@@ -68,6 +68,7 @@ This overview is structures as follows:
   - [kafkaproducer](#kafkaproducer)
   - [lumberjack](#lumberjack)
   - [Mongodb Group](#mongodb-group)
+  - [parquet](#parquet)
   - [prometheus](#prometheus)
   - [sqlite](#sqlite)
 - [pass](#pass)
@@ -92,7 +93,7 @@ segment in their notification.
 
 #### http
 
-_This segment is implemented in [http.go](https://github.com/BelWue/flowpipeline/tree/master/segments/alert/http/http.go)._
+_This segment is implemented in [http.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/alert/http/http.go)._
 
 The `http` segment is currently a work in progress and is limited to sending
 post requests with the full flow data to a single endpoint at the moment. The
@@ -113,7 +114,7 @@ print results in some way, but might also filter given flows.
 
 #### toptalkers_metrics
 
-_This segment is implemented in [toptalkers_metrics.go](https://github.com/BelWue/flowpipeline/tree/master/segments/analysis/toptalkers_metrics/toptalkers_metrics.go)._
+_This segment is implemented in [toptalkers_metrics.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/analysis/toptalkers_metrics/toptalkers_metrics.go)._
 
 The `toptalkers_metrics` segment calculates statistics about traffic levels
 per IP address and exports them in OpenMetrics format via HTTP.
@@ -151,7 +152,7 @@ flow traverses.
 
 #### branch
 
-_This segment is implemented in [branch.go](https://github.com/BelWue/flowpipeline/tree/master/segments/controlflow/branch/branch.go)._
+_This segment is implemented in [branch.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/controlflow/branch/branch.go)._
 
 The `branch` segment is used to select the further progression of the pipeline
 between to branches. To this end, it uses additional syntax that other segments
@@ -207,7 +208,7 @@ _No group documentation found._
 
 #### filegate
 
-_This segment is implemented in [filegate.go](https://github.com/BelWue/flowpipeline/tree/master/segments/dev/filegate/filegate.go)._
+_This segment is implemented in [filegate.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/dev/filegate/filegate.go)._
 
 Serves as a template for new segments and forwards flows, otherwise does
 nothing.
@@ -219,20 +220,20 @@ segment on. Fields in individual flows are never modified, only used as criteria
 
 #### aggregate
 
-_This segment is implemented in [aggregate.go](https://github.com/BelWue/flowpipeline/tree/master/segments/filter/aggregate/aggregate.go)._
+_This segment is implemented in [aggregate.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/filter/aggregate/aggregate.go)._
 
 _No segment documentation found._
 
 #### drop
 
-_This segment is implemented in [drop.go](https://github.com/BelWue/flowpipeline/tree/master/segments/filter/drop/drop.go)._
+_This segment is implemented in [drop.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/filter/drop/drop.go)._
 
 The `drop` segment is used to drain a pipeline, effectively starting a new
 pipeline after it. In conjunction with `skip`, this can act as a `flowfilter`.
 
 #### elephant
 
-_This segment is implemented in [elephant.go](https://github.com/BelWue/flowpipeline/tree/master/segments/filter/elephant/elephant.go)._
+_This segment is implemented in [elephant.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/filter/elephant/elephant.go)._
 
 The `elephant` segment uses a configurable sliding window to determine flow
 statistics at runtime and filter out unremarkable flows from the pipeline. This
@@ -259,7 +260,7 @@ flows. All flows within this Timerange are dropped after the start of the pipeli
 
 #### flowfilter
 
-_This segment is implemented in [flowfilter.go](https://github.com/BelWue/flowpipeline/tree/master/segments/filter/flowfilter/flowfilter.go)._
+_This segment is implemented in [flowfilter.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/filter/flowfilter/flowfilter.go)._
 
 The `flowfilter` segment uses [flowfilter syntax](https://github.com/BelWue/flowfilter)
 to drop flows based on the evaluation value of the provided filter conditional against
@@ -290,7 +291,7 @@ be limited according to the data protection requirements set forth by the univer
 
 #### bpf
 
-_This segment is implemented in [bpf.go](https://github.com/BelWue/flowpipeline/tree/master/segments/input/bpf/bpf.go)._
+_This segment is implemented in [bpf.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/input/bpf/bpf.go)._
 
 **This segment is available only on Linux.**
 
@@ -320,7 +321,7 @@ Roadmap:
 
 #### diskbuffer
 
-_This segment is implemented in [diskbuffer.go](https://github.com/BelWue/flowpipeline/tree/master/segments/input/diskbuffer/diskbuffer.go)._
+_This segment is implemented in [diskbuffer.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/input/diskbuffer/diskbuffer.go)._
 
 The `diskbuffer` segment buffers flows in memory and on-demand on disk.
 Writing to disk is done in the JSON representation of the flows, compressed using
@@ -345,7 +346,7 @@ maximum size on disk are configurable via the `filesize` and `maxcachesize` para
 
 #### goflow
 
-_This segment is implemented in [goflow.go](https://github.com/BelWue/flowpipeline/tree/master/segments/input/goflow/goflow.go)._
+_This segment is implemented in [goflow.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/input/goflow/goflow.go)._
 
 The `goflow` segment provides a convenient interface for
 [goflow2](https://github.com/netsampler/goflow2) right from flowpipeline
@@ -368,7 +369,7 @@ exporters, for instance your network devices.
 
 #### kafkaconsumer
 
-_This segment is implemented in [kafkaconsumer.go](https://github.com/BelWue/flowpipeline/tree/master/segments/input/kafkaconsumer/kafkaconsumer.go)._
+_This segment is implemented in [kafkaconsumer.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/input/kafkaconsumer/kafkaconsumer.go)._
 
 The `kafkaconsumer` segment consumes flows from a Kafka topic. This topic can
 be created using the `kafkaproducer` module or using an external instance of
@@ -404,7 +405,7 @@ separated list for `strategy`. Supported values are `sticky`, `roundrobin` and
 
 #### packet
 
-_This segment is implemented in [packet.go](https://github.com/BelWue/flowpipeline/tree/master/segments/input/packet/packet.go)._
+_This segment is implemented in [packet.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/input/packet/packet.go)._
 
 **This segment is available only on Linux.**
 **This segment is available in the static binary release with some caveats in configuration.**
@@ -438,7 +439,7 @@ aggregated in any flow cache.
 
 #### replay
 
-_This segment is implemented in [replay.go](https://github.com/BelWue/flowpipeline/tree/master/segments/input/replay/replay.go)._
+_This segment is implemented in [replay.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/input/replay/replay.go)._
 
 The `replay` segment reads a sqlite database previously created by the `sqlite`
 segment and emits the flows contained in it. The location of the database is
@@ -458,7 +459,7 @@ instantly after each other.
 
 #### stdin
 
-_This segment is implemented in [stdin.go](https://github.com/BelWue/flowpipeline/tree/master/segments/input/stdin/stdin.go)._
+_This segment is implemented in [stdin.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/input/stdin/stdin.go)._
 
 The `stdin` segment reads JSON encoded flows from stdin or a given file and introduces
 this into the pipeline. This is intended to be used in conjunction with the `json`
@@ -490,7 +491,7 @@ contains both, enriching and reducing segments.
 
 #### addcid
 
-_This segment is implemented in [addcid.go](https://github.com/BelWue/flowpipeline/tree/master/segments/modify/addcid/addcid.go)._
+_This segment is implemented in [addcid.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/modify/addcid/addcid.go)._
 
 Deprecated: This segment was very specific and was replaced by a more generic
 addnetid segment. Set useintids to true to have a similar behaviour to addcid.
@@ -530,7 +531,7 @@ Roadmap:
 
 #### addnetid
 
-_This segment is implemented in [addnetid.go](https://github.com/BelWue/flowpipeline/tree/master/segments/modify/addnetid/addnetid.go)._
+_This segment is implemented in [addnetid.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/modify/addnetid/addnetid.go)._
 
 _No segment documentation found._
 
@@ -546,7 +547,7 @@ _No segment documentation found._
 
 #### addrstrings
 
-_This segment is implemented in [addrstrings.go](https://github.com/BelWue/flowpipeline/tree/master/segments/modify/addrstrings/addrstrings.go)._
+_This segment is implemented in [addrstrings.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/modify/addrstrings/addrstrings.go)._
 
 The `addrstrings` segment adds string representations of IP and MAC addresses which
 are set. The new fields are
@@ -559,12 +560,14 @@ are set. The new fields are
 * `SourceMAC` (from `SrcMac`)
 * `DestinationMAC` (from `DstMac`)
 
-This segment has no configuration options. It is intended to be used in conjunction
-with the `dropfields` segment to remove the original fields.
+This segment has one configuration option `macseparator`. A value of `dash` will use dashes as separator, otherwise
+colons are used (default).
+
+This segment is intended to be used in conjunction with the `dropfields` segment to remove the original fields.
 
 #### anonymize
 
-_This segment is implemented in [anonymize.go](https://github.com/BelWue/flowpipeline/tree/master/segments/modify/anonymize/anonymize.go)._
+_This segment is implemented in [anonymize.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/modify/anonymize/anonymize.go)._
 
 The `anonymize` segment anonymizes IP addresses occuring in flows using the
 Crypto-PAn algorithm. By default all possible IP address fields are targeted,
@@ -583,7 +586,7 @@ Supported Fields for anonymization are `SrcAddr,DstAddr,SamplerAddress,NextHop`
 
 #### aslookup
 
-_This segment is implemented in [aslookup.go](https://github.com/BelWue/flowpipeline/tree/master/segments/modify/aslookup/aslookup.go)._
+_This segment is implemented in [aslookup.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/modify/aslookup/aslookup.go)._
 
 The `aslookup` segment can add AS numbers to flows using route collector dumps.
 Dumps can be obtained from your RIR in the `.mrt` format and can be converted to
@@ -603,7 +606,7 @@ however this is not recommended since this will significantly slow down lookup t
 
 #### bgp
 
-_This segment is implemented in [bgp.go](https://github.com/BelWue/flowpipeline/tree/master/segments/modify/bgp/bgp.go)._
+_This segment is implemented in [bgp.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/modify/bgp/bgp.go)._
 
 The `bgp` segment can add a information from BGP to flows. By default, this
 information is retrieved from a session with the router specified by a flow's
@@ -647,7 +650,7 @@ three are possibly overwritten from the original router export.
 
 #### dropfields
 
-_This segment is implemented in [dropfields.go](https://github.com/BelWue/flowpipeline/tree/master/segments/modify/dropfields/dropfields.go)._
+_This segment is implemented in [dropfields.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/modify/dropfields/dropfields.go)._
 
 The segment `dropfields` deletes fields from flows as they pass through this
 segment. To this end, this segment requires a policy parameter to be set to
@@ -664,7 +667,7 @@ fields parameter. For a list of fields, check our
 
 #### geolocation
 
-_This segment is implemented in [geolocation.go](https://github.com/BelWue/flowpipeline/tree/master/segments/modify/geolocation/geolocation.go)._
+_This segment is implemented in [geolocation.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/modify/geolocation/geolocation.go)._
 
 The `geolocation` segment annotates flows with their RemoteCountry field.
 Requires the filename parameter to be set to the location of a MaxMind
@@ -686,7 +689,7 @@ drop flows without any remote country data set.
 
 #### normalize
 
-_This segment is implemented in [normalize.go](https://github.com/BelWue/flowpipeline/tree/master/segments/modify/normalize/normalize.go)._
+_This segment is implemented in [normalize.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/modify/normalize/normalize.go)._
 
 The `normalize` segment multiplies the Bytes and the Packets field by the flows
 SamplingRate field. Additionally, it sets the Normalized field for this flow to 1.
@@ -707,7 +710,7 @@ instead
 
 #### protomap
 
-_This segment is implemented in [protomap.go](https://github.com/BelWue/flowpipeline/tree/master/segments/modify/protomap/protomap.go)._
+_This segment is implemented in [protomap.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/modify/protomap/protomap.go)._
 
 The `protomap` segment sets the ProtoName string field according to the Proto
 integer field. Note that this should only be done before final usage, as
@@ -716,7 +719,7 @@ and storage size.
 
 #### remoteaddress
 
-_This segment is implemented in [remoteaddress.go](https://github.com/BelWue/flowpipeline/tree/master/segments/modify/remoteaddress/remoteaddress.go)._
+_This segment is implemented in [remoteaddress.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/modify/remoteaddress/remoteaddress.go)._
 
 Determines the remote address of flows based on different criteria.
 
@@ -759,7 +762,7 @@ Any optional parameters relate to the `cidr` policy only and behave as in the
 
 #### reversedns
 
-_This segment is implemented in [reversedns.go](https://github.com/BelWue/flowpipeline/tree/master/segments/modify/reversedns/reversedns.go)._
+_This segment is implemented in [reversedns.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/modify/reversedns/reversedns.go)._
 
 The `reversedns` segment looks up DNS PTR records for Src, Dst, Sampler and
 NextHopAddr and adds them to our flows. The results are also written to a internal
@@ -777,7 +780,7 @@ to the internal cache only.
 
 #### snmp
 
-_This segment is implemented in [snmp.go](https://github.com/BelWue/flowpipeline/tree/master/segments/modify/snmp/snmp.go)._
+_This segment is implemented in [snmp.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/modify/snmp/snmp.go)._
 
 The `snmp` segment annotates flows with interface information learned
 directly from routers using SNMP. This is a potentially perfomance impacting
@@ -823,7 +826,7 @@ Roadmap:
 
 #### sync_timestamps
 
-_This segment is implemented in [sync_timestamps.go](https://github.com/BelWue/flowpipeline/tree/master/segments/modify/sync_timestamps/sync_timestamps.go)._
+_This segment is implemented in [sync_timestamps.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/modify/sync_timestamps/sync_timestamps.go)._
 
 The segment `sync_timestamps` tries to fill empty time fields using existing ones.
 It works on the following fields:
@@ -847,7 +850,7 @@ multiple output segments can be used in sequence to export to different places.
 
 #### clickhouse
 
-_This segment is implemented in [clickhouse.go](https://github.com/BelWue/flowpipeline/tree/master/segments/output/clickhouse/clickhouse.go)._
+_This segment is implemented in [clickhouse.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/output/clickhouse/clickhouse.go)._
 
 The `clickhouse` segment dumps all incoming flow messages to a clickhouse database.
 
@@ -866,7 +869,7 @@ The `preset` parameter is used to specify the schema used to insert into clickho
 
 #### csv
 
-_This segment is implemented in [csv.go](https://github.com/BelWue/flowpipeline/tree/master/segments/output/csv/csv.go)._
+_This segment is implemented in [csv.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/output/csv/csv.go)._
 
 The `csv` segment provides an CSV output option. It uses stdout by default, but
 can be instructed to write to file using the filename parameter. The fields
@@ -884,11 +887,11 @@ To reduce them, use a valid comma separated list of fields.
 
 #### influx
 
-_This segment is implemented in [influx.go](https://github.com/BelWue/flowpipeline/tree/master/segments/output/influx/influx.go)._
+_This segment is implemented in [influx.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/output/influx/influx.go)._
 
 The `influx` segment provides a way to write into an Influxdb instance.
 The `tags` parameter allows any field to be used as a tag and takes a comma-separated list from any
-field available in the [protobuf definition](https://github.com/BelWue/flowpipeline/blob/master/pb/flow.proto).
+field available in the [protobuf definition](https://codeberg.org/BelWue/flowpipeline/src/branch/master/pb/flow.proto).
 The `fields` works in the exact same way, except that these protobuf fields won't be indexed by InfluxDB.
 
 Note that some of the above fields might not be present depending on the method
@@ -907,7 +910,7 @@ in front of this export segment.
 
 #### json
 
-_This segment is implemented in [json.go](https://github.com/BelWue/flowpipeline/tree/master/segments/output/json/json.go)._
+_This segment is implemented in [json.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/output/json/json.go)._
 
 The `json` segment provides a JSON output option. It uses stdout by default, but can
 be instructed to write to file using the filename parameter. This is intended to be
@@ -936,7 +939,7 @@ a single line per flow.
 
 #### kafkaproducer
 
-_This segment is implemented in [kafkaproducer.go](https://github.com/BelWue/flowpipeline/tree/master/segments/output/kafkaproducer/kafkaproducer.go)._
+_This segment is implemented in [kafkaproducer.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/output/kafkaproducer/kafkaproducer.go)._
 
 The `kafkaproducer` segment produces flows to a Kafka topic. All settings are
 equivalent to the `kafkaconsumer` segment. Additionally, there is the
@@ -971,9 +974,77 @@ number of other things.
 
 #### lumberjack
 
-_This segment is implemented in [lumberjack.go](https://github.com/BelWue/flowpipeline/tree/master/segments/output/lumberjack/lumberjack.go)._
+_This segment is implemented in [lumberjack.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/output/lumberjack/lumberjack.go)._
 
-Send passing flows to one or more lumberjack (Elastic Beats) servers.
+The `lumberjack` segment sends flows to one or more [elastic beats](https://github.com/elastic/beats)
+servers user the [lumberjack](https://github.com/logstash-plugins/logstash-input-beats/blob/main/PROTOCOL.md)
+protocol. Flows are queued in a non-deterministic, round-robin fashion to the servers.
+
+The only mandatory option is `servers` which contains a comma-separated list of lumberjack
+server URLs. Each URL must start with one of these schemata: `tcp://` (plain TCP,
+no encryption), `tls://` (TLS encryption) or `tlsnoverify://` (TLS encryption without
+certificate verification). The schema is followed by the hostname or IP address, a colon `:`,
+and a port number. IPv6 addresses must be surrounded by square brackets.
+
+A goroutine is spawned for every lumberjack server. Each goroutine only uses one CPU core to
+process and send flows. This may not be enough when the ingress flow rate is high and/or a high compression
+level is used. The number of goroutines per backend can be set explicitly with the `?count=x` URL
+parameter. For example:
+
+```yaml
+config:
+
+	server: tls://host1:5043/?count=4, tls://host2:5043/?compression=9&count=16
+
+```
+
+will use four parallel goroutines for `host1` and sixteen parallel goroutines for `host2`. Use `&count=…` instead of
+`?count=…` when `count` is not the first parameter (standard URI convention).
+
+Transport compression is disabled by default. Use `compression` to set the compression level
+for all hosts. Compression levels can vary between 0 (no compression) and 9 (maximum compression).
+To set per-host transport compression adding `?compression=<level>` to the server URI.
+
+To prevent blocking, flows are buffered in a channel between the segment and the output
+go routines. Each output go routine maintains a buffer of flows which are send either when the
+buffer is full or after a configurable timeout. Proper parameter sizing for the queue,
+buffers, and timeouts depends on multiple individual factors (like size, characteristics
+of the incoming netflows and the responsiveness of the target servers). There are parameters
+to both observe and tune this segment's performance.
+
+Upon connection error or loss, the segment will try to reconnect indefinitely with a pause of
+`reconnectwait` between attempts.
+
+* `queuesize` (integer) sets the number of flows that are buffered between the segment and the output go routines.
+* `batchsize` (integer) sets the number of flows that each output go routine buffers before sending.
+* `batchtimeout` (duration) sets the maximum time that flows are buffered before sending.
+* `reconnectwait` (duration) sets the time to wait between reconnection attempts.
+
+These options help to observe the performance characteristics of the segment:
+
+* `batchdebug` (bool) enables debug logging of batch operations (full send, partial send, and skipped send).
+* `queuestatusinterval` (duration) sets the interval at which the segment logs the current queue status.
+
+To see debug output, set the `-l debug` flag when starting `flowpipeline`.
+
+See [time.ParseDuration](https://pkg.go.dev/time#ParseDuration) for proper duration format
+strings and [strconv.ParseBool](https://pkg.go.dev/strconv#ParseBool) for allowed bool keywords.
+
+```yaml
+  - segment: lumberjack
+    config:
+    servers: tcp://foo.example.com:5044, tls://bar.example.com:5044?compression=3, tlsnoverify://[2001:db8::1]:5044
+    compression: 0
+    batchsize: 1024
+    queuesize: = 2048
+    batchtimeout: "2000ms"
+    reconnectwait: "1s"
+    batchdebug: false
+    queuestatusinterval: "0s"
+
+```
+
+[godoc](https://pkg.go.dev/codeberg.org/BelWue/flowpipeline/segments/output/lumberjack)
 
 <details>
 <summary>Configuration options</summary>
@@ -986,14 +1057,27 @@ Send passing flows to one or more lumberjack (Elastic Beats) servers.
 
 _No group documentation found._
 
+#### parquet
+
+_This segment is implemented in [parquet.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/output/parquet/parquet.go)._
+
+_No segment documentation found._
+
+<details>
+<summary>Configuration options</summary>
+
+* **File** _*os.File_: Optional output file. If not set, stdout is used.
+
+</details>
+
 #### prometheus
 
-_This segment is implemented in [prometheus.go](https://github.com/BelWue/flowpipeline/tree/master/segments/output/prometheus/prometheus.go)._
+_This segment is implemented in [prometheus.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/output/prometheus/prometheus.go)._
 
 The `prometheus` segment provides a standard prometheus exporter, exporting its
 own monitoring info at `:8080/metrics` and its flow data at `:8080/flowdata` by
 default. The label set included with each metric is freely configurable with a
-comma-separated list from any field available in the [protobuf definition](https://github.com/BelWue/flowpipeline/blob/master/pb/flow.proto).
+comma-separated list from any field available in the [protobuf definition](https://codeberg.org/BelWue/flowpipeline/src/branch/master/pb/flow.proto).
 
 Note that some of the above fields might not be present depending on the method
 of flow export, the input segment used in this pipeline, or the modify segments
@@ -1012,7 +1096,7 @@ in front of this export segment.
 
 #### sqlite
 
-_This segment is implemented in [sqlite.go](https://github.com/BelWue/flowpipeline/tree/master/segments/output/sqlite/sqlite.go)._
+_This segment is implemented in [sqlite.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/output/sqlite/sqlite.go)._
 
 **This segment is unavailable in the static binary release due to its CGO dependency.**
 
@@ -1039,7 +1123,7 @@ throughput when setting this parameter.
 
 ### pass
 
-_This segment is implemented in [pass.go](https://github.com/BelWue/flowpipeline/tree/master/segments/pass/pass.go)._
+_This segment is implemented in [pass.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/pass/pass.go)._
 
 The `pass` segment serves as a heavily annotated template for new segments. So
 does this piece of documentation. Aside from summarizing what a segment does,
@@ -1053,7 +1137,7 @@ for ad-hoc applications and instant feedback use cases.
 
 #### count
 
-_This segment is implemented in [count.go](https://github.com/BelWue/flowpipeline/tree/master/segments/print/count/count.go)._
+_This segment is implemented in [count.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/print/count/count.go)._
 
 The `count` segment counts flows passing it. This is mainly for debugging
 flowpipelines. For instance, placing two of these segments around a
@@ -1074,7 +1158,7 @@ filename is configured.
 
 #### printdots
 
-_This segment is implemented in [printdots.go](https://github.com/BelWue/flowpipeline/tree/master/segments/print/printdots/printdots.go)._
+_This segment is implemented in [printdots.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/print/printdots/printdots.go)._
 
 The `printdots` segment keeps counting flows internally and emits a dot (`.`) to
 stdout every `flowsperdot` flows. Its parameter needs to be chosen with the expected
@@ -1091,7 +1175,7 @@ necessary. The segment can also print to a file if a filename is configured.
 
 #### printflowdump
 
-_This segment is implemented in [printflowdump.go](https://github.com/BelWue/flowpipeline/tree/master/segments/print/printflowdump/printflowdump.go)._
+_This segment is implemented in [printflowdump.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/print/printflowdump/printflowdump.go)._
 
 The `printflowdump` prints a tcpdump-style representation of flows with some
 addition deemed useful at [BelWü](https://www.belwue.de) Ops. It looks up
@@ -1117,7 +1201,7 @@ flowpipeline invocation's first argument as a filter.
 The parameter `verbose` changes some output elements, it will for instance add
 the decoded forwarding status (Cisco-style) in a human-readable manner. The
 `highlight` parameter causes the output of this segment to be printed in red,
-see the [relevant example](https://github.com/BelWue/flowpipeline/tree/master/examples/configuration/highlighted_flowdump)
+see the [relevant example](https://codeberg.org/BelWue/flowpipeline/src/branch/master/examples/configurations/flowdump/highlight.yml)
 for an application. The parameter `filename`can be used to redirect the output to a file instead of printing it to stdout.
 
 <details>
@@ -1132,7 +1216,7 @@ for an application. The parameter `filename`can be used to redirect the output t
 
 #### toptalkers
 
-_This segment is implemented in [toptalkers.go](https://github.com/BelWue/flowpipeline/tree/master/segments/print/toptalkers/toptalkers.go)._
+_This segment is implemented in [toptalkers.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/print/toptalkers/toptalkers.go)._
 
 The `toptalkers` segment prints a report on which destination addresses
 receives the most traffic. A report looks like this:
@@ -1171,6 +1255,6 @@ _No group documentation found._
 
 #### generator
 
-_This segment is implemented in [generator.go](https://github.com/BelWue/flowpipeline/tree/master/segments/testing/generator/generator.go)._
+_This segment is implemented in [generator.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/testing/generator/generator.go)._
 
 _No segment documentation found._
