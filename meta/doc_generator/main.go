@@ -33,7 +33,7 @@ func main() {
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 
-	outputFile := flag.String("out", "CONFIGURATION.md", "Output file for the generated documentation")
+	outputFile := flag.String("out", "Configuration.md", "Output file for the generated documentation")
 	segmentRoot := flag.String("root", "segments", "Root directory for segments")
 
 	flag.Parse()
