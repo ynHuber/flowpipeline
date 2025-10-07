@@ -3,9 +3,9 @@
 The files in this directory are used to create an example Container
 image that shows how Grafana to visualize flowpieline data.
 
-Use `docker pull ghcr.io/ynhuber/flowpipeline-grafana:example-kafka-container` 
+Use `docker pull codeberg.org/belwue/flowpipeline-grafana`
 to get the container and 
-`docker run -p 3000:3000 -p 2055:2055 -d ghcr.io/ynhuber/flowpipeline-grafana:example-kafka-container` 
+`docker run -p 3000:3000 -p 2055:2055 -d codeberg.org/belwue/flowpipeline-grafana`
 to run the container on your local system.
 This will start a netflow receiver on port 2055 as well as grafana on port 3000. 
 You can then explore example dashboards at `http://localhost:3000/`.

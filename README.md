@@ -70,7 +70,7 @@ docker run -v ./examples/configuration/xy:/config flowpipeline
 ```
 
 #### Flowpipeline Demo Container
-We also provide a container displaying example visualizations via prometheus+grafana dashboards (ghcr.io/belwue/flowpipeline-grafana).
+We also provide a container displaying example visualizations via prometheus+grafana dashboards (codeberg.org/belwue/flowpipeline-grafana).
 The example container starts with:
  - grafana running on port 3000
   - starting with default grafana admin credentials (`user:admin, password:admin`)
@@ -79,7 +79,7 @@ The example container starts with:
  - prometheus running on port 9090
 
 ```sh
-docker run -p 3000:3000 -p 2055:2055/udp -p 6343:6343 -p 9090:9090 /udp ghcr.io/belwue/flowpipeline-grafana
+docker run -p 3000:3000 -p 2055:2055/udp -p 6343:6343 -p 9090:9090 /udp codeberg.org/belwue/flowpipeline-grafana
 ```
 <img width="1602" height="921" alt="grafik" src="https://github.com/user-attachments/assets/d2fa3dd1-cc57-4cd7-a034-78a926ed509c" />
 
