@@ -30,6 +30,7 @@ jobs:
         with:
           repository: BelWue/flowpipeline.wiki
           path: wiki
+          ref: main
 
       - name: Set up Go
         uses: https://code.forgejo.org/actions/setup-go@v5
