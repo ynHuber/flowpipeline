@@ -1,7 +1,7 @@
 # Deployment example
 
-The files in this directory are used to create a example Docker 
-container that shows how Grafana to visualize flowpieline data.
+The files in this directory are used to create an example Container
+image that shows how Grafana to visualize flowpieline data.
 
 Use `docker pull ghcr.io/ynhuber/flowpipeline-grafana:example-kafka-container` 
 to get the container and 
