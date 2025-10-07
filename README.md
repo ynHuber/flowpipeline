@@ -1,7 +1,12 @@
-# Flowpipeline
-A [goflow2](https://github.com/netsampler/goflow2)-compatible flow message processing toolkit
+[![Codeberg release (latest SemVer)](https://codeberg.org/BelWue/flowpipeline/badges/release.svg)](https://codeberg.org/BelWue/flowpipeline/releases)
+[![GoDoc documentation](https://pkg.go.dev/badge/.svg)](https://pkg.go.dev/codeberg.org/BelWue/flowpipeline)
+[![CI](https://codeberg.org/BelWue/flowpipeline/badges/workflows/master.yml/badge.svg)](https://codeberg.org/BelWue/flowpipeline/actions)
+[![Go report card](https://goreportcard.com/badge/codeberg.org/BelWue/flowpipeline)](https://goreportcard.com/report/codeberg.org/BelWue/flowpipeline)
+[![License: GNU GPLv3](https://img.shields.io/badge/License-GPLv3-green.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-[godoc](https://pkg.go.dev/codeberg.org/BelWue/flowpipeline)
+# Flowpipeline
+
+**A [goflow2](https://github.com/netsampler/goflow2)-compatible flow message processing toolkit**
 
 ----------
 
@@ -44,7 +49,7 @@ maybe follow the instructions there).
 ### Binary Releases
 Download our [latest release](https://codeberg.org/BelWue/flowpipeline/releases)
 and run it, same as if you compiled it yourself.
-The flowpipeline releases contain executables for MacOS (`flowpipeline-darwin`) and for linux (`flowpipeline-linux`).
+The flowpipeline releases contain executables for Linux (`flowpipeline-linux`).
 
 The default, dynamically linked version requires a reasonably recent system
 (glibc 2.32+, linux 5.11+ for `bpf`, `mongodb` ...) and comes with all features.
@@ -73,7 +78,7 @@ docker run -v ./examples/configuration/xy:/config flowpipeline
 We also provide a container displaying example visualizations via prometheus+grafana dashboards (codeberg.org/belwue/flowpipeline-grafana).
 The example container starts with:
  - grafana running on port 3000
-  - starting with default grafana admin credentials (`user:admin, password:admin`)
+  - starting with default grafana admin credentials (user: `admin`, password: `admin`)
  - netflow receiver running on port 2055
  - sflow receiver running on port 6343
  - prometheus running on port 9090
@@ -81,9 +86,10 @@ The example container starts with:
 ```sh
 docker run -p 3000:3000 -p 2055:2055/udp -p 6343:6343 -p 9090:9090 /udp codeberg.org/belwue/flowpipeline-grafana
 ```
-<img width="1602" height="921" alt="grafik" src="https://github.com/user-attachments/assets/d2fa3dd1-cc57-4cd7-a034-78a926ed509c" />
+![Grafana dashboard showing some flowpipeline statistics](https://github.com/user-attachments/assets/d2fa3dd1-cc57-4cd7-a034-78a926ed509c)
 
-The corresponding configuration files are available in `/examples/visualization`
+The corresponding configuration files are available in `/examples/visualization`.
+
 ## Configuration
 
 Refer to the [configuration doc](https://codeberg.org/BelWue/flowpipeline/wiki/Configuration)
@@ -121,7 +127,7 @@ This allows distributing multiple redundant flowpipeline instances throughout mu
 The different workers can use the `kafkaconsumer` segment to read from and the `kafkaproducer` segment to write to the cluster.
 Redundant workers need to be configured using the same kafka group for all instances to not duplicate flows.
 
-<img width="2536" height="1372" alt="kafka-dark-transparent drawio" src="https://github.com/user-attachments/assets/3941568c-2c11-435f-8397-fcbb13ed3bdd" />
+![Architecture diagram](https://github.com/user-attachments/assets/3941568c-2c11-435f-8397-fcbb13ed3bdd)
 
 ### Custom Segments
 If you find that the existing segments lack some functionality or you require
