@@ -16,7 +16,7 @@ jobs:
   build-and-commit:
     permissions:
       contents: write
-    if: forge.event.pull_request.merged == true
+    # if: forge.event.pull_request.merged == true
     runs-on: codeberg-small
     steps:
       - name: Checkout Code
