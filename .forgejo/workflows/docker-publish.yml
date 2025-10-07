@@ -6,12 +6,16 @@ name: container build and publish
 # documentation.
 
 on:
+  workflow_dispatch:
+  release:
   push:
-    branches: [ master ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ master ]
+    paths:
+      - .forgejo/**
+      - Dockerfile
 
 env:
   # Use docker.io for Docker Hub if empty
