@@ -1,6 +1,6 @@
 # flowpipeline Configuration and User Guide
 
-_This document was generated from '[meta/doc_generator/main.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/meta/doc_generator/main.go)', based on commit '[3ea509c19b5f7df33f26db4b89c38461c400859f](https://codeberg.org/BelWue/flowpipeline/commit/3ea509c19b5f7df33f26db4b89c38461c400859f)'._
+_This document was generated from '[meta/doc_generator/main.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/meta/doc_generator/main.go)', based on commit '[90b8e630fc093ca398bf1d0d84a9d506f2aec874](https://codeberg.org/BelWue/flowpipeline/commit/90b8e630fc093ca398bf1d0d84a9d506f2aec874)'._
 
 Any flowpipeline is configured in a single yaml file which is either located in
 the default `config.yml` or specified using the `-c` option when calling the
@@ -78,6 +78,7 @@ This overview is structures as follows:
   - [printflowdump](#printflowdump)
   - [toptalkers](#toptalkers)
 - [Testing Group](#testing-group)
+  - [counter](#counter)
   - [generator](#generator)
 
 
@@ -121,10 +122,11 @@ per IP address and exports them in OpenMetrics format via HTTP.
 
 Traffic is counted in bits per second and packets per second, categorized into
 forwarded and dropped traffic. By default, only the destination IP addresses
-are accounted, but the configuration allows using the source IP address or
-both addresses. For the latter, a flows number of bytes and packets are
+are accounted, but the configuration allows using the source IP address,
+both addresses or the connection. For `both addresses`, a flows number of bytes and packets are
 counted for both addresses. `connection` is used to look a specific combinations
-of "source -> target".
+of "source -> target". Note that watching connections or addresses outside of your network
+can lead to high RAM usage - especially during ddos attacks.
 
 Thresholds for bits per second or packets per second can be configured. Only
 metrics for addresses that exceeded this threshold during the last window size
@@ -1252,6 +1254,19 @@ second are under their thresholds.
 ### Testing Group
 
 _No group documentation found._
+
+#### counter
+
+_This segment is implemented in [counter.go](https://codeberg.org/BelWue/flowpipeline/src/branch/master/segments/testing/counter/counter.go)._
+
+_No segment documentation found._
+
+<details>
+<summary>Configuration options</summary>
+
+* **Counter** _int_
+
+</details>
 
 #### generator
 
