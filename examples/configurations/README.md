@@ -2,7 +2,7 @@
 
 This collection of example configs is supposed to help users get started using
 different use cases. A grouped and alphabetically sorted
-[reference](https://codeberg.org/BelWue/flowpipeline/src/branch/master/CONFIGURATION.md),
+[reference](https://codeberg.org/BelWue/flowpipeline/wiki/Configuration),
 might be the best resource when trying to achieve a specific outcome, this
 short guide however tries to give new users some idea of what is possible with
 this tool and present existing users with additional options.

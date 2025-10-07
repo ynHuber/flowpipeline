@@ -7,7 +7,7 @@ on:
       - master
 
 env:
-  CONFIG_FILE: "CONFIGURATION.md"
+  CONFIG_FILE: "Configuration.md"
   GO_VERSION: "1.24"
   GENERATOR_EXEC: "./generator"
 
@@ -21,7 +21,15 @@ jobs:
       - name: Checkout Code
         uses: https://code.forgejo.org/actions/checkout@v5
         with:
-          fetch-depth: 0
+          repository: BelWue/flowpipeline
+          path: flowpipeline
+
+      - name: Checkout Wiki
+        uses: https://code.forgejo.org/actions/checkout@v5
+        with:
+          repository: BelWue/flowpipeline.wiki
+          path: wiki
+          ref: main
 
       - name: Set up Go
         uses: https://code.forgejo.org/actions/setup-go@v5
@@ -29,21 +37,26 @@ jobs:
           go-version: ${{ env.GO_VERSION }}
 
       - name: Build config generator
+        working-directory: flowpipeline
         run: go build -o $GENERATOR_EXEC ./meta/doc_generator
 
       - name: Generate configuration markdown file
+        working-directory: flowpipeline
         run: $GENERATOR_EXEC -out "$CONFIG_FILE"
 
       - name: Commit and Push Changes
+        working-directory: wiki
         run: |
           git config --global user.name "codeberg-actions[bot]"
           git config --global user.email "codeberg-actions[bot]@users.noreply.codeberg.org"
+
+          cp ../flowpipeline/$CONFIG_FILE .
 
           git add "$CONFIG_FILE"
 
           if ! git diff --staged --quiet; then
             git commit -m "docs: auto-generated $CONFIG_FILE"
-            git push origin HEAD:${{ forge.base_ref }}
+            git push origin main
           else
             echo "No changes to commit."
           fi
