@@ -11,7 +11,7 @@ on:
 
 env:
   CONFIG_FILE: "CONFIGURATION.md"
-  GO_VERSION: "1.23"
+  GO_VERSION: "1.24"
   GENERATOR_EXEC: "./generator"
 
 jobs:
