@@ -3,10 +3,11 @@
 //
 // Traffic is counted in bits per second and packets per second, categorized into
 // forwarded and dropped traffic. By default, only the destination IP addresses
-// are accounted, but the configuration allows using the source IP address or
-// both addresses. For the latter, a flows number of bytes and packets are
+// are accounted, but the configuration allows using the source IP address,
+// both addresses or the connection. For `both addresses`, a flows number of bytes and packets are
 // counted for both addresses. `connection` is used to look a specific combinations
-// of "source -> target".
+// of "source -> target". Note that watching connections or addresses outside of your network
+// can lead to high RAM usage - especially during ddos attacks.
 //
 // Thresholds for bits per second or packets per second can be configured. Only
 // metrics for addresses that exceeded this threshold during the last window size
@@ -27,6 +28,7 @@ package toptalkers_metrics
 import (
 	"sync"
 
+	"codeberg.org/BelWue/flowpipeline/pipeline/config/evaluation_mode"
 	"codeberg.org/BelWue/flowpipeline/segments"
 	"github.com/rs/zerolog/log"
 )
@@ -35,6 +37,7 @@ type ToptalkersMetrics struct {
 	segments.BaseFilterSegment
 	PrometheusMetricsParams
 	PrometheusParams
+	EvaluationMode evaluation_mode.EvaluationMode // optional, default is "destination", options are "destination", "source", "both", "connection"
 }
 
 func (segment ToptalkersMetrics) New(config map[string]string) segments.Segment {
@@ -74,9 +77,9 @@ func (segment *ToptalkersMetrics) Run(wg *sync.WaitGroup) {
 
 	var promExporter = PrometheusExporter{}
 
-	database := NewDatabase(segment.PrometheusMetricsParams, &promExporter)
-	collector := NewPrometheusCollector([]*Database{&database})
+	database := NewDatabase(segment.PrometheusMetricsParams, &promExporter, segment.EvaluationMode)
 	promExporter.Initialize()
+	collector := NewPrometheusCollector([]*ToptalkerDatabase{&database})
 	promExporter.FlowReg.MustRegister(collector)
 	promExporter.ServeEndpoints(&segment.PrometheusParams)
 
@@ -85,20 +88,25 @@ func (segment *ToptalkersMetrics) Run(wg *sync.WaitGroup) {
 
 	for msg := range segment.In {
 		promExporter.KafkaMessageCount.Inc()
-		var keys []string
-		switch segment.RelevantAddress {
-		case "source":
-			keys = []string{msg.SrcAddrObj().String()}
-		case "destination":
-			keys = []string{msg.DstAddrObj().String()}
-		case "both":
-			keys = []string{msg.SrcAddrObj().String(), msg.DstAddrObj().String()}
+		var keys [][]byte
+		switch segment.EvaluationMode {
+		case evaluation_mode.Source:
+			keys = [][]byte{msg.SrcAddr}
+		case evaluation_mode.Destination:
+			keys = [][]byte{msg.DstAddr}
+		case evaluation_mode.SourceAndDestination:
+			keys = [][]byte{msg.SrcAddr, msg.DstAddr}
+		case evaluation_mode.Connection:
+			keys = [][]byte{append(msg.SrcAddr, msg.DstAddr...)}
+		case evaluation_mode.Unknown:
+			//default = Destination
+			keys = [][]byte{msg.DstAddr}
 		}
 		forward := false
 		for _, key := range keys {
 			record := database.GetRecord(key)
-			record.Append(msg.Bytes, msg.Packets, msg.IsForwarded())
-			if record.aboveThreshold.Load() {
+			record.Append(msg)
+			if record.AboveThreshold().Load() {
 				forward = true
 			}
 		}

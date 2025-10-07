@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"codeberg.org/BelWue/flowpipeline/pipeline/config"
+	"codeberg.org/BelWue/flowpipeline/pipeline/config/evaluation_mode"
 	"github.com/rs/zerolog/log"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -14,7 +15,7 @@ import (
 )
 
 type PrometheusCollector struct {
-	Databases      []*Database
+	Databases      []*ToptalkerDatabase
 	trafficBpsDesc *prometheus.Desc
 	trafficPpsDesc *prometheus.Desc
 }
@@ -30,7 +31,7 @@ type PrometheusMetricsParams struct {
 	CleanupWindowSizes int
 }
 
-func NewPrometheusCollector(databases []*Database) *PrometheusCollector {
+func NewPrometheusCollector(databases []*ToptalkerDatabase) *PrometheusCollector {
 	coll := PrometheusCollector{
 		Databases: databases,
 	}
@@ -65,9 +66,6 @@ func (params *PrometheusMetricsParams) InitDefaultPrometheusMetricParams() {
 	}
 	if params.BucketDuration == 0 {
 		params.BucketDuration = 1
-	}
-	if params.RelevantAddress == "" {
-		params.RelevantAddress = "destination"
 	}
 	if params.CleanupWindowSizes == 0 {
 		params.CleanupWindowSizes = 5
@@ -150,17 +148,23 @@ func (prometheusParams *PrometheusMetricsParams) ParsePrometheusConfig(config ma
 		log.Info().Msg("ToptalkersMetrics: 'thresholdpps' set to default '0'.")
 	}
 
-	switch config["relevantaddress"] {
-	case
-		"destination",
-		"source",
-		"both",
-		"connection":
-		prometheusParams.RelevantAddress = config["relevantaddress"]
-	case "":
-		log.Info().Msg("ToptalkersMetrics: 'relevantaddress' set to default 'destination'.")
-	default:
-		log.Error().Msg("ToptalkersMetrics: Could not parse 'relevantaddress', using default value 'destination'.")
+	if config["evaluationmode"] == "" && config["relevantaddress"] != "" {
+		log.Warn().Msg("ToptalkersMetrics: Using deprecated parameter 'relevantaddress' - please use evaluationmode instead")
+		config["evaluationmode"] = config["relevantaddress"]
+	}
+
+	if config["evaluationmode"] == "" {
+		log.Info().Msg("ToptalkersMetrics: 'evaluationmode' set to default 'destination'.")
+	} else {
+		if config["evaluationmode"] == "both" {
+			log.Warn().Msg("ToptalkersMetrics: using depected evaluation mode 'both' - please use 'Source and Destination' instead")
+		}
+		evaluationMode := evaluation_mode.ParseEvaluationMode(config["evaluationmode"])
+
+		if evaluationMode == evaluation_mode.Unknown {
+			log.Error().Msg("ToptalkersMetrics: Could not parse 'evaluationmode', using default value 'destination'.")
+			evaluationMode = evaluation_mode.Destination
+		}
 	}
 	return nil
 }
@@ -171,12 +175,11 @@ func (c *PrometheusCollector) Describe(ch chan<- *prometheus.Desc) {
 }
 func (collector *PrometheusCollector) Collect(ch chan<- prometheus.Metric) {
 	for _, db := range collector.Databases {
-		for entry := range db.GetAllRecords() {
-			record := entry.record
+		for record := range db.GetAllRecords() {
 			// check if thresholds are exceeded
 			buckets := db.ReportBuckets
 			bucketDuration := db.BucketDuration
-			if record.aboveThreshold.Load() {
+			if record.AboveThreshold().Load() {
 				sumFwdBps, sumFwdPps, sumDropBps, sumDropPps, address := record.GetMetrics(buckets, bucketDuration)
 				ch <- prometheus.MustNewConstMetric(
 					collector.trafficBpsDesc,
