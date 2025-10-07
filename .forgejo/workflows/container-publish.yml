@@ -1,4 +1,4 @@
-name: grafana container build and publish
+name: container build and publish
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -15,12 +15,13 @@ on:
     branches: [ master ]
     paths:
       - .forgejo/**
-      - examples/visualization/**
+      - Containerfile
 
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: codeberg.org
   IMAGE_NAME: ${{ forge.repository }}
+
 
 jobs:
   build:
@@ -33,20 +34,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: https://code.forgejo.org/actions/checkout@v5
-
-      # Extract metadata (tags, labels) for Docker
-      - name: Extract Docker metadata
+          
+      # Extract metadata (tags, labels) for Container
+      - name: Extract Container metadata
         id: meta
         uses: https://code.forgejo.org/docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      # Build and push Docker image with Kaniko (don't push on PR)
-      - name: Build and push Docker image
+      # Build and push Container image with Kaniko (don't push on PR)
+      - name: Build and push Container image
         uses: https://codeberg.org/umglurf/kaniko-action@v1.4.3
         with:
-          docker_file: examples/visualization/Dockerfile
+          docker_file: Containerfile
           credentials: ${{ env.REGISTRY }}=${{ forge.repository_owner }}:${{ secrets.CODEBERG_PACKAGE_REPOSITORY_TOKEN }}
           destinations: ${{ steps.meta.outputs.tags }}
           push: ${{ forge.event_name != 'pull_request' }}
-          extra_args: '--compressed-caching=false'
