@@ -43,7 +43,7 @@ jobs:
 
           if ! git diff --staged --quiet; then
             git commit -m "docs: auto-generated $CONFIG_FILE"
-            git push origin master
+            git push origin HEAD:${{ forge.base_ref }}
           else
             echo "No changes to commit."
           fi
