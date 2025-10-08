@@ -1,26 +1,15 @@
-FROM docker.io/library/golang:1.24.0-alpine AS builder
-# add local repo into the builder
-ADD . /opt/build
-WORKDIR /opt/build
-
-# build the binary there
-RUN CGO_ENABLED=0 go build -tags container -o fpl
-
 # use official prometheus container image
 FROM quay.io/prometheus/prometheus AS prometheus
 
 # use official grafana container image
 FROM docker.io/grafana/grafana AS grafana
 
-# begin new container
-FROM docker.io/library/alpine:latest
+# begin new container based on the standalone flowpipeline one
+FROM codeberg.org/belwue/flowpipeline:latest
 
 RUN apk add --no-cache supervisor
 
 WORKDIR /flowpipeline-example
-
-# copy binaries from builder to your desired location
-COPY --from=builder /opt/build/fpl .
 
 COPY --from=prometheus /bin/prometheus .
 #COPY --from=prometheus /opt/build/prometheus/web/ui/static static
