@@ -9,7 +9,7 @@
 
 // Filters with a specified `traffictyp` will be exported if they reach the configured thresholds.
 // The segment allows forwarding all traffic to a matched ip to a subpipeline.
-// See the [example configuration](https://github.com/BelWue/flowpipeline/tree/master/examples/configuration/analysis/traffic-specific-toptalker.yml)
+// See the [example configuration](https://codeberg.org/BelWue/flowpipeline/src/branch/main/examples/configurations/analysis/traffic-specific-toptalker.yml)
 // for an example using that functionality
 
 package traffic_specific_toptalkers

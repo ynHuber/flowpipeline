@@ -29,10 +29,10 @@ processing stack into a single piece of software which can be configured to
 serve any function:
 
 * accepting raw Netflow (using [goflow2](https://github.com/netsampler/goflow2))
-* enriching the resulting flow messages ([examples/configurations/enricher](https://codeberg.org/BelWue/flowpipeline/src/branch/master/examples/configurations/enricher))
-* writing to and reading from Kafka ([examples/localkafka](https://codeberg.org/BelWue/flowpipeline/src/branch/master/examples/configurations/localkafka))
-* dumping flows to cli (e.g. [flowdump](https://codeberg.org/BelWue/flowpipeline/src/branch/master/examples/configurations/flowdump))
-* providing metrics and insights ([examples/prometheus](https://codeberg.org/BelWue/flowpipeline/src/branch/master/examples/configurations/export/prometheus_export.yml))
+* enriching the resulting flow messages ([examples/configurations/enricher](https://codeberg.org/BelWue/flowpipeline/src/branch/main/examples/configurations/enricher))
+* writing to and reading from Kafka ([examples/localkafka](https://codeberg.org/BelWue/flowpipeline/src/branch/main/examples/configurations/localkafka))
+* dumping flows to cli (e.g. [flowdump](https://codeberg.org/BelWue/flowpipeline/src/branch/main/examples/configurations/flowdump))
+* providing metrics and insights ([examples/prometheus](https://codeberg.org/BelWue/flowpipeline/src/branch/main/examples/configurations/export/prometheus_export.yml))
 * and many more...
 
 ## Getting Started
@@ -134,7 +134,7 @@ If you find that the existing segments lack some functionality or you require
 some very specific behaviour, it is possible to include segments as a plugin.
 This is done using the `-p yourplugin.so` commandline option and your own
 custom module. See
-[examples/plugin](https://codeberg.org/BelWue/flowpipeline/src/branch/master/examples/plugin)
+[examples/plugin](https://codeberg.org/BelWue/flowpipeline/src/branch/main/examples/plugin)
 for a basic example and instructions on how to compile your plugin.
 
 Note that this requires CGO and thus will not work using the static binary

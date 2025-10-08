@@ -1,7 +1,7 @@
 // The `prometheus` segment provides a standard prometheus exporter, exporting its
 // own monitoring info at `:8080/metrics` and its flow data at `:8080/flowdata` by
 // default. The label set included with each metric is freely configurable with a
-// comma-separated list from any field available in the [protobuf definition](https://codeberg.org/BelWue/flowpipeline/src/branch/master/pb/flow.proto).
+// comma-separated list from any field available in the [protobuf definition](https://codeberg.org/BelWue/flowpipeline/src/branch/main/pb/flow.proto).
 //
 // Note that some of the above fields might not be present depending on the method
 // of flow export, the input segment used in this pipeline, or the modify segments

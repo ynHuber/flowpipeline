@@ -22,7 +22,7 @@
 // The parameter `verbose` changes some output elements, it will for instance add
 // the decoded forwarding status (Cisco-style) in a human-readable manner. The
 // `highlight` parameter causes the output of this segment to be printed in red,
-// see the [relevant example](https://codeberg.org/BelWue/flowpipeline/src/branch/master/examples/configurations/flowdump/highlight.yml)
+// see the [relevant example](https://codeberg.org/BelWue/flowpipeline/src/branch/main/examples/configurations/flowdump/highlight.yml)
 // for an application. The parameter `filename`can be used to redirect the output to a file instead of printing it to stdout.
 package printflowdump
 

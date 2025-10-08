@@ -13,7 +13,7 @@ import (
 )
 
 const FlowPipelineRepo = "https://codeberg.org/BelWue/flowpipeline"
-const FlowPipelineFilesBase = FlowPipelineRepo + "/src/branch/master/"
+const FlowPipelineFilesBase = FlowPipelineRepo + "/src/branch/main/"
 const FlowPipelineCommitBase = FlowPipelineRepo + "/commit/"
 
 func linkTo(display string, url string) string {
