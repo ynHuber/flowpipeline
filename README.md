@@ -1,6 +1,6 @@
 [![Codeberg release (latest SemVer)](https://codeberg.org/BelWue/flowpipeline/badges/release.svg)](https://codeberg.org/BelWue/flowpipeline/releases)
 [![GoDoc documentation](https://pkg.go.dev/badge/.svg)](https://pkg.go.dev/codeberg.org/BelWue/flowpipeline)
-[![CI](https://codeberg.org/BelWue/flowpipeline/badges/workflows/master.yml/badge.svg)](https://codeberg.org/BelWue/flowpipeline/actions)
+[![CI](https://codeberg.org/BelWue/flowpipeline/badges/workflows/main.yml/badge.svg)](https://codeberg.org/BelWue/flowpipeline/actions)
 [![Go report card](https://goreportcard.com/badge/codeberg.org/BelWue/flowpipeline)](https://goreportcard.com/report/codeberg.org/BelWue/flowpipeline)
 [![License: GNU GPLv3](https://img.shields.io/badge/License-GPLv3-green.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
