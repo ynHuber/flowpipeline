@@ -40,6 +40,7 @@ jobs:
         uses: https://code.forgejo.org/docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          flavor: latest=${{ startsWith(forge.ref, 'refs/tags/') && ! endsWith(forge.ref, '-alpha') && ! endsWith(forge.ref, '-beta') }}
 
       # Build and push Container image with Kaniko (don't push on PR)
       - name: Build and push Container image
