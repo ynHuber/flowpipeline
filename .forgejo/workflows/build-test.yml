@@ -1,4 +1,4 @@
-name: Test main and PRs
+name: build and test
 
 on:
   push:
@@ -28,14 +28,36 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y libpcap-dev
 
     - name: setup go
-      uses: https://code.forgejo.org/actions/setup-go@v5
+      uses: https://code.forgejo.org/actions/setup-go@v6
       with:
         go-version: '1.24.0'
 
     - name: test
       run: go test ./...
 
-    - name: build
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+        - os: codeberg-small
+          goos: linux
+        #- os: macos-latest
+          #goos: darwin
+    steps:
+    - name: checkout
+      uses: https://code.forgejo.org/actions/checkout@v5
+
+    - name: install libpcap
+      if: matrix.goos == 'linux'
+      run: sudo apt-get update && sudo apt-get install -y libpcap-dev
+
+    - name: setup go
+      uses: https://code.forgejo.org/actions/setup-go@v6
+      with:
+        go-version: '1.24.0'
+
+    - name: build dynamically linked
       run: go build -o flowpipeline -ldflags "-X main.Version=${{ forge.sha }}" .
 
     - name: save binary

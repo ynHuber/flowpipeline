@@ -32,7 +32,7 @@ jobs:
           ref: main
 
       - name: Set up Go
-        uses: https://code.forgejo.org/actions/setup-go@v5
+        uses: https://code.forgejo.org/actions/setup-go@v6
         with:
           go-version: ${{ env.GO_VERSION }}
 
