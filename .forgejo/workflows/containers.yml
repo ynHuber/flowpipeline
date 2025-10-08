@@ -1,4 +1,4 @@
-name: grafana container build and publish
+name: Container build and publish
 
 on:
   workflow_dispatch:
@@ -10,15 +10,18 @@ on:
     branches: [ main ]
     paths:
       - .forgejo/**
+      - Containerfile
       - examples/visualization/**
 
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: codeberg.org
-  IMAGE_NAME: ${{ forge.repository }}-grafana
+  IMAGE_NAME: ${{ forge.repository }}
+  IMAGE_NAME_VISUALIZATION: ${{ forge.repository }}-grafana
+
 
 jobs:
-  build:
+  flowpipeline:
 
     runs-on: codeberg-small
     permissions:
@@ -35,6 +38,35 @@ jobs:
         uses: https://code.forgejo.org/docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          flavor: latest=${{ startsWith(forge.ref, 'refs/tags/') && ! endsWith(forge.ref, '-alpha') && ! endsWith(forge.ref, '-beta') }}
+
+      # Build and push Container image with Kaniko (don't push on PR)
+      - name: Build and push Container image
+        uses: https://codeberg.org/umglurf/kaniko-action@v1.4.3
+        with:
+          docker_file: Containerfile
+          credentials: ${{ env.REGISTRY }}=${{ forge.repository_owner }}:${{ secrets.CODEBERG_PACKAGE_REPOSITORY_TOKEN }}
+          destinations: ${{ steps.meta.outputs.tags }}
+          push: ${{ forge.event_name != 'pull_request' }}
+
+  visualization:
+
+    needs: flowpipeline
+    runs-on: codeberg-small
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: https://code.forgejo.org/actions/checkout@v5
+
+      # Extract metadata (tags, labels) for Container
+      - name: Extract Container metadata
+        id: meta
+        uses: https://code.forgejo.org/docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_VISUALIZATION }}
           flavor: latest=${{ startsWith(forge.ref, 'refs/tags/') && ! endsWith(forge.ref, '-alpha') && ! endsWith(forge.ref, '-beta') }}
 
       # Build and push Container image with Kaniko (don't push on PR)
