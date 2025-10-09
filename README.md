@@ -143,3 +143,10 @@ releases or in a container.
 ## Contributing
 
 Contributions in any form (code, issues, feature requests) are very much welcome.
+
+## Making a release
+
+A release is automatically done when creating or pushing a git tag of the form `v*.*.*` ([semver](https://semver.org/)).
+The CI jobs build dynamically and statically linked binaries and add them to the release, and build container images for standalone flowpipeline and the visualization example, pushed with their version number, e.g. `1.2.3`, and as `latest`.
+
+Git tags of the form `v*.*.*-alpha` or `v*.*.*-beta` make the same, but the release is marked as pre-release and the container images don't update the `latest` tag.
