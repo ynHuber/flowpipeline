@@ -33,7 +33,7 @@ jobs:
       - name: Set up Go
         uses: https://code.forgejo.org/actions/setup-go@v6
         with:
-          go-version-file: 'go.mod'
+          go-version-file: 'flowpipeline/go.mod'
 
       - name: Build config generator
         working-directory: flowpipeline
