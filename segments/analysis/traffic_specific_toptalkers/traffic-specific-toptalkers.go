@@ -191,7 +191,7 @@ func (segment *TrafficSpecificToptalkers) IpInToptalkers(msg *pb.EnrichedFlow, f
 }
 
 func (segment *TrafficSpecificToptalkers) IpInToptalkersOfMetric(metricDef *ThresholdMetric, msg *pb.EnrichedFlow, filter *flowfilter.Filter) bool {
-	if metricDef.PrometheusMetricsParams.TrafficType != "" {
+	if metricDef.TrafficType != "" {
 
 		var keys [][]byte
 		switch segment.EvaluationMode {
@@ -209,7 +209,7 @@ func (segment *TrafficSpecificToptalkers) IpInToptalkersOfMetric(metricDef *Thre
 		}
 
 		for _, key := range keys {
-			record := metricDef.Database.GetTypedRecord(metricDef.PrometheusMetricsParams.TrafficType, key)
+			record := metricDef.Database.GetTypedRecord(metricDef.TrafficType, key)
 			if record.AboveThreshold().Load() {
 				return true
 			}
@@ -239,7 +239,7 @@ func (segment *TrafficSpecificToptalkers) initDatabasesAndCollector(promExporter
 
 func (segment *TrafficSpecificToptalkers) initDatabasesForFilter(filterDef *ThresholdMetric, promExporter *toptalkers_metrics.PrometheusExporter) []*toptalkers_metrics.ToptalkerDatabase {
 	databases := []*toptalkers_metrics.ToptalkerDatabase{}
-	if filterDef.PrometheusMetricsParams.TrafficType != "" { //defined a metric that should be in prometheus
+	if filterDef.TrafficType != "" { //defined a metric that should be in prometheus
 		database := toptalkers_metrics.NewDatabase(filterDef.PrometheusMetricsParams, promExporter, segment.EvaluationMode)
 
 		filterDef.Database = &database
@@ -254,7 +254,7 @@ func (segment *TrafficSpecificToptalkers) initDatabasesForFilter(filterDef *Thre
 func (s *TrafficSpecificToptalkers) addMessageToMatchingToptalkers(msg *pb.EnrichedFlow, definition *ThresholdMetric, filter *flowfilter.Filter) {
 	if match, _ := filter.CheckFlow(definition.Expression, msg); match {
 		// Update Counters if definition has a prometheus label defined
-		if definition.PrometheusMetricsParams.TrafficType != "" {
+		if definition.TrafficType != "" {
 			var keys []([]byte)
 			switch s.EvaluationMode {
 			case evaluation_mode.Source:
@@ -270,7 +270,7 @@ func (s *TrafficSpecificToptalkers) addMessageToMatchingToptalkers(msg *pb.Enric
 				keys = [][]byte{msg.DstAddrObj().To16()}
 			}
 			for _, key := range keys {
-				record := definition.Database.GetTypedRecord(definition.PrometheusMetricsParams.TrafficType, key)
+				record := definition.Database.GetTypedRecord(definition.TrafficType, key)
 				record.Append(msg)
 			}
 		}
