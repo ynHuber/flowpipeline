@@ -131,7 +131,7 @@ func main() {
 		return
 	}
 
-	pipelineCount := 1
+	var pipelineCount int
 	if *concurrency == 0 {
 		pipelineCount = runtime.GOMAXPROCS(0)
 	} else {

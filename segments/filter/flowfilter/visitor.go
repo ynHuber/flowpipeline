@@ -117,6 +117,9 @@ func (f *Filter) Visit(n parser.Node, next func() error) error {
 		}
 		bps := f.flowmsg.Bytes * 8 / duration
 		(*node).EvalResult, err = processNumericRange(node.NumericRange, bps)
+		if err != nil {
+			return fmt.Errorf("[error] Bad range: %v.", err)
+		}
 	case *parser.ByteRangeMatch:
 		(*node).EvalResult, err = processNumericRange(node.NumericRange, f.flowmsg.Bytes)
 		if err != nil {

@@ -190,11 +190,12 @@ func (segment *KafkaProducer) Run(wg *sync.WaitGroup) {
 		wg.Done()
 	}()
 
-	producer, err := sarama.NewAsyncProducer(strings.Split(segment.Server, ","), segment.saramaConfig)
+	producer, _ := sarama.NewAsyncProducer(strings.Split(segment.Server, ","), segment.saramaConfig)
 
 	for msg := range segment.In {
 		segment.Out <- msg
 		var binary []byte
+		var err error
 		if segment.Legacy {
 			legacyFlow := msg.ConvertToLegacyEnrichedFlow()
 			if binary, err = proto.Marshal(legacyFlow); err != nil {

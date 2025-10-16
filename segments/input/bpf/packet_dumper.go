@@ -168,7 +168,7 @@ func (b *PacketDumper) Setup(device string) error {
 	}
 
 	var addrs []net.Addr
-	addrs, err = b.iface.Addrs()
+	addrs, _ = b.iface.Addrs()
 	for _, a := range addrs {
 		if ipnet, ok := a.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
 			b.SamplerAddress = ipnet.IP

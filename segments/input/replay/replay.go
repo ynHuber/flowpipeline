@@ -187,25 +187,26 @@ func readFromDB(db *sql.DB) ([]*pb.EnrichedFlow, error) {
 			continue
 		}
 
+		// All the err assignments are marked as ineffective, but nevertheless they work :)
 		var err error
 		flow.Type = pb.EnrichedFlow_FlowType(pb.EnrichedFlow_FlowType_value[typ])
-		flow.BgpCommunities, err = parseUint32Slice(bgpCommunities)
-		flow.AsPath, err = parseUint32Slice(asPath)
-		flow.MplsTtl, err = parseUint32Slice(mplsTtl)
-		flow.MplsLabel, err = parseUint32Slice(mplsLabel)
-		flow.MplsIp, err = parseByteSlices(mplsIp)
-		flow.LayerStack, err = parseLayerStackSlice(layerStack)
-		flow.LayerSize, err = parseUint32Slice(layerSize)
-		flow.Ipv6RoutingHeaderAddresses, err = parseByteSlices(ipv6RoutingHeaderAddresses)
-		flow.SrcAddrAnon = pb.EnrichedFlow_AnonymizedType(pb.EnrichedFlow_AnonymizedType_value[srcAddrAnon])
-		flow.DstAddrAnon = pb.EnrichedFlow_AnonymizedType(pb.EnrichedFlow_AnonymizedType_value[dstAddrAnon])
-		flow.SamplerAddrAnon = pb.EnrichedFlow_AnonymizedType(pb.EnrichedFlow_AnonymizedType_value[samplerAddrAnon])
-		flow.NextHopAnon = pb.EnrichedFlow_AnonymizedType(pb.EnrichedFlow_AnonymizedType_value[nextHopAnon])
-		flow.ValidationStatus = pb.EnrichedFlow_ValidationStatusType(pb.EnrichedFlow_ValidationStatusType_value[validationStatus])
-		flow.Normalized = pb.EnrichedFlow_NormalizedType(pb.EnrichedFlow_NormalizedType_value[normalized])
-		flow.RemoteAddr = pb.EnrichedFlow_RemoteAddrType(pb.EnrichedFlow_RemoteAddrType_value[remoteAddr])
-		flow.SrcAsPath, err = parseUint32Slice(srcAsPath)
-		flow.DstAsPath, err = parseUint32Slice(dstAsPath)
+		flow.BgpCommunities, err = parseUint32Slice(bgpCommunities)                                                                //nolint:ineffassign,staticcheck
+		flow.AsPath, err = parseUint32Slice(asPath)                                                                                //nolint:ineffassign,staticcheck
+		flow.MplsTtl, err = parseUint32Slice(mplsTtl)                                                                              //nolint:ineffassign,staticcheck
+		flow.MplsLabel, err = parseUint32Slice(mplsLabel)                                                                          //nolint:ineffassign,staticcheck
+		flow.MplsIp, err = parseByteSlices(mplsIp)                                                                                 //nolint:ineffassign,staticcheck
+		flow.LayerStack, err = parseLayerStackSlice(layerStack)                                                                    //nolint:ineffassign,staticcheck
+		flow.LayerSize, err = parseUint32Slice(layerSize)                                                                          //nolint:ineffassign,staticcheck
+		flow.Ipv6RoutingHeaderAddresses, err = parseByteSlices(ipv6RoutingHeaderAddresses)                                         //nolint:ineffassign,staticcheck
+		flow.SrcAddrAnon = pb.EnrichedFlow_AnonymizedType(pb.EnrichedFlow_AnonymizedType_value[srcAddrAnon])                       //nolint:ineffassign,staticcheck
+		flow.DstAddrAnon = pb.EnrichedFlow_AnonymizedType(pb.EnrichedFlow_AnonymizedType_value[dstAddrAnon])                       //nolint:ineffassign,staticcheck
+		flow.SamplerAddrAnon = pb.EnrichedFlow_AnonymizedType(pb.EnrichedFlow_AnonymizedType_value[samplerAddrAnon])               //nolint:ineffassign,staticcheck
+		flow.NextHopAnon = pb.EnrichedFlow_AnonymizedType(pb.EnrichedFlow_AnonymizedType_value[nextHopAnon])                       //nolint:ineffassign,staticcheck
+		flow.ValidationStatus = pb.EnrichedFlow_ValidationStatusType(pb.EnrichedFlow_ValidationStatusType_value[validationStatus]) //nolint:ineffassign,staticcheck
+		flow.Normalized = pb.EnrichedFlow_NormalizedType(pb.EnrichedFlow_NormalizedType_value[normalized])                         //nolint:ineffassign,staticcheck
+		flow.RemoteAddr = pb.EnrichedFlow_RemoteAddrType(pb.EnrichedFlow_RemoteAddrType_value[remoteAddr])                         //nolint:ineffassign,staticcheck
+		flow.SrcAsPath, err = parseUint32Slice(srcAsPath)                                                                          //nolint:ineffassign,staticcheck
+		flow.DstAsPath, err = parseUint32Slice(dstAsPath)                                                                          //nolint:ineffassign,staticcheck
 
 		if err != nil {
 			log.Error().Err(err).Msg("Failed to parse row data from database.")
