@@ -33,7 +33,7 @@ func (segment Http) New(config map[string]string) segments.Segment {
 		log.Error().Err(err).Msgf("Http: error parsing url parameter")
 		return nil
 	}
-	if !(requestUrl.Scheme == "http" || requestUrl.Scheme == "https") {
+	if requestUrl.Scheme != "http" && requestUrl.Scheme != "https" {
 		log.Error().Msgf("Http: error parsing url parameter, scheme must be 'http://' or 'https://'")
 		return nil
 	}
@@ -58,7 +58,7 @@ func (segment *Http) Run(wg *sync.WaitGroup) {
 			log.Error().Err(err).Msg("Http: Request setup error, skipping at least one flow")
 			log.Error().Msg("Http: Above message will not repeat for every flow and is effective until resolved.")
 			limitLog = true
-		} else if !(resp.StatusCode-200 < 100) {
+		} else if resp.StatusCode-200 >= 100 {
 			log.Error().Msgf("Http: Server endpoint error, skipping at least one flow. Code %s.", resp.Status)
 			log.Error().Msg("Http: Above message will not repeat for every flow and is effective until resolved.")
 			limitLog = true

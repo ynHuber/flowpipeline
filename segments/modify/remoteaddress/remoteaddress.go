@@ -55,7 +55,7 @@ type RemoteAddress struct {
 }
 
 func (segment RemoteAddress) New(config map[string]string) segments.Segment {
-	if !(config["policy"] == "cidr" || config["policy"] == "border" || config["policy"] == "user" || config["policy"] == "clear") {
+	if config["policy"] != "cidr" && config["policy"] != "border" && config["policy"] != "user" && config["policy"] != "clear" {
 		log.Error().Msg("RemoteAddress: The 'policy' parameter is required to be one of 'cidr', 'border', 'user', or 'clear'.")
 		return nil
 	}
