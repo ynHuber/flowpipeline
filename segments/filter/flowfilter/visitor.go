@@ -11,7 +11,7 @@ import (
 )
 
 type Filter struct {
-	flowmsg     *pb.EnrichedFlow
+	flowmsg *pb.EnrichedFlow
 }
 
 func (f *Filter) CheckFlow(expr *parser.Expression, flowmsg *pb.EnrichedFlow) (bool, error) {
