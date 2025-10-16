@@ -129,17 +129,17 @@ func (segment *Prometheus) Run(wg *sync.WaitGroup) {
 		values := reflect.ValueOf(msg).Elem()
 		for _, fieldname := range segment.Labels {
 			value := values.FieldByName(fieldname).Interface()
-			switch value.(type) {
+			switch v := value.(type) {
 			case []uint8: // this is necessary for proper formatting
-				ipstring := net.IP(value.([]uint8)).String()
+				ipstring := net.IP(v).String()
 				if ipstring == "<nil>" {
 					ipstring = ""
 				}
 				labelset[fieldname] = ipstring
 			case uint32: // this is because FormatUint is much faster than Sprint
-				labelset[fieldname] = strconv.FormatUint(uint64(value.(uint32)), 10)
+				labelset[fieldname] = strconv.FormatUint(uint64(v), 10)
 			case uint64: // this is because FormatUint is much faster than Sprint
-				labelset[fieldname] = strconv.FormatUint(uint64(value.(uint64)), 10)
+				labelset[fieldname] = strconv.FormatUint(uint64(v), 10)
 			case string: // this is because doing nothing is also much faster than Sprint
 				labelset[fieldname] = value.(string)
 			default:
