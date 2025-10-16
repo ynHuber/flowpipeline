@@ -8,15 +8,15 @@ import (
 
 // A config representation of a segment.
 type SegmentRepr struct {
-	Name   string `yaml:"segment"`        // to be looked up with a registry
-	Config Config `yaml:"config"`         // to be expanded by our instance
-	Jobs   int    `yaml:"jobs,omitempty"` // parallel jobs running the pipeline
-
 	//Adds if/then/else
 	BranchOptions `yaml:",inline"`
 
 	//Adds matching_pipeline - used to process msg hows IPs are matching a filter
 	ThresholdMetricDefinition `yaml:",inline"`
+
+	Name   string `yaml:"segment"`        // to be looked up with a registry
+	Config Config `yaml:"config"`         // to be expanded by our instance
+	Jobs   int    `yaml:"jobs,omitempty"` // parallel jobs running the pipeline
 }
 
 // Returns the SegmentRepr's Config with all its variables expanded. It tries

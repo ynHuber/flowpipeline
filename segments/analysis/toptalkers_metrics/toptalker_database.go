@@ -21,6 +21,8 @@ type Record interface {
 }
 
 type DefaultRecord struct {
+	sync.RWMutex
+
 	FwdBytes             []uint64
 	FwdPackets           []uint64
 	DropBytes            []uint64
@@ -29,8 +31,6 @@ type DefaultRecord struct {
 	pointer              int
 	AboveThresholdAtomic atomic.Bool
 	Display              string
-
-	sync.RWMutex
 }
 
 type TwoWayRecord struct {
@@ -40,6 +40,8 @@ type TwoWayRecord struct {
 }
 
 type ToptalkerDatabase struct {
+	sync.RWMutex
+
 	entries            ToptalkerDatabaseEntries
 	TrafficType        string
 	thresholdBps       uint64
@@ -54,7 +56,6 @@ type ToptalkerDatabase struct {
 	evaluationMode     e.EvaluationMode
 	stopCleanupC       chan struct{}
 	stopClockC         chan struct{}
-	sync.RWMutex
 }
 
 type ToptalkerDatabaseEntries interface {
