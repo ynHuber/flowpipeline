@@ -30,10 +30,10 @@ type StdIn struct {
 func (segment StdIn) New(config map[string]string) segments.Segment {
 	newsegment := &StdIn{}
 
-	var filename string = "stdout"
+	filename := "stdout"
+	eofCloses := false
 	var file *os.File
 	var err error
-	var eofCloses bool = false
 	if config["filename"] != "" {
 		file, err = os.Open(config["filename"])
 		if err != nil {

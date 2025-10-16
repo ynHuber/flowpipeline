@@ -62,7 +62,7 @@ func (segment *PrintFlowdump) Run(wg *sync.WaitGroup) {
 }
 
 func (segment PrintFlowdump) New(config map[string]string) segments.Segment {
-	var useProtoname bool = true
+	useProtoname := true
 	if config["useprotoname"] != "" {
 		if parsedUseProtoname, err := strconv.ParseBool(config["useprotoname"]); err == nil {
 			useProtoname = parsedUseProtoname
@@ -73,7 +73,7 @@ func (segment PrintFlowdump) New(config map[string]string) segments.Segment {
 		log.Info().Msg("PrintFlowdump: 'useprotoname' set to default true.")
 	}
 
-	var verbose bool = false
+	verbose := false
 	if config["verbose"] != "" {
 		if parsedVerbose, err := strconv.ParseBool(config["verbose"]); err == nil {
 			verbose = parsedVerbose
@@ -84,7 +84,7 @@ func (segment PrintFlowdump) New(config map[string]string) segments.Segment {
 		log.Info().Msg("PrintFlowdump: 'verbose' set to default false.")
 	}
 
-	var highlight bool = false
+	highlight := false
 	if config["highlight"] != "" {
 		if parsedHighlight, err := strconv.ParseBool(config["highlight"]); err == nil {
 			highlight = parsedHighlight

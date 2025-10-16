@@ -72,7 +72,7 @@ func (segment KafkaProducer) New(config map[string]string) segments.Segment {
 		newsegment.Topic = config["topic"]
 	}
 
-	var legacy bool = false
+	legacy := false
 	if config["legacy"] != "" {
 		if parsedTls, err := strconv.ParseBool(config["legacy"]); err == nil {
 			legacy = parsedTls
@@ -103,7 +103,7 @@ func (segment KafkaProducer) New(config map[string]string) segments.Segment {
 	}
 
 	// parse config and setup TLS
-	var useTls bool = true
+	useTls := true
 	if config["tls"] != "" {
 		if parsedTls, err := strconv.ParseBool(config["tls"]); err == nil {
 			useTls = parsedTls
@@ -126,7 +126,7 @@ func (segment KafkaProducer) New(config map[string]string) segments.Segment {
 	}
 
 	// parse config and setup auth
-	var useAuth bool = true
+	useAuth := true
 	if config["auth"] != "" {
 		if parsedAuth, err := strconv.ParseBool(config["auth"]); err == nil {
 			useAuth = parsedAuth

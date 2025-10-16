@@ -31,7 +31,7 @@ func (segment ReverseDns) New(config map[string]string) segments.Segment {
 		resolver: &dnscache.Resolver{},
 	}
 
-	var cache bool = true
+	cache := true
 	if config["cache"] != "" {
 		var err error
 		if cache, err = strconv.ParseBool(config["cache"]); err == nil {

@@ -38,19 +38,19 @@ type Prometheus struct {
 }
 
 func (segment Prometheus) New(config map[string]string) segments.Segment {
-	var endpoint string = ":8080"
+	endpoint := ":8080"
 	if config["endpoint"] == "" {
 		log.Info().Msg("Prometheus: Missing configuration parameter 'endpoint'. Using default port ':8080'")
 	} else {
 		endpoint = config["endpoint"]
 	}
-	var metricsPath string = "/metrics"
+	metricsPath := "/metrics"
 	if config["metricspath"] == "" {
 		log.Info().Msg("Prometheus: Missing configuration parameter 'metricspath'. Using default path '/metrics'")
 	} else {
 		metricsPath = config["metricspath"]
 	}
-	var flowdataPath string = "/flowdata"
+	flowdataPath := "/flowdata"
 	if config["flowdatapath"] == "" {
 		log.Info().Msg("Prometheus: Missing configuration parameter 'flowdatapath'. Using default path '/flowdata'")
 	} else {
@@ -66,7 +66,7 @@ func (segment Prometheus) New(config map[string]string) segments.Segment {
 			vacuumInterval = &vacuumIntervalDuration
 		}
 	}
-	var exportASPathPairs bool = false
+	exportASPathPairs := false
 	if config["export_as_pairs"] == "" {
 		log.Info().Msg("Prometheus: Missing configuration parameter 'export_as_pairs'. Using default value 'false'")
 	} else if strings.ToLower(config["export_as_pairs"]) == "true" {
@@ -74,7 +74,7 @@ func (segment Prometheus) New(config map[string]string) segments.Segment {
 		exportASPathPairs = true
 	}
 
-	var exportASPaths bool = false
+	exportASPaths := false
 	if config["export_as_paths"] == "" {
 		log.Info().Msg("Prometheus: Missing configuration parameter 'export_as_paths'. Using default value 'false'")
 	} else if strings.ToLower(config["export_as_paths"]) == "true" {
