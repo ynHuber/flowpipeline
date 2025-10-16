@@ -110,7 +110,6 @@ type PacketDumper struct {
 
 	// setup
 	objs           bpfObjects
-	socketFilterFd int
 	iface          *net.Interface
 	SamplerAddress net.IP
 

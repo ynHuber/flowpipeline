@@ -12,7 +12,6 @@ import (
 )
 
 const cgoEnabled = true
-const pfringEnabled = false
 
 func getPcapHandle(source string, filter string) *pcap.Handle {
 	inactive, err := pcap.NewInactiveHandle(source)
