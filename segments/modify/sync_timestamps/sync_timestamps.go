@@ -4,10 +4,12 @@
 //   - TimeFlowStart
 //   - TimeFlowStartMs
 //   - TimeFlowStartNs
+//
 // - TimeFlowEnd:
 //   - TimeFlowEnd
 //   - TimeFlowEndMs
 //   - TimeFlowEndNs
+//
 // - TimeReceived:
 //   - TimeReceived
 //   - TimeReceivedNs

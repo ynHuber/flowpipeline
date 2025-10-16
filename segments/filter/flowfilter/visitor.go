@@ -6,8 +6,8 @@ import (
 	"net"
 	"strings"
 
-	"github.com/BelWue/flowfilter/parser"
 	"codeberg.org/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowfilter/parser"
 )
 
 type Filter struct {

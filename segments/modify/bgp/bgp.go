@@ -11,10 +11,12 @@
 // routerid: "192.0.2.42"
 // asn: 553
 // routers:
-//   default:
-//     neighbors:
-//       - 192.0.2.1
-//       - 2001:db8::1
+//
+//	default:
+//	  neighbors:
+//	    - 192.0.2.1
+//	    - 2001:db8::1
+//
 // ```
 //
 // For the above bgp config to work, the parameter `fallbackrouter: default` is
@@ -38,9 +40,9 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/BelWue/bgp_routeinfo/routeinfo"
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"github.com/BelWue/bgp_routeinfo/routeinfo"
 	"gopkg.in/yaml.v2"
 )
 

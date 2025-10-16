@@ -14,8 +14,8 @@
 // - `pcap`, a wrapper around libpcap, requires that at compile- and runtime
 // - `pfring`, a wrapper around PF_RING, requires the appropriate libraries as well as the loaded kernel module
 // - `file`, a `pcapgo` replay reader for PCAP files which will fallback to `pcap` automatically if either:
-//   1. the file is not in `.pcapng` format, but using the legacy `.pcap` format
-//   2. a BPF filter was specified
+//  1. the file is not in `.pcapng` format, but using the legacy `.pcap` format
+//  2. a BPF filter was specified
 //
 // The filter parameter available for some methods will filter packets before they are
 // aggregated in any flow cache.

@@ -8,9 +8,9 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/BelWue/flowfilter/parser"
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"github.com/BelWue/flowfilter/parser"
 )
 
 type FlowFilter struct {
