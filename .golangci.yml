@@ -1,4 +1,8 @@
 version: "2"
+output:
+  formats:
+    tab:
+      path: stdout
 formatters:
   enable:
     - gofmt
@@ -9,6 +13,9 @@ linters:
     - exhaustive
   disable:
     - errcheck
+  exclusions:
+    paths:
+      - pb/
   settings:
     copyloopvar:
       check-alias: true
