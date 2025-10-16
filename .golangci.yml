@@ -1,0 +1,16 @@
+version: "2"
+formatters:
+  enable:
+    - gofmt
+linters:
+  enable:
+    - decorder
+    - embeddedstructfieldcheck
+    - exhaustive
+  disable:
+    - errcheck
+  settings:
+    copyloopvar:
+      check-alias: true
+    embeddedstructfieldcheck:
+      empty-line: false
