@@ -21,3 +21,5 @@ linters:
       check-alias: true
     embeddedstructfieldcheck:
       empty-line: false
+    exhaustive:
+      default-signifies-exhaustive: true
