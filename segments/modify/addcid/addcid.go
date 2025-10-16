@@ -82,7 +82,7 @@ func (segment *AddCid) Run(wg *sync.WaitGroup) {
 	for msg := range segment.In {
 		var laddress net.IP
 		if !segment.MatchBoth {
-			switch  msg.RemoteAddr{
+			switch msg.RemoteAddr {
 			case 1: // 1 indicates SrcAddr is the RemoteAddr
 				laddress = msg.DstAddr // we want the LocalAddr tho
 			case 2: // 2 indicates DstAddr is the RemoteAddr
