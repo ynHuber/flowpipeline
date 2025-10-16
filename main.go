@@ -40,7 +40,7 @@ import (
 
 	_ "codeberg.org/BelWue/flowpipeline/segments/meta/monitoring"
 
-	_ "codeberg.org/BelWue/flowpipeline/segments/modify/addcid"
+	_ "codeberg.org/BelWue/flowpipeline/segments/modify/addcid" //nolint:staticcheck // deprecated, use addnetid
 	_ "codeberg.org/BelWue/flowpipeline/segments/modify/addnetid"
 	_ "codeberg.org/BelWue/flowpipeline/segments/modify/addrstrings"
 	_ "codeberg.org/BelWue/flowpipeline/segments/modify/anonymize"

@@ -163,7 +163,7 @@ func (prometheusParams *PrometheusMetricsParams) ParsePrometheusConfig(config ma
 
 		if evaluationMode == evaluation_mode.Unknown {
 			log.Error().Msg("ToptalkersMetrics: Could not parse 'evaluationmode', using default value 'destination'.")
-			evaluationMode = evaluation_mode.Destination
+			evaluationMode = evaluation_mode.Destination //nolint:ineffassign // TODO: this should be removed, once evaluationMode is correctly used
 		}
 	}
 	return nil
