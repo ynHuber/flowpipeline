@@ -295,7 +295,7 @@ func WriteToDisk(segment *DiskBuffer, ReadWriteWG *sync.WaitGroup, Signal chan s
 			}
 			if uint64(fi.Size()) > segment.FileSize {
 				log.Debug().Msgf("Diskbuffer: File %s is bigger than %d, stopping write", filename, segment.FileSize)
-				break
+				return
 			}
 		}
 	}

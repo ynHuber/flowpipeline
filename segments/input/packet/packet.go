@@ -60,25 +60,25 @@ type opt struct {
 
 type conf map[string]string
 
-func (c conf) parseOption(o opt) (error, string) {
+func (c conf) parseOption(o opt) (string, error) {
 	switch o.Type {
 	case "option":
 		if c[o.Name] == "" {
 			if o.Default != "" {
 				log.Info().Msgf("Packet: '%s' set to default '%s'.", o.Name, o.Default)
-				return nil, o.Default
+				return o.Default, nil
 			} else {
 				log.Error().Msgf("Packet: Field '%s' is required.", o.Name)
-				return fmt.Errorf("[error] parse error"), ""
+				return "", fmt.Errorf("[error] parse error")
 			}
 		}
 		for _, option := range o.Options {
 			if c[o.Name] == option {
-				return nil, option
+				return option, nil
 			}
 		}
 		log.Error().Msgf("Packet: Field '%s' must be set to a valid option: %s.", o.Name, strings.Join(o.Options, "|"))
-		return fmt.Errorf("[error] parse error"), ""
+		return "", fmt.Errorf("[error] parse error")
 	case "duration":
 		_, err := time.ParseDuration(c[o.Name])
 		if err != nil {
@@ -87,42 +87,42 @@ func (c conf) parseOption(o opt) (error, string) {
 			} else {
 				log.Warn().Msgf("Packet: '%s' was invalid, fallback to default '%s'.", o.Name, o.Default)
 			}
-			return nil, o.Default
+			return o.Default, nil
 		} else {
 			log.Info().Msgf("Packet: '%s' set to '%s'.", o.Name, c[o.Name])
-			return nil, c[o.Name]
+			return c[o.Name], nil
 		}
 	case "rfile":
 		if _, err := os.Stat(c[o.Name]); err != nil {
 			if o.Default != "" {
 				if _, err := os.Stat(o.Default); err != nil {
 					log.Info().Msgf("Packet: '%s' set to default '%s'.", o.Name, o.Default)
-					return nil, o.Default
+					return o.Default, nil
 				}
-				return err, ""
+				return "", err
 			} else {
 				log.Error().Msgf("Packet: Field '%s' is required.", o.Name)
-				return err, ""
+				return "", err
 			}
 		}
-		return nil, c[o.Name]
+		return c[o.Name], nil
 	case "iface":
 		if c[o.Name] == "" {
 			if o.Default != "" {
 				log.Info().Msgf("Packet: '%s' set to default '%s'.", o.Name, o.Default)
-				return nil, o.Default
+				return o.Default, nil
 			} else {
 				log.Error().Msgf("Packet: Field '%s' is required.", o.Name)
-				return fmt.Errorf("[error] parse error"), ""
+				return "", fmt.Errorf("[error] parse error")
 			}
 		}
 		if _, err := net.InterfaceByName(c[o.Name]); err == nil {
-			return nil, c[o.Name]
+			return c[o.Name], nil
 		}
 		log.Error().Msgf("Packet: Field '%s' must be set to a valid interface.", o.Name)
-		return fmt.Errorf("[error] parse error"), ""
+		return "", fmt.Errorf("[error] parse error")
 	}
-	return fmt.Errorf("[error] parse error"), ""
+	return "", fmt.Errorf("[error] parse error")
 }
 
 func (segment Packet) New(config map[string]string) segments.Segment {
@@ -131,21 +131,21 @@ func (segment Packet) New(config map[string]string) segments.Segment {
 	// setup flow export
 	var err error
 	c := conf(config)
-	if err, newsegment.ActiveTimeout = c.parseOption(opt{"activetimeout", "30m", []string{}, "duration"}); err != nil {
+	if newsegment.ActiveTimeout, err = c.parseOption(opt{"activetimeout", "30m", []string{}, "duration"}); err != nil {
 		return nil
 	}
-	if err, newsegment.InactiveTimeout = c.parseOption(opt{"inactivetimeout", "15s", []string{}, "duration"}); err != nil {
+	if newsegment.InactiveTimeout, err = c.parseOption(opt{"inactivetimeout", "15s", []string{}, "duration"}); err != nil {
 		return nil
 	}
-	if err, newsegment.Method = c.parseOption(opt{"method", "pcapgo", []string{"pcapgo", "pcap", "pfring", "file"}, "option"}); err != nil {
+	if newsegment.Method, err = c.parseOption(opt{"method", "pcapgo", []string{"pcapgo", "pcap", "pfring", "file"}, "option"}); err != nil {
 		return nil
 	}
 	if newsegment.Method == "file" {
-		if err, newsegment.Source = c.parseOption(opt{"source", "", []string{}, "rfile"}); err != nil {
+		if newsegment.Source, err = c.parseOption(opt{"source", "", []string{}, "rfile"}); err != nil {
 			return nil
 		}
 	} else {
-		if err, newsegment.Source = c.parseOption(opt{"source", "", []string{}, "iface"}); err != nil {
+		if newsegment.Source, err = c.parseOption(opt{"source", "", []string{}, "iface"}); err != nil {
 			return nil
 		}
 	}

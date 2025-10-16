@@ -118,7 +118,7 @@ func (f *Filter) Visit(n parser.Node, next func() error) error {
 		bps := f.flowmsg.Bytes * 8 / duration
 		(*node).EvalResult, err = processNumericRange(node.NumericRange, bps)
 		if err != nil {
-			return fmt.Errorf("[error] Bad range: %v.", err)
+			return fmt.Errorf("[error] Bad range: %v", err)
 		}
 	case *parser.ByteRangeMatch:
 		(*node).EvalResult, err = processNumericRange(node.NumericRange, f.flowmsg.Bytes)
@@ -392,7 +392,7 @@ func (f *Filter) Visit(n parser.Node, next func() error) error {
 		pps := f.flowmsg.Packets / duration
 		(*node).EvalResult, err = processNumericRange(node.NumericRange, pps)
 		if err != nil {
-			return fmt.Errorf("[error] Bad range: %v.", err)
+			return fmt.Errorf("[error] Bad range: %v", err)
 		}
 	case *parser.PassesThroughListMatch:
 		sliceEq := func(a []parser.Number, b []uint32) bool {
@@ -448,7 +448,7 @@ func (f *Filter) Visit(n parser.Node, next func() error) error {
 		case node.SubExpression != nil:
 			(*node).EvalResult = node.SubExpression.EvalResult
 		}
-		if node.Negated != nil && *node.Negated == true {
+		if node.Negated != nil && *node.Negated {
 			(*node).EvalResult = !(*node).EvalResult
 		}
 	case *parser.StatusMatch:

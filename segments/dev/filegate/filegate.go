@@ -35,10 +35,7 @@ func (segment *Filegate) New(config map[string]string) segments.Segment {
 func checkFileExists(filename string) bool {
 	log.Debug().Msgf("Filegate: check if filename %s exists", filename)
 	_, err := os.Stat(filename)
-	if errors.Is(err, os.ErrNotExist) {
-		return false
-	}
-	return true
+	return !errors.Is(err, os.ErrNotExist)
 }
 
 func (segment *Filegate) Run(wg *sync.WaitGroup) {
