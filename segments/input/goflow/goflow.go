@@ -141,7 +141,7 @@ func (d *channelDriver) Send(key, data []byte) error {
 		log.Error().Msg("Goflow: Conversion error for received flow.")
 		return nil
 	}
-	d.out <- &msg.EnrichedFlow
+	d.out <- msg.EnrichedFlow
 	return nil
 }
 

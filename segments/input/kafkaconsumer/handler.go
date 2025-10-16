@@ -54,7 +54,7 @@ func (h *Handler) ConsumeClaim(session sarama.ConsumerGroupSession, claim sarama
 					log.Error().Err(err).Msg("KafkaConsumer: Failed unmarshalling message")
 					continue
 				}
-				h.flows <- &msg.EnrichedFlow
+				h.flows <- msg.EnrichedFlow
 			}
 		case <-session.Context().Done():
 			return nil
