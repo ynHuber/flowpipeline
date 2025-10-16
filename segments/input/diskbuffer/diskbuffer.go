@@ -415,7 +415,7 @@ func ReadFromDisk(segment *DiskBuffer, ReadWriteWG *sync.WaitGroup, Signal chan 
 
 			for emerg_line := range fromReader {
 				// use Fprintln because it adds an OS specific newline
-				_, err = fmt.Fprintln(writer, emerg_line)
+				_, err = fmt.Fprintln(writer, string(emerg_line))
 				if err != nil {
 					log.Warn().Err(err).Msgf("Diskbuffer: Skipping a flow, failed to write to file %s", filename)
 					continue
