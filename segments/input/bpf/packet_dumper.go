@@ -70,12 +70,13 @@ type Packet struct {
 
 func parseRawPacket(rawPacket rawPacket) Packet {
 	var srcip, dstip net.IP
-	if rawPacket.Etype == 0x0800 {
+	switch rawPacket.Etype {
+	case 0x0800:
 		srcip = make(net.IP, 4)
 		binary.BigEndian.PutUint32(srcip, rawPacket.SrcAddr)
 		dstip = make(net.IP, 4)
 		binary.BigEndian.PutUint32(dstip, rawPacket.DstAddr)
-	} else if rawPacket.Etype == 0x86dd {
+	case 0x86dd:
 		srcip = make(net.IP, 16)
 		binary.BigEndian.PutUint64(srcip, rawPacket.SrcAddrHi)
 		binary.BigEndian.PutUint64(srcip[8:], rawPacket.SrcAddrLo)
@@ -110,7 +111,6 @@ type PacketDumper struct {
 
 	// setup
 	objs           bpfObjects
-	socketFilterFd int
 	iface          *net.Interface
 	SamplerAddress net.IP
 
@@ -169,7 +169,7 @@ func (b *PacketDumper) Setup(device string) error {
 	}
 
 	var addrs []net.Addr
-	addrs, err = b.iface.Addrs()
+	addrs, _ = b.iface.Addrs()
 	for _, a := range addrs {
 		if ipnet, ok := a.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
 			b.SamplerAddress = ipnet.IP

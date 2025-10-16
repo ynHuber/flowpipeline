@@ -72,7 +72,7 @@ func (segment KafkaProducer) New(config map[string]string) segments.Segment {
 		newsegment.Topic = config["topic"]
 	}
 
-	var legacy bool = false
+	legacy := false
 	if config["legacy"] != "" {
 		if parsedTls, err := strconv.ParseBool(config["legacy"]); err == nil {
 			legacy = parsedTls
@@ -103,7 +103,7 @@ func (segment KafkaProducer) New(config map[string]string) segments.Segment {
 	}
 
 	// parse config and setup TLS
-	var useTls bool = true
+	useTls := true
 	if config["tls"] != "" {
 		if parsedTls, err := strconv.ParseBool(config["tls"]); err == nil {
 			useTls = parsedTls
@@ -126,7 +126,7 @@ func (segment KafkaProducer) New(config map[string]string) segments.Segment {
 	}
 
 	// parse config and setup auth
-	var useAuth bool = true
+	useAuth := true
 	if config["auth"] != "" {
 		if parsedAuth, err := strconv.ParseBool(config["auth"]); err == nil {
 			useAuth = parsedAuth
@@ -190,11 +190,12 @@ func (segment *KafkaProducer) Run(wg *sync.WaitGroup) {
 		wg.Done()
 	}()
 
-	producer, err := sarama.NewAsyncProducer(strings.Split(segment.Server, ","), segment.saramaConfig)
+	producer, _ := sarama.NewAsyncProducer(strings.Split(segment.Server, ","), segment.saramaConfig)
 
 	for msg := range segment.In {
 		segment.Out <- msg
 		var binary []byte
+		var err error
 		if segment.Legacy {
 			legacyFlow := msg.ConvertToLegacyEnrichedFlow()
 			if binary, err = proto.Marshal(legacyFlow); err != nil {
@@ -205,7 +206,7 @@ func (segment *KafkaProducer) Run(wg *sync.WaitGroup) {
 			if msg != nil {
 				protoProducerMessage := pb.ProtoProducerMessage{}
 				msg.SyncMissingTimeStamps()
-				protoProducerMessage.EnrichedFlow = *msg
+				protoProducerMessage.EnrichedFlow = msg
 				if binary, err = protoProducerMessage.MarshalBinary(); err != nil {
 					log.Error().Err(err).Msg("KafkaProducer: Error encoding protobuf. ")
 					continue

@@ -72,7 +72,7 @@ func (segment KafkaConsumer) New(config map[string]string) segments.Segment {
 		newsegment.Group = config["group"]
 	}
 
-	var legacy bool = false
+	legacy := false
 	if config["legacy"] != "" {
 		if parsedTls, err := strconv.ParseBool(config["legacy"]); err == nil {
 			legacy = parsedTls
@@ -117,7 +117,7 @@ func (segment KafkaConsumer) New(config map[string]string) segments.Segment {
 	}
 
 	// parse config and setup TLS
-	var useTls bool = true
+	useTls := true
 	if config["tls"] != "" {
 		if parsedTls, err := strconv.ParseBool(config["tls"]); err == nil {
 			useTls = parsedTls
@@ -140,7 +140,7 @@ func (segment KafkaConsumer) New(config map[string]string) segments.Segment {
 	}
 
 	// parse config and setup auth
-	var useAuth bool = true
+	useAuth := true
 	if config["auth"] != "" {
 		if parsedAuth, err := strconv.ParseBool(config["auth"]); err == nil {
 			useAuth = parsedAuth
@@ -179,7 +179,7 @@ func (segment KafkaConsumer) New(config map[string]string) segments.Segment {
 
 	// parse and set starting point of fresh consumer groups
 	startAt := "newest"
-	var startingOffset int64 = sarama.OffsetNewest // see sarama const OffsetNewest
+	startingOffset := sarama.OffsetNewest // see sarama const OffsetNewest
 	if config["startat"] != "" {
 		if strings.ToLower(config["startat"]) == "oldest" {
 			startAt = "oldest"

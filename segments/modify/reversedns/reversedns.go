@@ -18,11 +18,12 @@ import (
 )
 
 type ReverseDns struct {
+	segments.BaseSegment
+
 	Cache           bool   // optional, default is true, disable to use a caching resolver directly
 	RefreshInterval string // optional, default is 5m, set another duration for cache refreshes
 
 	resolver *dnscache.Resolver
-	segments.BaseSegment
 }
 
 func (segment ReverseDns) New(config map[string]string) segments.Segment {
@@ -30,7 +31,7 @@ func (segment ReverseDns) New(config map[string]string) segments.Segment {
 		resolver: &dnscache.Resolver{},
 	}
 
-	var cache bool = true
+	cache := true
 	if config["cache"] != "" {
 		var err error
 		if cache, err = strconv.ParseBool(config["cache"]); err == nil {

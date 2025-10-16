@@ -6,13 +6,12 @@ import (
 	"net"
 	"strings"
 
-	"github.com/BelWue/flowfilter/parser"
 	"codeberg.org/BelWue/flowpipeline/pb"
+	"github.com/BelWue/flowfilter/parser"
 )
 
 type Filter struct {
-	flowmsg     *pb.EnrichedFlow
-	__direction string // this is super hacky
+	flowmsg *pb.EnrichedFlow
 }
 
 func (f *Filter) CheckFlow(expr *parser.Expression, flowmsg *pb.EnrichedFlow) (bool, error) {
@@ -118,6 +117,9 @@ func (f *Filter) Visit(n parser.Node, next func() error) error {
 		}
 		bps := f.flowmsg.Bytes * 8 / duration
 		(*node).EvalResult, err = processNumericRange(node.NumericRange, bps)
+		if err != nil {
+			return fmt.Errorf("[error] Bad range: %v", err)
+		}
 	case *parser.ByteRangeMatch:
 		(*node).EvalResult, err = processNumericRange(node.NumericRange, f.flowmsg.Bytes)
 		if err != nil {
@@ -279,9 +281,10 @@ func (f *Filter) Visit(n parser.Node, next func() error) error {
 			(*node).EvalResult = node.Left.EvalResult || node.Right.EvalResult
 		}
 	case *parser.FlowDirectionMatch:
-		if *node.FlowDirection == "incoming" {
+		switch *node.FlowDirection {
+		case "incoming":
 			(*node).EvalResult = f.flowmsg.FlowDirection == 0
-		} else if *node.FlowDirection == "outgoing" {
+		case "outgoing":
 			(*node).EvalResult = f.flowmsg.FlowDirection == 1
 		}
 	case *parser.IcmpMatch:
@@ -389,7 +392,7 @@ func (f *Filter) Visit(n parser.Node, next func() error) error {
 		pps := f.flowmsg.Packets / duration
 		(*node).EvalResult, err = processNumericRange(node.NumericRange, pps)
 		if err != nil {
-			return fmt.Errorf("[error] Bad range: %v.", err)
+			return fmt.Errorf("[error] Bad range: %v", err)
 		}
 	case *parser.PassesThroughListMatch:
 		sliceEq := func(a []parser.Number, b []uint32) bool {
@@ -445,7 +448,7 @@ func (f *Filter) Visit(n parser.Node, next func() error) error {
 		case node.SubExpression != nil:
 			(*node).EvalResult = node.SubExpression.EvalResult
 		}
-		if node.Negated != nil && *node.Negated == true {
+		if node.Negated != nil && *node.Negated {
 			(*node).EvalResult = !(*node).EvalResult
 		}
 	case *parser.StatusMatch:

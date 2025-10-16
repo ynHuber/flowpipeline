@@ -27,23 +27,30 @@
 // ones in a sqlite export:
 //
 // ```yaml
-// - segment: branch
-//   if:
+//
+//   - segment: branch
+//     if:
+//
 //   - segment: flowfilter
 //     config:
-//       filter: proto tcp
+//     filter: proto tcp
+//
 //   - segment: elephant
-//   then:
+//     then:
+//
 //   - segment: printflowdump
 //     config:
-//       highlight: 1
-//   else:
+//     highlight: 1
+//     else:
+//
 //   - segment: printflowdump
+//
 //   - segment: drop
 //
-// - segment: sqlite
-//   config:
+//   - segment: sqlite
+//     config:
 //     filename: tcponly.sqlite
+//
 // ```
 package branch
 

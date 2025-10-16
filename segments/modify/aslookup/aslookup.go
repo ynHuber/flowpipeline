@@ -37,11 +37,12 @@ func (segment AsLookup) New(config map[string]string) segments.Segment {
 	}
 	newSegment.FileName = config["filename"]
 
-	if config["type"] == "db" {
+	switch config["type"] {
+	case "db":
 		newSegment.Type = "db"
-	} else if config["type"] == "mrt" {
+	case "mrt":
 		newSegment.Type = "mrt"
-	} else {
+	default:
 		log.Info().Msg("AsLookup: 'type' set to default 'db'.")
 		newSegment.Type = "db"
 	}

@@ -295,7 +295,7 @@ func WriteToDisk(segment *DiskBuffer, ReadWriteWG *sync.WaitGroup, Signal chan s
 			}
 			if uint64(fi.Size()) > segment.FileSize {
 				log.Debug().Msgf("Diskbuffer: File %s is bigger than %d, stopping write", filename, segment.FileSize)
-				break
+				return
 			}
 		}
 	}
@@ -413,18 +413,18 @@ func ReadFromDisk(segment *DiskBuffer, ReadWriteWG *sync.WaitGroup, Signal chan 
 			}
 			writer := bufio.NewWriter(encoder)
 
-			defer file.Close()
-			defer encoder.Close()
-			defer writer.Flush()
-
 			for emerg_line := range fromReader {
 				// use Fprintln because it adds an OS specific newline
-				_, err = fmt.Fprintln(writer, emerg_line)
+				_, err = fmt.Fprintln(writer, string(emerg_line))
 				if err != nil {
 					log.Warn().Err(err).Msgf("Diskbuffer: Skipping a flow, failed to write to file %s", filename)
 					continue
 				}
 			}
+
+			file.Close()
+			encoder.Close()
+			writer.Flush()
 		default:
 			msg := &pb.EnrichedFlow{}
 			err := protojson.Unmarshal(line, msg)

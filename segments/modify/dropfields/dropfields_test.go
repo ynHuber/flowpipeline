@@ -1,3 +1,4 @@
+//nolint:govet // Copying the lock is necessary for the test to work
 package dropfields
 
 import (

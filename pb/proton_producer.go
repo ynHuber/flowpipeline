@@ -7,7 +7,7 @@ import (
 )
 
 type ProtoProducerMessage struct {
-	EnrichedFlow
+	*EnrichedFlow
 }
 
 func (m *ProtoProducerMessage) MarshalBinary() ([]byte, error) {

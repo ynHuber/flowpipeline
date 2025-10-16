@@ -1,4 +1,8 @@
 version: "2"
+output:
+  formats:
+    tab:
+      path: stdout
 formatters:
   enable:
     - gofmt
@@ -9,8 +13,17 @@ linters:
     - exhaustive
   disable:
     - errcheck
+  exclusions:
+    rules:
+      - linters:
+        - embeddedstructfieldcheck
+        text: "there must be an empty line separating embedded fields from regular fields"
+    paths:
+      - pb/
   settings:
     copyloopvar:
       check-alias: true
     embeddedstructfieldcheck:
       empty-line: false
+    exhaustive:
+      default-signifies-exhaustive: true

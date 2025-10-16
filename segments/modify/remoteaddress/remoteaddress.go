@@ -55,7 +55,7 @@ type RemoteAddress struct {
 }
 
 func (segment RemoteAddress) New(config map[string]string) segments.Segment {
-	if !(config["policy"] == "cidr" || config["policy"] == "border" || config["policy"] == "user" || config["policy"] == "clear") {
+	if config["policy"] != "cidr" && config["policy"] != "border" && config["policy"] != "user" && config["policy"] != "clear" {
 		log.Error().Msg("RemoteAddress: The 'policy' parameter is required to be one of 'cidr', 'border', 'user', or 'clear'.")
 		return nil
 	}
@@ -102,20 +102,20 @@ func (segment *RemoteAddress) Run(wg *sync.WaitGroup) {
 		}
 	case "border":
 		for msg := range segment.In {
-			switch {
-			case msg.FlowDirection == 0: // flow is ingress on border interface
+			switch msg.FlowDirection {
+			case 0: // flow is ingress on border interface
 				msg.RemoteAddr = 1 // thus, RemoteAddr should indicate SrcAddr
-			case msg.FlowDirection == 1: // flow is egress on border interface
+			case 1: // flow is egress on border interface
 				msg.RemoteAddr = 2 // thus, RemoteAddr should indicate DstAddr
 			}
 			segment.Out <- msg
 		}
 	case "user":
 		for msg := range segment.In {
-			switch {
-			case msg.FlowDirection == 0: // flow is ingress on user interface
+			switch msg.FlowDirection {
+			case 0: // flow is ingress on user interface
 				msg.RemoteAddr = 2 // thus, RemoteAddr should indicate DstAddr
-			case msg.FlowDirection == 1: // flow is egress on user interface
+			case 1: // flow is egress on user interface
 				msg.RemoteAddr = 1 // thus, RemoteAddr should indicate SrcAddr
 			}
 			segment.Out <- msg

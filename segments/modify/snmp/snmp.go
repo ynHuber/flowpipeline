@@ -112,13 +112,13 @@ func (segment Snmp) New(config map[string]string) segments.Segment {
 		cacheInterval = 1 * time.Hour
 	}
 
-	var community string = "public"
+	community := "public"
 	if config["community"] != "" {
 		community = config["community"]
 	} else {
 		log.Info().Msg("Snmp: 'community' set to default 'public'.")
 	}
-	var regex string = "^(.*)$"
+	regex := "^(.*)$"
 	if config["regex"] != "" {
 		regex = config["regex"]
 	} else {
