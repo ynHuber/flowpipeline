@@ -73,10 +73,10 @@ func (segment *GeoLocation) Run(wg *sync.WaitGroup) {
 	for msg := range segment.In {
 		if !segment.MatchBoth {
 			var raddress net.IP
-			switch {
-			case msg.RemoteAddr == 1: // 1 indicates SrcAddr is the RemoteAddr
+			switch msg.RemoteAddr {
+			case 1: // 1 indicates SrcAddr is the RemoteAddr
 				raddress = msg.SrcAddr
-			case msg.RemoteAddr == 2: // 2 indicates DstAddr is the RemoteAddr
+			case 2: // 2 indicates DstAddr is the RemoteAddr
 				raddress = msg.DstAddr
 			default:
 				if !segment.DropUnmatched {

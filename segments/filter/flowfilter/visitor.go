@@ -281,9 +281,10 @@ func (f *Filter) Visit(n parser.Node, next func() error) error {
 			(*node).EvalResult = node.Left.EvalResult || node.Right.EvalResult
 		}
 	case *parser.FlowDirectionMatch:
-		if *node.FlowDirection == "incoming" {
+		switch *node.FlowDirection {
+		case "incoming":
 			(*node).EvalResult = f.flowmsg.FlowDirection == 0
-		} else if *node.FlowDirection == "outgoing" {
+		case "outgoing":
 			(*node).EvalResult = f.flowmsg.FlowDirection == 1
 		}
 	case *parser.IcmpMatch:
