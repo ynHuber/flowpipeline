@@ -413,10 +413,6 @@ func ReadFromDisk(segment *DiskBuffer, ReadWriteWG *sync.WaitGroup, Signal chan 
 			}
 			writer := bufio.NewWriter(encoder)
 
-			defer file.Close()
-			defer encoder.Close()
-			defer writer.Flush()
-
 			for emerg_line := range fromReader {
 				// use Fprintln because it adds an OS specific newline
 				_, err = fmt.Fprintln(writer, emerg_line)
@@ -425,6 +421,10 @@ func ReadFromDisk(segment *DiskBuffer, ReadWriteWG *sync.WaitGroup, Signal chan 
 					continue
 				}
 			}
+
+			file.Close()
+			encoder.Close()
+			writer.Flush()
 		default:
 			msg := &pb.EnrichedFlow{}
 			err := protojson.Unmarshal(line, msg)
