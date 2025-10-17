@@ -33,7 +33,7 @@ func (segment *TestingSegment) Run(wg *sync.WaitGroup) {
 
 func TestSegmentRegistration(t *testing.T) {
 	s := &TestingSegment{}
-	segmentName := "testingsegment"
+	segmentName := "testingsegment_TestSegmentRegistration"
 
 	RegisterSegment(segmentName, s)
 	foundSegment := LookupSegment(segmentName)
@@ -53,8 +53,8 @@ func TestDeprecationwrapper(t *testing.T) {
 	s := &TestingSegment{
 		Counter: 0,
 	}
-	segmentName := "testingsegment"
-	segmentDeprecatedName := "deprecatedtestingsegment"
+	segmentName := "testingsegment_TestDeprecationwrapper"
+	segmentDeprecatedName := "deprecatedtestingsegment_TestDeprecationwrapper"
 
 	d := CreateSegmentDeprecationWrapper(s, segmentName, segmentDeprecatedName)
 
@@ -91,7 +91,7 @@ func TestDeprecationwrapper(t *testing.T) {
 
 func TestParallelizedSegment(t *testing.T) {
 	msg := &pb.EnrichedFlow{}
-	parallelSegmentName := "p"
+	parallelSegmentName := "p_TestParallelizedSegment"
 
 	s1 := &TestingSegment{
 		Counter: 0,
