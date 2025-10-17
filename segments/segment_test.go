@@ -112,14 +112,14 @@ func TestParallelizedSegment(t *testing.T) {
 	go LookupSegment(parallelSegmentName).Run(wg)
 
 	in <- msg
-	if !((s1.Counter == 1 && s2.Counter == 0) || (s1.Counter == 0 && s2.Counter == 1)) {
+	if !((s1.Counter == 1 && s2.Counter == 0) || (s1.Counter == 0 && s2.Counter == 1)) { //nolint:staticcheck // ignoring De Morgan's law on purpose for readability
 		t.Error("Message should only be processed by one subsegment of the parallelized segment")
 	}
 	//at this point the segment processing the first input should still be busy, since the message wasn't yet retrieved from its output channel
 	in <- msg
 	<-out
 	<-out
-	if !(s1.Counter == 1 && s2.Counter == 1) {
+	if s1.Counter != 1 || s2.Counter != 1 {
 		t.Error("Each subsegment should have processed a message at this point")
 	}
 }
