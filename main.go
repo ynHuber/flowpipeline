@@ -38,7 +38,7 @@ import (
 	_ "codeberg.org/BelWue/flowpipeline/segments/input/replay"
 	_ "codeberg.org/BelWue/flowpipeline/segments/input/stdin"
 
-	_ "codeberg.org/BelWue/flowpipeline/segments/meta/monitoring"
+	_ "codeberg.org/BelWue/flowpipeline/segments/meta/delay_monitoring"
 
 	_ "codeberg.org/BelWue/flowpipeline/segments/modify/addcid" //nolint:staticcheck // deprecated, use addnetid
 	_ "codeberg.org/BelWue/flowpipeline/segments/modify/addnetid"

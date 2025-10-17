@@ -2,7 +2,7 @@
 // the delay in seconds using a prometheus server. The delay is calculated using a
 // exponential window moving average. The alpha value can be set using `alpha`. To
 // reduce load, a sampling intervall can be set using `samplingRate`.
-package monitoring
+package delay_monitoring
 
 import (
 	"net/http"
