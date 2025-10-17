@@ -66,6 +66,15 @@ func (segment ToptalkersMetrics) New(config map[string]string) segments.Segment 
 	} else {
 		newsegment.FlowdataPath = config["flowdatapath"]
 	}
+
+	evaluationMode := evaluation_mode.ParseEvaluationMode(config["evaluationmode"])
+
+	if evaluationMode == evaluation_mode.Unknown {
+		log.Error().Msg("ToptalkersMetrics: Could not parse 'evaluationmode', using default value 'destination'.")
+		evaluationMode = evaluation_mode.Destination
+	}
+	newsegment.EvaluationMode = evaluationMode
+
 	return newsegment
 }
 

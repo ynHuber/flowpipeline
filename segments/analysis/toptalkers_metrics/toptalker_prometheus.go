@@ -7,7 +7,6 @@ import (
 	"strconv"
 
 	"codeberg.org/BelWue/flowpipeline/pipeline/config"
-	"codeberg.org/BelWue/flowpipeline/pipeline/config/evaluation_mode"
 	"github.com/rs/zerolog/log"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -153,19 +152,6 @@ func (prometheusParams *PrometheusMetricsParams) ParsePrometheusConfig(config ma
 		config["evaluationmode"] = config["relevantaddress"]
 	}
 
-	if config["evaluationmode"] == "" {
-		log.Info().Msg("ToptalkersMetrics: 'evaluationmode' set to default 'destination'.")
-	} else {
-		if config["evaluationmode"] == "both" {
-			log.Warn().Msg("ToptalkersMetrics: using depected evaluation mode 'both' - please use 'Source and Destination' instead")
-		}
-		evaluationMode := evaluation_mode.ParseEvaluationMode(config["evaluationmode"])
-
-		if evaluationMode == evaluation_mode.Unknown {
-			log.Error().Msg("ToptalkersMetrics: Could not parse 'evaluationmode', using default value 'destination'.")
-			evaluationMode = evaluation_mode.Destination //nolint:ineffassign // TODO: this should be removed, once evaluationMode is correctly used
-		}
-	}
 	return nil
 }
 
