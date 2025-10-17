@@ -283,6 +283,12 @@ func (s *TrafficSpecificToptalkers) addMessageToMatchingToptalkers(msg *pb.Enric
 }
 
 func init() {
+	segmentName := "trafficspecifictoptalkers"
+	deprecatedSegmentName := "traffic_specific_toptalkers"
+
 	segment := &TrafficSpecificToptalkers{}
-	segments.RegisterSegment("traffic_specific_toptalkers", segment)
+	segments.RegisterSegment(segmentName, segment)
+
+	deprecatedSegment := segments.CreateSegmentDeprecationWrapper(segment, deprecatedSegmentName, segmentName)
+	segments.RegisterSegment(deprecatedSegmentName, deprecatedSegment)
 }

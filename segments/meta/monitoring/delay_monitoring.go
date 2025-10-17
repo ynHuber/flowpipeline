@@ -200,6 +200,12 @@ func (e *PrometheusExporter) ServeEndpoints(endpoint string) {
 }
 
 func init() {
+	segmentName := "delaymonitoring"
+	deprecatedSegmentName := "delay_monitoring"
+
 	segment := &DelayMonitoring{}
-	segments.RegisterSegment("delay_monitoring", segment)
+	segments.RegisterSegment(segmentName, segment)
+
+	deprecatedSegment := segments.CreateSegmentDeprecationWrapper(segment, deprecatedSegmentName, segmentName)
+	segments.RegisterSegment(deprecatedSegmentName, deprecatedSegment)
 }

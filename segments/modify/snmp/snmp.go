@@ -258,25 +258,13 @@ func (segment *Snmp) fetchInterfaceData(router string, iface uint32) (string, st
 	return name, desc, speed
 }
 
-// @Deprecated: Wrapper for old segment name. Gonna be removed
-type SNMPInterface struct {
-	Snmp
-}
-
-func (segment SNMPInterface) New(config map[string]string) segments.Segment {
-	log.Warn().Msg("Using deprected segment 'snmpinterface'. Please use 'snmp' instead")
-	return segment.Snmp.New(config)
-}
-
-func (segment *SNMPInterface) Run(wg *sync.WaitGroup) {
-	log.Warn().Msg("Using deprected segment 'snmpinterface'. Please use 'snmp' instead")
-	segment.Snmp.Run(wg)
-}
-
 func init() {
-	segment := &Snmp{}
-	segments.RegisterSegment("snmp", segment)
+	segmentName := "snmp"
+	deprecatedSegmentName := "snmpinterface"
 
-	deprecatedSegment := &SNMPInterface{}
-	segments.RegisterSegment("snmpinterface", deprecatedSegment)
+	segment := &Snmp{}
+	segments.RegisterSegment(segmentName, segment)
+
+	deprecatedSegment := segments.CreateSegmentDeprecationWrapper(segment, deprecatedSegmentName, segmentName)
+	segments.RegisterSegment(deprecatedSegmentName, deprecatedSegment)
 }

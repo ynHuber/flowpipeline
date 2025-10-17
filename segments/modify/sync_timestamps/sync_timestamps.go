@@ -42,6 +42,12 @@ func (segment *SyncTimestamps) Run(wg *sync.WaitGroup) {
 }
 
 func init() {
+	segmentName := "synctimestamps"
+	deprecatedSegmentName := "sync_timestamps"
+
 	segment := &SyncTimestamps{}
-	segments.RegisterSegment("sync_timestamps", segment)
+	segments.RegisterSegment(segmentName, segment)
+
+	deprecatedSegment := segments.CreateSegmentDeprecationWrapper(segment, deprecatedSegmentName, segmentName)
+	segments.RegisterSegment(deprecatedSegmentName, deprecatedSegment)
 }
