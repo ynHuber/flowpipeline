@@ -1,4 +1,4 @@
-// The `toptalkers_metrics` segment calculates statistics about traffic levels
+// The `toptalkersmetrics` segment calculates statistics about traffic levels
 // per IP address and exports them in OpenMetrics format via HTTP.
 //
 // Traffic is counted in bits per second and packets per second, categorized into
@@ -128,6 +128,12 @@ func (segment *ToptalkersMetrics) Run(wg *sync.WaitGroup) {
 }
 
 func init() {
+	segmentName := "toptalkersmetrics"
+	deprecatedSegmentName := "toptalkers_metrics"
+
 	segment := &ToptalkersMetrics{}
-	segments.RegisterSegment("toptalkers_metrics", segment)
+	segments.RegisterSegment(segmentName, segment)
+
+	deprecatedSegment := segments.CreateSegmentDeprecationWrapper(segment, deprecatedSegmentName, segmentName)
+	segments.RegisterSegment(deprecatedSegmentName, deprecatedSegment)
 }
