@@ -30,11 +30,13 @@ jobs:
           version: latest
           skip-cache: true
 
-  commitlint:
+  lint-commits:
     runs-on: BelWü
     steps:
       - name: Checkout repository
         uses: https://code.forgejo.org/actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v5
