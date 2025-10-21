@@ -40,7 +40,6 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 'lts/*'
-          cache: 'npm'
 
       - name: Install commitlint
         run: npm install --save-dev @commitlint/config-conventional @commitlint/cli
