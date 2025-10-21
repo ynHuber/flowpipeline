@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# This matches the following: <type>(<scope>)!: <subject>\n\n<body>
+# - type: fix, ci, feat, chore, docs
+# - scope: optional, alphanumeric and underscores
+# - !: optional, indicates a breaking change
+# - subject: non-empty string
+# - body: optional, can be multiple lines
+
+file="$1"
+regex="^(fix|ci|feat|chore|docs)(?:\(([[\w_]+)\))?(!)?: ([^\n]+)(?:\n\n([^\n][\s\S]+))?\Z"
+# This regex matches all parts into groups, but there is no way to make grep return
+# only specific groups, so we just check for a full match.
+
+# Only read until the first line that starts with #
+# This ignores comments added by git
+commit_content=$(sed -n '/^#/q;p' "$file")
+
+if printf "%s" "$commit_content" | grep -Pqz "$regex"; then
+	echo "✅ Commit message is valid."
+	exit 0
+else
+	echo "❌ Commit message is invalid." >&2
+	echo "------------------------------------------------" >&2
+	echo "Please follow the conventional commit format:" >&2
+	echo "  <type>(<scope>)!: <subject>" >&2
+	echo "" >&2
+	echo "  [optional body separated by a blank line]" >&2
+	echo "" >&2
+	echo "  Types:   required: fix, ci, feat, chore, docs" >&2
+	echo "  Scope:   optional: alphanumeric and underscores" >&2
+	echo "  !:       optional: indicates a breaking change" >&2
+	echo "  Subject: required: non-empty string" >&2
+	echo "  Body:    optional: anything" >&2
+	echo "------------------------------------------------" >&2
+	exit 1
+fi
