@@ -8,11 +8,12 @@ import (
 	"sync"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	"codeberg.org/BelWue/flowpipeline/utils"
 )
 
 type Protomap struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 }
 
 // TODO make configurable to only add specific protocol names instead of all

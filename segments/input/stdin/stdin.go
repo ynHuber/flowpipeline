@@ -13,6 +13,7 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	"google.golang.org/protobuf/encoding/protojson"
 
 	"os"
@@ -20,7 +21,7 @@ import (
 )
 
 type StdIn struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	scanner *bufio.Scanner
 
 	FileName  string // optional, default is empty which means read from stdin

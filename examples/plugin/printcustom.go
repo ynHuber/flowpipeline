@@ -7,6 +7,7 @@ import (
 	"sync"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 )
 
 // This is a short example on how to write custom segments and load them as a plugin.
@@ -16,7 +17,7 @@ import (
 // TODO: This type name can be edited to your liking and has to be replaced
 // thourough the segment.
 type PrintCustom struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 }
 
 func (segment PrintCustom) New(config map[string]string) segments.Segment {

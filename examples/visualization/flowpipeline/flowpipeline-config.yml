@@ -12,7 +12,7 @@
     endpoint: ":8080"
     labels: "SrcAddr,SrcAs,SrcPort,DstAddr,DstAs,DstPort,Etype,Proto,Bytes,Packets"
 
-- segment: toptalkers_metrics
+- segment: toptalkersmetrics
   config:
     # the lines below are optional and set to default
     traffictype: "All"

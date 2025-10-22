@@ -5,10 +5,11 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 )
 
 type Generator struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 }
 
 func (segment Generator) New(config map[string]string) segments.Segment {

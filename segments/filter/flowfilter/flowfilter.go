@@ -10,11 +10,12 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basefiltersegment"
 	"github.com/BelWue/flowfilter/parser"
 )
 
 type FlowFilter struct {
-	segments.BaseFilterSegment
+	basefiltersegment.BaseFilterSegment
 	Filter string // optional, default is empty
 
 	expression *parser.Expression

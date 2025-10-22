@@ -32,10 +32,11 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 )
 
 type Sqlite struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	db              *sql.DB
 	fieldTypes      []string
 	fieldNames      []string

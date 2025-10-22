@@ -13,11 +13,12 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
 type Http struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	Url string
 	// TODO: add async parameter
 	// TODO: add timeout options

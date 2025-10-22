@@ -11,10 +11,11 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basetextoutputsegment"
 )
 
 type PrintDots struct {
-	segments.BaseTextOutputSegment
+	basetextoutputsegment.BaseTextOutputSegment
 	FlowsPerDot uint64 // optional, default is 5000
 }
 
@@ -38,7 +39,7 @@ func (segment PrintDots) New(config map[string]string) segments.Segment {
 	}
 	return &PrintDots{
 		FlowsPerDot: fpd,
-		BaseTextOutputSegment: segments.BaseTextOutputSegment{
+		BaseTextOutputSegment: basetextoutputsegment.BaseTextOutputSegment{
 			File: file,
 		},
 	}

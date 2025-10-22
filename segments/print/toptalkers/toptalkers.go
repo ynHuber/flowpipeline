@@ -29,6 +29,7 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basetextoutputsegment"
 	"github.com/asecurityteam/rolling"
 	"github.com/dustin/go-humanize"
 )
@@ -40,7 +41,7 @@ type Record struct {
 }
 
 type TopTalkers struct {
-	segments.BaseTextOutputSegment
+	basetextoutputsegment.BaseTextOutputSegment
 	writer *bufio.Writer
 
 	Window         int    // optional, default is 60, sets the number of seconds used as a sliding window size

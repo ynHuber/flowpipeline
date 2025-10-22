@@ -17,6 +17,7 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	cryptopan "github.com/Yawning/cryptopan"
 )
 
@@ -34,7 +35,7 @@ type SubnetAnonymizer struct {
 }
 
 type Anonymize struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	EncryptionKey     string   // required if AnonymizationMode == cryptopan or AnonymizationMode == All, key for anonymization by Crypto-PAn.
 	Fields            []string // optional, list of Fields to anonymize their IP address. Default if not set are all available fields: SrcAddr, DstAddr, SamplerAddress
 	AnonymizationMode Mode     //optional, define which mode should be used for anonymizing ips. Default is Crypto-PAn

@@ -1,4 +1,4 @@
-package traffic_specific_toptalkers
+package trafficspecifictoptalkers
 
 import (
 	"sync"
@@ -18,7 +18,7 @@ func TestSegment_TrafficSpecificToptalkers_passthrough(t *testing.T) {
 	msg := &pb.EnrichedFlow{SrcAddr: []byte{192, 168, 88, 142}, DstAddr: []byte{192, 168, 88, 123}, DstPort: 123, Packets: 1000, Bytes: 230000, Proto: 17} //Ntp (udp)
 	msg2 := &pb.EnrichedFlow{SrcAddr: []byte{192, 168, 88, 142}, DstAddr: []byte{192, 168, 88, 123}, DstPort: 443, Packets: 1, Bytes: 100, Proto: 6}
 
-	segment := segments.LookupSegment("traffic_specific_toptalkers")
+	segment := segments.LookupSegment("trafficspecifictoptalkers")
 	//normally done via config
 	segment.AddCustomConfig(config.SegmentRepr{
 		Config: config.Config{
@@ -42,7 +42,7 @@ func TestSegment_TrafficSpecificToptalkers_passthrough(t *testing.T) {
 	segment = segment.New(map[string]string{})
 
 	if segment == nil {
-		log.Fatal().Msgf("Configured segment traffic_specific_toptalkers could not be initialized properly, see previous messages.")
+		log.Fatal().Msgf("Configured segment trafficspecifictoptalkers could not be initialized properly, see previous messages.")
 	}
 
 	in, out := make(chan *pb.EnrichedFlow), make(chan *pb.EnrichedFlow)
@@ -55,7 +55,7 @@ func TestSegment_TrafficSpecificToptalkers_passthrough(t *testing.T) {
 	in <- msg
 	resultMsg := <-out
 	if resultMsg == nil {
-		t.Error("Segment traffic_specific_toptalkers is not passing through flows.")
+		t.Error("Segment trafficspecifictoptalkers is not passing through flows.")
 	}
 
 	in <- msg2
@@ -64,16 +64,16 @@ func TestSegment_TrafficSpecificToptalkers_passthrough(t *testing.T) {
 	wg.Wait()
 
 	if resultMsg2 == nil {
-		t.Error("Segment traffic_specific_toptalkers is not passing through flows.")
+		t.Error("Segment trafficspecifictoptalkers is not passing through flows.")
 	}
 }
 
 func TestSegment_TrafficSpecificToptalkers_matching_passthrough(t *testing.T) {
 	pipeline := pipeline.NewFromConfig([]byte(`---
-- segment: traffic_specific_toptalkers
+- segment: trafficspecifictoptalkers
   config:
     endpoint: ":8085"
-    traffic_specific_toptalkers:
+    trafficspecifictoptalkers:
     - filter: "proto udp"
       traffictype: "UDP"
   matching_pipeline:
@@ -149,11 +149,11 @@ func TestSegment_TrafficSpecificToptalkers_matching_passthrough(t *testing.T) {
 
 func TestSegment_TrafficSpecificToptalkers_connection_passthrough(t *testing.T) {
 	pipeline := pipeline.NewFromConfig([]byte(`---
-- segment: traffic_specific_toptalkers
+- segment: trafficspecifictoptalkers
   config:
     endpoint: ":8085"
     evaluationmode: "connection"
-    traffic_specific_toptalkers:
+    trafficspecifictoptalkers:
     - filter: "proto udp"
       traffictype: "UDP"
   matching_pipeline:

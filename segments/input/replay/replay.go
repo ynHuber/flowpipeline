@@ -20,11 +20,12 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	"github.com/rs/zerolog/log"
 )
 
 type Replay struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	db *sql.DB
 
 	FileName      string

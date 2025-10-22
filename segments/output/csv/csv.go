@@ -18,10 +18,11 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basetextoutputsegment"
 )
 
 type Csv struct {
-	segments.BaseTextOutputSegment
+	basetextoutputsegment.BaseTextOutputSegment
 	writer     *csv.Writer
 	fieldNames []string
 

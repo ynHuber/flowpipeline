@@ -1,0 +1,1 @@
+This group contains segments, that are supposed to be used as templates for the creation of new segments.

@@ -15,10 +15,11 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basetextoutputsegment"
 )
 
 type Count struct {
-	segments.BaseTextOutputSegment
+	basetextoutputsegment.BaseTextOutputSegment
 	count  uint64
 	Prefix string // optional, default is empty, a string which is printed along with the result
 }
@@ -32,7 +33,7 @@ func (segment Count) New(config map[string]string) segments.Segment {
 	log.Info().Msgf("Count: configured output to %s", file.Name())
 	return &Count{
 		Prefix: config["prefix"],
-		BaseTextOutputSegment: segments.BaseTextOutputSegment{
+		BaseTextOutputSegment: basetextoutputsegment.BaseTextOutputSegment{
 			File: file,
 		},
 	}

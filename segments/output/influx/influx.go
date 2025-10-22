@@ -18,10 +18,11 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 )
 
 type Influx struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	Address string   // optional, URL for influxdb endpoint, default is http://127.0.0.1:8086
 	Org     string   // required, Influx org name
 	Bucket  string   // required, Influx bucket

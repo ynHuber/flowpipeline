@@ -12,7 +12,7 @@ import (
 
 // Wrapper allowing multiple parallel instances of a segment by wiring in/out/drops-channels to all contained segments
 type ParallelizedSegment struct {
-	BaseFilterSegment
+	FilterSegment
 	segments []Segment
 }
 

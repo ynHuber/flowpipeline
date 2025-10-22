@@ -4,10 +4,11 @@ import (
 	"sync"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 )
 
 type Aggregate struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 
 	cache FlowExporter
 }

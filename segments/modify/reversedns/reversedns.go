@@ -14,11 +14,12 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	"github.com/rs/dnscache"
 )
 
 type ReverseDns struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 
 	Cache           bool   // optional, default is true, disable to use a caching resolver directly
 	RefreshInterval string // optional, default is 5m, set another duration for cache refreshes

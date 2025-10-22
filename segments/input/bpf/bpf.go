@@ -26,10 +26,11 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 )
 
 type Bpf struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 
 	dumper   PacketDumper
 	exporter *FlowExporter

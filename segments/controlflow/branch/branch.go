@@ -64,6 +64,7 @@ import (
 	"codeberg.org/BelWue/flowpipeline/pipeline"
 	"codeberg.org/BelWue/flowpipeline/pipeline/config"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basefiltersegment"
 )
 
 // This mirrors the proper implementation in the pipeline package. This
@@ -77,7 +78,7 @@ type Pipeline interface {
 }
 
 type Branch struct {
-	segments.BaseFilterSegment
+	basefiltersegment.BaseFilterSegment
 	condition      Pipeline
 	then_branch    Pipeline
 	else_branch    Pipeline

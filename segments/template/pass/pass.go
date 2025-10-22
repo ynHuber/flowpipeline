@@ -8,12 +8,13 @@ import (
 	"sync"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 )
 
 // The Pass Segment is considered a template for any additional Segments, as it
 // showcases the exact implementation.
 type Pass struct {
-	segments.BaseSegment // always embed this, no need to repeat I/O chan code
+	basesegment.BaseSegment // always embed this, no need to repeat I/O chan code
 	// add any additional fields here
 }
 

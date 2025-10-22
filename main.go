@@ -21,7 +21,7 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pipeline"
 
-	_ "codeberg.org/BelWue/flowpipeline/segments/alert/http"
+	_ "codeberg.org/BelWue/flowpipeline/segments/output/http"
 
 	_ "codeberg.org/BelWue/flowpipeline/segments/controlflow/branch"
 
@@ -31,18 +31,19 @@ import (
 	_ "codeberg.org/BelWue/flowpipeline/segments/filter/flowfilter"
 
 	_ "codeberg.org/BelWue/flowpipeline/segments/input/bpf"
-	_ "codeberg.org/BelWue/flowpipeline/segments/input/diskbuffer"
 	_ "codeberg.org/BelWue/flowpipeline/segments/input/goflow"
 	_ "codeberg.org/BelWue/flowpipeline/segments/input/kafkaconsumer"
 	_ "codeberg.org/BelWue/flowpipeline/segments/input/packet"
 	_ "codeberg.org/BelWue/flowpipeline/segments/input/replay"
 	_ "codeberg.org/BelWue/flowpipeline/segments/input/stdin"
+	_ "codeberg.org/BelWue/flowpipeline/segments/ungrouped/diskbuffer"
 
 	_ "codeberg.org/BelWue/flowpipeline/segments/meta/delay_monitoring"
 
 	_ "codeberg.org/BelWue/flowpipeline/segments/modify/addcid" //nolint:staticcheck // deprecated, use addnetid
 	_ "codeberg.org/BelWue/flowpipeline/segments/modify/addnetid"
 	_ "codeberg.org/BelWue/flowpipeline/segments/modify/addrstrings"
+	_ "codeberg.org/BelWue/flowpipeline/segments/modify/aggregate"
 	_ "codeberg.org/BelWue/flowpipeline/segments/modify/anonymize"
 	_ "codeberg.org/BelWue/flowpipeline/segments/modify/aslookup"
 	_ "codeberg.org/BelWue/flowpipeline/segments/modify/bgp"
@@ -54,8 +55,6 @@ import (
 	_ "codeberg.org/BelWue/flowpipeline/segments/modify/reversedns"
 	_ "codeberg.org/BelWue/flowpipeline/segments/modify/snmp"
 	_ "codeberg.org/BelWue/flowpipeline/segments/modify/sync_timestamps"
-
-	_ "codeberg.org/BelWue/flowpipeline/segments/pass"
 
 	_ "codeberg.org/BelWue/flowpipeline/segments/output/clickhouse"
 	_ "codeberg.org/BelWue/flowpipeline/segments/output/csv"
@@ -73,8 +72,8 @@ import (
 	_ "codeberg.org/BelWue/flowpipeline/segments/print/printflowdump"
 	_ "codeberg.org/BelWue/flowpipeline/segments/print/toptalkers"
 
-	_ "codeberg.org/BelWue/flowpipeline/segments/analysis/toptalkers_metrics"
-	_ "codeberg.org/BelWue/flowpipeline/segments/analysis/traffic_specific_toptalkers"
+	_ "codeberg.org/BelWue/flowpipeline/segments/analysis/toptalkersmetrics"
+	_ "codeberg.org/BelWue/flowpipeline/segments/analysis/trafficspecifictoptalkers"
 )
 
 var Version string

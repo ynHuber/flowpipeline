@@ -1,4 +1,4 @@
-package toptalkers_metrics
+package toptalkersmetrics
 
 import (
 	"fmt"

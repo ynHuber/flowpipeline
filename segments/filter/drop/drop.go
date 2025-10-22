@@ -6,10 +6,11 @@ import (
 	"sync"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basefiltersegment"
 )
 
 type Drop struct {
-	segments.BaseFilterSegment
+	basefiltersegment.BaseFilterSegment
 }
 
 func (segment Drop) New(config map[string]string) segments.Segment {

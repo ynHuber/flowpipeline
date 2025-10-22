@@ -32,7 +32,8 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
-	"codeberg.org/BelWue/flowpipeline/segments/filter/aggregate"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
+	"codeberg.org/BelWue/flowpipeline/segments/modify/aggregate"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcapgo"
@@ -40,7 +41,7 @@ import (
 )
 
 type Packet struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 
 	exporter *aggregate.FlowExporter
 

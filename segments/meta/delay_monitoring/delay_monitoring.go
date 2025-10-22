@@ -12,15 +12,16 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
-	"codeberg.org/BelWue/flowpipeline/segments/analysis/toptalkers_metrics"
+	"codeberg.org/BelWue/flowpipeline/segments/analysis/toptalkersmetrics"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/zerolog/log"
 )
 
 type DelayMonitoring struct {
-	segments.BaseSegment
-	toptalkers_metrics.PrometheusParams
+	basesegment.BaseSegment
+	toptalkersmetrics.PrometheusParams
 
 	SamplingRate int     // flow samplingrate fpr calculating delay - default 100
 	Alpha        float64 // alpha used for the exponential window moving average?

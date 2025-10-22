@@ -28,6 +28,7 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	"github.com/IBM/sarama"
 	"google.golang.org/protobuf/proto"
 )
@@ -45,7 +46,7 @@ import (
 
 // FIXME: use sarama directly here
 type KafkaProducer struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	Server       string // required
 	Topic        string // required
 	TopicSuffix  string // optional, default is empty

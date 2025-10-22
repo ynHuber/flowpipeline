@@ -1,22 +1,16 @@
-// This package is home to all pipeline segment implementations. Generally,
-// every segment lives in its own package, implements the Segment interface,
-// embeds the BaseSegment to take care of the I/O side of things, and has an
-// additional init() function to register itself using RegisterSegment.
-package segments
+// The `basefiltersegment` serves as a basis for segments implementing the FilterSegment-interface.
+// It extends the BaseSegment by adding an additional channel for dropped flows as well as the required access methods
+package basefiltersegment
 
 import (
 	"codeberg.org/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 )
-
-type FilterSegment interface {
-	Segment
-	SubscribeDrops(drops chan<- *pb.EnrichedFlow) //for processing dropped packages
-}
 
 // An extended basis for Segment implementations in the filter group. It
 // contains the necessities to process filtered (dropped) flows.
 type BaseFilterSegment struct {
-	BaseSegment
+	basesegment.BaseSegment
 	Drops chan<- *pb.EnrichedFlow
 }
 

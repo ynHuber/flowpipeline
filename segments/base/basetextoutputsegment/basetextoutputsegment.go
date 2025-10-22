@@ -1,22 +1,18 @@
-// This package is home to all pipeline segment implementations. Generally,
-// every segment lives in its own package, implements the Segment interface,
-// embeds the BaseSegment to take care of the I/O side of things, and has an
-// additional init() function to register itself using RegisterSegment.
-package segments
+// The `basetextoutputsegment` serves as a basis for segments implementing the TextOutputSegment-interface.
+// It extends the BaseSegment by adding a file parameter that is used for outputing data in segment inheriting this base segment
+// The file name for this output file should be defined via the parameter `filename` otherise StdOut will be used
+package basetextoutputsegment
 
 import (
 	"os"
-)
 
-type TextOutputSegment interface {
-	Segment
-	GetOutput(config map[string]string) (*os.File, error)
-}
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
+)
 
 // An extended basis for Segment implementations in the filter group. It
 // contains the necessities to process filtered (dropped) flows.
 type BaseTextOutputSegment struct {
-	BaseSegment
+	basesegment.BaseSegment
 	File *os.File // optional, default is empty which means stdout
 }
 

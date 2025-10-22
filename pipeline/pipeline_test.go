@@ -5,7 +5,7 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
-	"codeberg.org/BelWue/flowpipeline/segments/pass"
+	"codeberg.org/BelWue/flowpipeline/segments/template/pass"
 )
 
 func TestPipelineBuild(t *testing.T) {

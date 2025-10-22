@@ -29,12 +29,13 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	"github.com/IBM/sarama"
 )
 
 // FIXME: clean up those todos
 type KafkaConsumer struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	Server       string        // required
 	Topic        string        // required
 	Group        string        // required

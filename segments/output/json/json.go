@@ -26,11 +26,12 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basetextoutputsegment"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
 type Json struct {
-	segments.BaseTextOutputSegment
+	basetextoutputsegment.BaseTextOutputSegment
 	writer *bufio.Writer
 	Pretty bool // optional, default is false
 }

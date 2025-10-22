@@ -11,11 +11,12 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 )
 
 type Filegate struct {
-	segments.BaseSegment // always embed this, no need to repeat I/O chan code
-	filename             string
+	basesegment.BaseSegment // always embed this, no need to repeat I/O chan code
+	filename                string
 }
 
 // Every Segment must implement a New method, even if there isn't any config

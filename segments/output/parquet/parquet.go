@@ -4,11 +4,12 @@ import (
 	"sync"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basetextoutputsegment"
 	"github.com/rs/zerolog/log"
 )
 
 type Parquet struct {
-	segments.BaseTextOutputSegment
+	basetextoutputsegment.BaseTextOutputSegment
 }
 
 func (segment Parquet) New(config map[string]string) segments.Segment {

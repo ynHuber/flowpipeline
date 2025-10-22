@@ -13,10 +13,10 @@
 ###############################################################################
 # filter with traffic specific toptalker thresholds
 # forward traffic to all ips that are matched to a csv export 
-- segment: traffic_specific_toptalkers
+- segment: trafficspecifictoptalkers
   config:
     endpoint: ":8085"
-    traffic_specific_toptalkers:
+    trafficspecifictoptalkers:
     - filter: "proto udp"
       subfilter:
       - filter: "port 0"

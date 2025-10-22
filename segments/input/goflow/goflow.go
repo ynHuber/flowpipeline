@@ -21,6 +21,7 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	"google.golang.org/protobuf/encoding/protodelim"
 
 	"github.com/netsampler/goflow2/v2/utils/debug"
@@ -40,7 +41,7 @@ import (
 )
 
 type Goflow struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	Listen     []url.URL // optional, default config value for this slice is "sflow://:6343,netflow://:2055"
 	Workers    uint64    // optional, amount of workers to spawn for each endpoint, default is 1
 	Blocking   bool      //optional, default is false

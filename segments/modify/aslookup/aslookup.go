@@ -15,11 +15,12 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	"github.com/banviktor/asnlookup/pkg/database"
 )
 
 type AsLookup struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	FileName string
 	Type     string
 

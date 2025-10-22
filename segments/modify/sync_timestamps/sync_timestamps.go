@@ -19,10 +19,11 @@ import (
 	"sync"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 )
 
 type SyncTimestamps struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 }
 
 func (segment SyncTimestamps) New(config map[string]string) segments.Segment {

@@ -21,10 +21,11 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 )
 
 type AddrStrings struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	Separator pb.MacSeparator
 }
 

@@ -33,6 +33,7 @@ import (
 	"sync"
 	"time"
 
+	"codeberg.org/BelWue/flowpipeline/segments/base/basetextoutputsegment"
 	"codeberg.org/BelWue/flowpipeline/utils"
 	"github.com/rs/zerolog/log"
 
@@ -42,7 +43,7 @@ import (
 )
 
 type PrintFlowdump struct {
-	segments.BaseTextOutputSegment
+	basetextoutputsegment.BaseTextOutputSegment
 	UseProtoname bool // optional, default is true
 	Verbose      bool // optional, default is false
 	Highlight    bool // optional, default is false
@@ -106,7 +107,7 @@ func (segment PrintFlowdump) New(config map[string]string) segments.Segment {
 		UseProtoname: useProtoname,
 		Verbose:      verbose,
 		Highlight:    highlight,
-		BaseTextOutputSegment: segments.BaseTextOutputSegment{
+		BaseTextOutputSegment: basetextoutputsegment.BaseTextOutputSegment{
 			File: file,
 		},
 	}

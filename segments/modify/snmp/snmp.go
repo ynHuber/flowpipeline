@@ -42,6 +42,7 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	"github.com/alouca/gosnmp"
 	cache "github.com/patrickmn/go-cache"
 )
@@ -52,7 +53,7 @@ var (
 )
 
 type Snmp struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	Community     string        // optional, default is 'public'
 	Regex         string        // optional, default matches all, can be used to extract content from descriptions, see examples/configurations/enricher
 	ConnLimit     uint64        // optional, default is 16

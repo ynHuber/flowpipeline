@@ -1,4 +1,4 @@
-// The `traffic_specific_toptalkers` segement is simmilar to the `toptalker-metrics` segment,
+// The `trafficspecifictoptalkers` segement is simmilar to the `toptalker-metrics` segment,
 // but allows filtering for specific protocols. The use of nested filters is supported to
 // allow for a more efficient filtering.
 //
@@ -11,8 +11,7 @@
 // The segment allows forwarding all traffic to a matched ip to a subpipeline.
 // See the [example configuration](https://codeberg.org/BelWue/flowpipeline/src/branch/main/examples/configurations/analysis/traffic-specific-toptalker.yml)
 // for an example using that functionality
-
-package traffic_specific_toptalkers
+package trafficspecifictoptalkers
 
 import (
 	"sync"
@@ -24,23 +23,24 @@ import (
 	"codeberg.org/BelWue/flowpipeline/pipeline/config"
 	"codeberg.org/BelWue/flowpipeline/pipeline/config/evaluation_mode"
 	"codeberg.org/BelWue/flowpipeline/segments"
-	"codeberg.org/BelWue/flowpipeline/segments/analysis/toptalkers_metrics"
+	"codeberg.org/BelWue/flowpipeline/segments/analysis/toptalkersmetrics"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	"codeberg.org/BelWue/flowpipeline/segments/filter/flowfilter"
 	"github.com/BelWue/flowfilter/parser"
 )
 
 type TrafficSpecificToptalkers struct {
-	segments.BaseSegment
-	toptalkers_metrics.PrometheusParams
+	basesegment.BaseSegment
+	toptalkersmetrics.PrometheusParams
 	ThresholdMetricDefinition []*ThresholdMetric
 	EvaluationMode            evaluation_mode.EvaluationMode // optional, default is "destination", options are "destination", "source", "both", "connection"
 	MatchingPipeline          *pipeline.Pipeline
 }
 
 type ThresholdMetric struct {
-	toptalkers_metrics.PrometheusMetricsParams
+	toptalkersmetrics.PrometheusMetricsParams
 
-	Database         *toptalkers_metrics.ToptalkerDatabase
+	Database         *toptalkersmetrics.ToptalkerDatabase
 	SubDefinitions   []*ThresholdMetric
 	Expression       *parser.Expression
 	FilterDefinition string
@@ -129,7 +129,7 @@ func (segment *TrafficSpecificToptalkers) metricFromDefinition(definition *confi
 }
 
 func (segment *TrafficSpecificToptalkers) Run(wg *sync.WaitGroup) {
-	var allDatabases *[]*toptalkers_metrics.ToptalkerDatabase
+	var allDatabases *[]*toptalkersmetrics.ToptalkerDatabase
 	defer func() {
 		if segment.MatchingPipeline != nil {
 			segment.MatchingPipeline.Close()
@@ -145,7 +145,7 @@ func (segment *TrafficSpecificToptalkers) Run(wg *sync.WaitGroup) {
 		segment.MatchingPipeline.Start()
 	}
 
-	var promExporter = toptalkers_metrics.PrometheusExporter{}
+	var promExporter = toptalkersmetrics.PrometheusExporter{}
 	promExporter.Initialize()
 
 	allDatabases = segment.initDatabasesAndCollector(promExporter)
@@ -225,22 +225,22 @@ func (segment *TrafficSpecificToptalkers) IpInToptalkersOfMetric(metricDef *Thre
 	return false
 }
 
-func (segment *TrafficSpecificToptalkers) initDatabasesAndCollector(promExporter toptalkers_metrics.PrometheusExporter) *[]*toptalkers_metrics.ToptalkerDatabase {
-	allDatabases := []*toptalkers_metrics.ToptalkerDatabase{}
+func (segment *TrafficSpecificToptalkers) initDatabasesAndCollector(promExporter toptalkersmetrics.PrometheusExporter) *[]*toptalkersmetrics.ToptalkerDatabase {
+	allDatabases := []*toptalkersmetrics.ToptalkerDatabase{}
 	for _, filterDef := range segment.ThresholdMetricDefinition {
 		databases := segment.initDatabasesForFilter(filterDef, &promExporter)
 		allDatabases = append(allDatabases, databases...)
 	}
 
-	collector := toptalkers_metrics.NewPrometheusCollector(allDatabases)
+	collector := toptalkersmetrics.NewPrometheusCollector(allDatabases)
 	promExporter.FlowReg.MustRegister(collector)
 	return &allDatabases
 }
 
-func (segment *TrafficSpecificToptalkers) initDatabasesForFilter(filterDef *ThresholdMetric, promExporter *toptalkers_metrics.PrometheusExporter) []*toptalkers_metrics.ToptalkerDatabase {
-	databases := []*toptalkers_metrics.ToptalkerDatabase{}
+func (segment *TrafficSpecificToptalkers) initDatabasesForFilter(filterDef *ThresholdMetric, promExporter *toptalkersmetrics.PrometheusExporter) []*toptalkersmetrics.ToptalkerDatabase {
+	databases := []*toptalkersmetrics.ToptalkerDatabase{}
 	if filterDef.TrafficType != "" { //defined a metric that should be in prometheus
-		database := toptalkers_metrics.NewDatabase(filterDef.PrometheusMetricsParams, promExporter, segment.EvaluationMode)
+		database := toptalkersmetrics.NewDatabase(filterDef.PrometheusMetricsParams, promExporter, segment.EvaluationMode)
 
 		filterDef.Database = &database
 		databases = append(databases, &database)

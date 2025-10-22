@@ -21,11 +21,12 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	"github.com/go-co-op/gocron/v2"
 )
 
 type Prometheus struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	Endpoint          string         // optional, default value is ":8080"
 	MetricsPath       string         // optional, default is "/metrics"
 	FlowdataPath      string         // optional, default is "/flowdata"

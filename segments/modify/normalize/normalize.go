@@ -16,10 +16,11 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 )
 
 type Normalize struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	Fallback uint64 // optional, default is no fallback, determines a assumed sampling rate of flows if none is found in a given flow
 }
 

@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	"github.com/bwNetFlow/ip_prefix_trie"
 	"github.com/rs/zerolog/log"
 )
@@ -41,7 +42,7 @@ import (
 // written to the SrcId Field in the enriched flow.
 
 type AddNetId struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	FileName      string // required
 	DropUnmatched bool   // optional, default is false, determines whether flows are dropped when no Cid is found
 	MatchBoth     bool   // optional, default is false, determines whether src and dst addresses are matched separately and not according to remote addresses

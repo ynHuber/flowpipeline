@@ -15,6 +15,7 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 )
 
 type Policy int
@@ -29,7 +30,7 @@ var (
 )
 
 type DropFields struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	Policy Policy   // required, determines whether to keep or drop fields
 	Fields []string // required, determines which fields are kept/dropped
 }

@@ -37,11 +37,12 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	"github.com/bwNetFlow/ip_prefix_trie"
 )
 
 type AddCid struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	FileName      string // required
 	DropUnmatched bool   // optional, default is false, determines whether flows are dropped when no Cid is found
 	MatchBoth     bool   // optional, default is false, determines whether src and dst addresses are matched seperately and not according to remote addresses

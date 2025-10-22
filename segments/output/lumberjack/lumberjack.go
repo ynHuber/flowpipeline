@@ -81,6 +81,7 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 )
 
 const (
@@ -100,7 +101,7 @@ type ServerOptions struct {
 }
 
 type Lumberjack struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	Servers             map[string]ServerOptions
 	BatchSize           int
 	BatchTimeout        time.Duration

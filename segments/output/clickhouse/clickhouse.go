@@ -18,12 +18,13 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 
 	_ "github.com/ClickHouse/clickhouse-go/v2"
 )
 
 type Clickhouse struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	db              *sql.DB
 	createStatement string
 	insertStatement string

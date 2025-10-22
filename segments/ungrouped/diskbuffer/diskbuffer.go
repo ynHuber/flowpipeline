@@ -21,6 +21,7 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	"github.com/dustin/go-humanize"
 	"github.com/google/uuid"
 	"github.com/klauspost/compress/zstd"
@@ -40,7 +41,7 @@ const (
 )
 
 type DiskBuffer struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	BatchSize           int
 	BatchDebugPrintf    func(format string, v ...any)
 	QueueStatusInterval time.Duration

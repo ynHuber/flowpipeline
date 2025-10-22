@@ -23,18 +23,19 @@
 //
 // The parameter "traffictype" is passed as OpenMetrics label, so this segment
 // can be used multiple times in one pipeline without metrics getting mixed up.
-package toptalkers_metrics
+package toptalkersmetrics
 
 import (
 	"sync"
 
 	"codeberg.org/BelWue/flowpipeline/pipeline/config/evaluation_mode"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basefiltersegment"
 	"github.com/rs/zerolog/log"
 )
 
 type ToptalkersMetrics struct {
-	segments.BaseFilterSegment
+	basefiltersegment.BaseFilterSegment
 	PrometheusMetricsParams
 	PrometheusParams
 	EvaluationMode evaluation_mode.EvaluationMode // optional, default is "destination", options are "destination", "source", "both", "connection"

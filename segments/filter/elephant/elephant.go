@@ -18,13 +18,14 @@ import (
 	"time"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basefiltersegment"
 	"github.com/rs/zerolog/log"
 
 	"github.com/asecurityteam/rolling"
 )
 
 type Elephant struct {
-	segments.BaseFilterSegment
+	basefiltersegment.BaseFilterSegment
 	Aspect     string  // optional, one of "bytes", "bps", "packets", or "pps", default is "bytes", determines which aspect qualifies a flow as an elephant
 	Percentile float64 // optional, default is 99.00, determines the cutoff percentile for flows being dropped by this segment, i.e. 95.00 corresponds to outputting the top 5% only
 	// TODO: add option to get bottom percent?

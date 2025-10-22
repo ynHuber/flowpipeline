@@ -32,6 +32,7 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -39,7 +40,7 @@ import (
 )
 
 type Mongodb struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	mongodbUri     string
 	dbCollection   *mongo.Collection
 	fieldTypes     []string

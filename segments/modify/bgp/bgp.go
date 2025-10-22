@@ -42,12 +42,13 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	"github.com/BelWue/bgp_routeinfo/routeinfo"
 	"gopkg.in/yaml.v2"
 )
 
 type Bgp struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	FileName        string // required
 	FallbackRouter  string // optional, default is "" (i.e., none or disabled), this will determine the BGP session that is used when SamplerAddress has no corresponding session
 	UseFallbackOnly bool   // optional, default is false, this will disable looking for SamplerAddress BGP sessions

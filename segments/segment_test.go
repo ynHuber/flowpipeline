@@ -3,15 +3,35 @@ package segments
 import (
 	"strings"
 	"sync"
+	"syscall"
 	"testing"
 
 	"codeberg.org/BelWue/flowpipeline/pb"
+	"codeberg.org/BelWue/flowpipeline/pipeline/config"
 )
 
 // creating a local test segment since no other segments can be imported here without cyclic dependencies
 type TestingSegment struct {
-	BaseSegment
 	Counter int
+	In      <-chan *pb.EnrichedFlow
+	Out     chan<- *pb.EnrichedFlow
+}
+
+func (segment *TestingSegment) Rewire(in chan *pb.EnrichedFlow, out chan *pb.EnrichedFlow) {
+	segment.In = in
+	segment.Out = out
+}
+
+func (segment *TestingSegment) ShutdownParentPipeline() {
+	syscall.Kill(syscall.Getpid(), syscall.SIGINT)
+}
+
+func (segment *TestingSegment) Close() {
+	//placeholder since this segment doesn't need to do anything
+}
+
+func (segment *TestingSegment) AddCustomConfig(config.SegmentRepr) {
+	//placeholder since this segment doesn't have a custom structured config
 }
 
 func (segment TestingSegment) New(config map[string]string) Segment {

@@ -16,11 +16,12 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	maxmind "github.com/oschwald/maxminddb-golang"
 )
 
 type GeoLocation struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	FileName      string // required
 	DropUnmatched bool   // optional, default is false, determines whether flows are dropped when location is indeterminate
 	MatchBoth     bool   // optional, default is false, determines whether both addresses are matched

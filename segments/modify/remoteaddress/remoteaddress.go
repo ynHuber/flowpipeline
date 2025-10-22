@@ -41,11 +41,12 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	"github.com/bwNetFlow/ip_prefix_trie"
 )
 
 type RemoteAddress struct {
-	segments.BaseSegment
+	basesegment.BaseSegment
 	Policy        string // required, 'cidr', 'border', 'user' and 'clear' are available options, see above
 	FileName      string // optional, required if policy is set to 'cidr', default is empty
 	DropUnmatched bool   // optional, default is false, relevant to 'cidr' only, determines what to do with unmatched flows

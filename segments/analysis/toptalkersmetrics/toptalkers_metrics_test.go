@@ -1,4 +1,4 @@
-package toptalkers_metrics
+package toptalkersmetrics
 
 import (
 	"testing"
@@ -20,14 +20,14 @@ func TestSegment_EvaluationMode_initialization_connection(t *testing.T) {
 		var config string
 		if setting != "" {
 			config = `---
-- segment: toptalkers_metrics
+- segment: toptalkersmetrics
   config:
     endpoint: ":8085"
     evaluationmode: "` + setting + `"
 `
 		} else {
 			config = `---
-- segment: toptalkers_metrics
+- segment: toptalkersmetrics
   config:
     endpoint: ":8085"
 `
@@ -38,10 +38,10 @@ func TestSegment_EvaluationMode_initialization_connection(t *testing.T) {
 		//grab counter segment to validate the test result
 		if seg, ok := pipeline.SegmentList[0].(*ToptalkersMetrics); ok {
 			if seg.EvaluationMode != evalMode {
-				t.Error("Evaluation mode " + setting + " not parsed correctly for segment toptalkers_metrics")
+				t.Error("Evaluation mode " + setting + " not parsed correctly for segment toptalkersmetrics")
 			}
 		} else {
-			t.Error("Segment toptalkers_metrics not initializing correctly")
+			t.Error("Segment toptalkersmetrics not initializing correctly")
 		}
 	}
 }

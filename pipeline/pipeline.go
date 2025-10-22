@@ -8,7 +8,6 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
-	"codeberg.org/BelWue/flowpipeline/segments/pass"
 )
 
 // Basically a list of segments. It further exposes the In and Out channels of
@@ -36,7 +35,7 @@ func (pipeline *Pipeline) GetDrop() <-chan *pb.EnrichedFlow {
 	}
 	pipeline.Drop = make(chan *pb.EnrichedFlow)
 	// Subscribe to drops from special segments, namely all based on
-	// BaseFilterSegment grouped in the filter directory.
+	// FilterSegment grouped in the filter directory.
 	for _, segment := range pipeline.SegmentList {
 		value, implementsFilter := segment.(segments.FilterSegment)
 		if implementsFilter {
@@ -80,7 +79,8 @@ func (pipeline *Pipeline) Close() {
 // wiring up the segments in the segmentList with them.
 func New(segmentList ...segments.Segment) *Pipeline {
 	if len(segmentList) == 0 {
-		segmentList = []segments.Segment{&pass.Pass{}}
+		channel := make(chan *pb.EnrichedFlow)
+		return &Pipeline{In: channel, Out: channel, wg: &sync.WaitGroup{}, SegmentList: segmentList}
 	}
 	channels := make([]chan *pb.EnrichedFlow, len(segmentList)+1)
 	channels[0] = make(chan *pb.EnrichedFlow)
