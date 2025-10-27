@@ -9,6 +9,7 @@ on:
 
 jobs:
   renovate:
+    if: ${{ forge.actor }} != 'flowpipeline-bot' # Prevent potential trigger loops
     runs-on: codeberg-small
     container:
       image: docker.io/renovate/renovate
