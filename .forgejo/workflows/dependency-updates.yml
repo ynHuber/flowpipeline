@@ -1,0 +1,29 @@
+name: Check for dependency updates
+
+on:
+  workflow_dispatch: # For manual triggers
+  schedule: # To regularly get new updates even without activity
+    - cron: '47 14 * * */7' # Every seven days at a random daytime
+  pull_request_target: # Needed so RENOVATE_TOKEN is available
+    types: [reopened, closed, synchronize, edited] # So Renovate can directly react to merged/closed/modified PRs
+  push: # To rebase all PRs on latest main branch
+    branches:
+      - main
+
+jobs:
+  renovate:
+    runs-on: codeberg-small
+    container:
+      image: docker.io/renovate/renovate
+    steps:
+      - name: Run Renovate
+        run: renovate
+        env:
+          # With this, we can set global config options in the same file.
+          # https://docs.renovatebot.com/config-overview/#global-config
+          RENOVATE_PLATFORM: forgejo
+          RENOVATE_ENDPOINT: ${{ forge.api_url }}
+          RENOVATE_REPOSITORIES: ${{ forge.repository }}
+          RENOVATE_ONBOARDING_CONFIG_FILE_NAME: .renovaterc.json
+          RENOVATE_GIT_AUTHOR: 'Flowpipeline Bot <flowpipeline-bot@noreply.codeberg.org>'
+          RENOVATE_TOKEN: ${{ secrets.RENOVATE_TOKEN }}
