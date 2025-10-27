@@ -7,6 +7,9 @@ on:
   pull_request_target: # Needed so RENOVATE_TOKEN is available
     types: [reopened, closed, synchronize, edited] # So Renovate can directly react to merged/closed/modified PRs
 
+env:
+  CACHE_DIR: /tmp/renovate-cache
+
 jobs:
   renovate:
     if: ${{ forge.actor }} != 'flowpipeline-bot' # Prevent potential trigger loops
@@ -14,11 +17,18 @@ jobs:
     container:
       image: docker.io/renovate/renovate
     steps:
+      - name: Setup Renovate cache
+        uses: https://code.forgejo.org/actions/cache@v4
+        with:
+          key: renovate-cache-repo-${{ forge.repository }}
+          path: ${{ env.CACHE_DIR }}
       - name: Run Renovate
         run: renovate
         env:
           # With this, we can set global config options in the same file.
           # https://docs.renovatebot.com/config-overview/#global-config
+          RENOVATE_REPOSITORY_CACHE: true
+          RENOVATE_CACHE_DIR: ${{ env.CACHE_DIR }}
           RENOVATE_PLATFORM: forgejo
           RENOVATE_ENDPOINT: ${{ forge.api_url }}
           RENOVATE_REPOSITORIES: ${{ forge.repository }}
