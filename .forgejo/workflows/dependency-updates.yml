@@ -16,7 +16,7 @@ jobs:
     if: ${{ forge.actor }} != 'flowpipeline-bot' # Prevent potential trigger loops
     runs-on: codeberg-small
     container:
-      image: docker.io/renovate/renovate
+      image: docker.io/renovate/renovate:41
     steps:
       - name: Restore Renovate cache
         uses: https://code.forgejo.org/actions/cache/restore@v4
