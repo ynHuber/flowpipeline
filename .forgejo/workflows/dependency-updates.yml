@@ -37,6 +37,7 @@ jobs:
           RENOVATE_ONBOARDING_CONFIG_FILE_NAME: .renovaterc.json
           RENOVATE_GIT_AUTHOR: 'Flowpipeline Bot <flowpipeline-bot@noreply.codeberg.org>'
           RENOVATE_TOKEN: ${{ secrets.RENOVATE_TOKEN }}
+          RENOVATE_GITHUB_COM_TOKEN: ${{ secrets.RENOVATE_GITHUB_COM_TOKEN }}
 
       - name: Save Renovate cache
         uses: https://code.forgejo.org/actions/cache/save@v4
