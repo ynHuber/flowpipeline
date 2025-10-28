@@ -9,6 +9,7 @@ on:
 
 env:
   CACHE_DIR: /tmp/renovate-cache
+  CACHE_KEY: renovate-cache
 
 jobs:
   renovate:
@@ -17,11 +18,12 @@ jobs:
     container:
       image: docker.io/renovate/renovate
     steps:
-      - name: Setup Renovate cache
-        uses: https://code.forgejo.org/actions/cache@v4
+      - name: Restore Renovate cache
+        uses: https://code.forgejo.org/actions/cache/restore@v4
         with:
-          key: renovate-cache-repo-${{ forge.repository }}
+          key: ${{ env.CACHE_KEY }}
           path: ${{ env.CACHE_DIR }}
+
       - name: Run Renovate
         run: renovate
         env:
@@ -35,3 +37,9 @@ jobs:
           RENOVATE_ONBOARDING_CONFIG_FILE_NAME: .renovaterc.json
           RENOVATE_GIT_AUTHOR: 'Flowpipeline Bot <flowpipeline-bot@noreply.codeberg.org>'
           RENOVATE_TOKEN: ${{ secrets.RENOVATE_TOKEN }}
+
+      - name: Save Renovate cache
+        uses: https://code.forgejo.org/actions/cache/save@v4
+        with:
+          key: ${{ env.CACHE_KEY }}
+          path: ${{ env.CACHE_DIR }}
