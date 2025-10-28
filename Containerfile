@@ -8,7 +8,7 @@ WORKDIR /opt/build
 RUN CGO_ENABLED=0 go build -tags container -o fpl
 
 # begin new container
-FROM docker.io/library/alpine:latest
+FROM docker.io/library/alpine:3.22.2
 WORKDIR /
 
 # add some tools
