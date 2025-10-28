@@ -12,6 +12,9 @@ jobs:
     - name: checkout
       uses: https://code.forgejo.org/actions/checkout@v5
 
+    - name: install libpcap
+      run: sudo apt-get update && sudo apt-get install -y libpcap-dev
+
     - name: setup go
       uses: https://code.forgejo.org/actions/setup-go@v5
       with:
