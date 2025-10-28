@@ -21,4 +21,3 @@ jobs:
       uses: https://github.com/golangci/golangci-lint-action@v8
       with:
         version: latest
-        only-new-issues: true
