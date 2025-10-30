@@ -12,7 +12,6 @@ import (
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
-	"google.golang.org/protobuf/proto"
 )
 
 type FlowKey struct {
@@ -77,95 +76,119 @@ type FlowRecord struct {
 }
 
 func BuildFlow(f *FlowRecord) *pb.EnrichedFlow {
-	msg := &pb.EnrichedFlow{}
-	msg.Type = pb.EnrichedFlow_EBPF
-	msg.SamplerAddress = f.SamplerAddress
-	msg.TimeReceived = uint64(f.TimeReceived.UnixNano())
-	msg.TimeFlowStart = uint64(f.TimeReceived.UnixNano())
-	msg.TimeFlowEnd = uint64(f.LastUpdated.UnixNano())
-	for i, pkt := range f.Packets {
-		if i == 0 {
-			msg.InIf = uint32(pkt.Metadata().InterfaceIndex)
-			for _, layer := range pkt.Layers() {
-				switch layer.LayerType() {
-				case layers.LayerTypeEthernet:
-					eth, _ := layer.(*layers.Ethernet)
-					msg.Etype = uint32(eth.EthernetType)
-					if bytes.Equal(eth.SrcMAC, f.HardwareAddress) {
-						msg.FlowDirection = 1                              // egress
-						msg.RemoteAddr = pb.EnrichedFlow_RemoteAddrType(2) // src is remote
+	if len(f.Packets) > 0 {
+		msg := &pb.EnrichedFlow{}
+		msg.Type = pb.EnrichedFlow_EBPF
+		msg.SamplerAddress = f.SamplerAddress
+		msg.TimeReceived = uint64(f.TimeReceived.UnixNano())
+		msg.TimeFlowStart = uint64(f.TimeReceived.UnixNano())
+		msg.TimeFlowEnd = uint64(f.LastUpdated.UnixNano())
+		for i, pkt := range f.Packets {
+			if i == 0 {
+				msg.InIf = uint32(pkt.Metadata().InterfaceIndex)
+				for _, layer := range pkt.Layers() {
+					switch layer.LayerType() {
+					case layers.LayerTypeEthernet:
+						eth, _ := layer.(*layers.Ethernet)
+						msg.Etype = uint32(eth.EthernetType)
+						if bytes.Equal(eth.SrcMAC, f.HardwareAddress) {
+							msg.FlowDirection = 1                              // egress
+							msg.RemoteAddr = pb.EnrichedFlow_RemoteAddrType(2) // src is remote
+						}
+						if bytes.Equal(eth.DstMAC, f.HardwareAddress) {
+							msg.FlowDirection = 0                              // ingress
+							msg.RemoteAddr = pb.EnrichedFlow_RemoteAddrType(1) // dst is remote
+						}
+					case layers.LayerTypeIPv4:
+						ip, _ := layer.(*layers.IPv4)
+						msg.SrcAddr = ip.SrcIP
+						msg.DstAddr = ip.DstIP
+						msg.Proto = uint32(ip.Protocol)
+						msg.IpTos = uint32(ip.TOS)
+						msg.IpTtl = uint32(ip.TTL)
+					case layers.LayerTypeIPv6:
+						ip, _ := layer.(*layers.IPv6)
+						msg.SrcAddr = ip.SrcIP
+						msg.DstAddr = ip.DstIP
+						msg.Proto = uint32(ip.NextHeader)
+						msg.IpTos = uint32(ip.TrafficClass)
+						msg.IpTtl = uint32(ip.HopLimit)
+						msg.Ipv6FlowLabel = ip.FlowLabel
+					case layers.LayerTypeTCP:
+						tcp, _ := layer.(*layers.TCP)
+						msg.SrcPort = uint32(tcp.SrcPort)
+						msg.DstPort = uint32(tcp.DstPort)
+						if tcp.URG {
+							msg.TcpFlags = msg.TcpFlags | 0b100000
+						}
+						if tcp.ACK {
+							msg.TcpFlags = msg.TcpFlags | 0b010000
+						}
+						if tcp.PSH {
+							msg.TcpFlags = msg.TcpFlags | 0b001000
+						}
+						if tcp.RST {
+							msg.TcpFlags = msg.TcpFlags | 0b000100
+						}
+						if tcp.SYN {
+							msg.TcpFlags = msg.TcpFlags | 0b000010
+						}
+						if tcp.FIN {
+							msg.TcpFlags = msg.TcpFlags | 0b000001
+						}
+					case layers.LayerTypeUDP:
+						udp, _ := layer.(*layers.UDP)
+						msg.SrcPort = uint32(udp.SrcPort)
+						msg.DstPort = uint32(udp.DstPort)
+					case layers.LayerTypeICMPv4:
+						icmp, _ := layer.(*layers.ICMPv4)
+						msg.IcmpType = uint32(icmp.TypeCode.Type())
+						msg.IcmpCode = uint32(icmp.TypeCode.Code())
+					case layers.LayerTypeICMPv6:
+						icmp, _ := layer.(*layers.ICMPv6)
+						msg.IcmpType = uint32(icmp.TypeCode.Type())
+						msg.IcmpCode = uint32(icmp.TypeCode.Code())
 					}
-					if bytes.Equal(eth.DstMAC, f.HardwareAddress) {
-						msg.FlowDirection = 0                              // ingress
-						msg.RemoteAddr = pb.EnrichedFlow_RemoteAddrType(1) // dst is remote
-					}
-				case layers.LayerTypeIPv4:
-					ip, _ := layer.(*layers.IPv4)
-					msg.SrcAddr = ip.SrcIP
-					msg.DstAddr = ip.DstIP
-					msg.Proto = uint32(ip.Protocol)
-					msg.IpTos = uint32(ip.TOS)
-					msg.IpTtl = uint32(ip.TTL)
-				case layers.LayerTypeIPv6:
-					ip, _ := layer.(*layers.IPv6)
-					msg.SrcAddr = ip.SrcIP
-					msg.DstAddr = ip.DstIP
-					msg.Proto = uint32(ip.NextHeader)
-					msg.IpTos = uint32(ip.TrafficClass)
-					msg.IpTtl = uint32(ip.HopLimit)
-					msg.Ipv6FlowLabel = ip.FlowLabel
-				case layers.LayerTypeTCP:
-					tcp, _ := layer.(*layers.TCP)
-					msg.SrcPort = uint32(tcp.SrcPort)
-					msg.DstPort = uint32(tcp.DstPort)
-					if tcp.URG {
-						msg.TcpFlags = msg.TcpFlags | 0b100000
-					}
-					if tcp.ACK {
-						msg.TcpFlags = msg.TcpFlags | 0b010000
-					}
-					if tcp.PSH {
-						msg.TcpFlags = msg.TcpFlags | 0b001000
-					}
-					if tcp.RST {
-						msg.TcpFlags = msg.TcpFlags | 0b000100
-					}
-					if tcp.SYN {
-						msg.TcpFlags = msg.TcpFlags | 0b000010
-					}
-					if tcp.FIN {
-						msg.TcpFlags = msg.TcpFlags | 0b000001
-					}
-				case layers.LayerTypeUDP:
-					udp, _ := layer.(*layers.UDP)
-					msg.SrcPort = uint32(udp.SrcPort)
-					msg.DstPort = uint32(udp.DstPort)
-				case layers.LayerTypeICMPv4:
-					icmp, _ := layer.(*layers.ICMPv4)
-					msg.IcmpType = uint32(icmp.TypeCode.Type())
-					msg.IcmpCode = uint32(icmp.TypeCode.Code())
-				case layers.LayerTypeICMPv6:
-					icmp, _ := layer.(*layers.ICMPv6)
-					msg.IcmpType = uint32(icmp.TypeCode.Type())
-					msg.IcmpCode = uint32(icmp.TypeCode.Code())
 				}
 			}
+			// special handling
+			msg.Bytes += uint64(pkt.Metadata().Length)
+			msg.Packets += 1
 		}
-		// special handling
-		msg.Bytes += uint64(pkt.Metadata().Length)
-		msg.Packets += 1
+		return msg
+	} else if len(f.Flows) > 0 {
+		msg := f.Flows[0]
+		msgBytes := uint64(0)
+		msgPackets := uint64(0)
+		msg.Type = pb.EnrichedFlow_AGGREGATE
+		for _, flow := range f.Flows {
+
+			// TimeFlowStart: use earlier
+			if flow.TimeFlowStart < msg.TimeFlowStart {
+				msg.TimeFlowStart = flow.TimeFlowStart
+			}
+
+			// TimeFlowEnd: use later
+			if flow.TimeFlowEnd > msg.TimeFlowEnd {
+				msg.TimeFlowEnd = flow.TimeFlowEnd
+			}
+
+			// TimeReceived: use earlier
+			if flow.TimeReceived < msg.TimeReceived {
+				msg.TimeReceived = flow.TimeReceived
+			}
+
+			// Bytes: add
+			msgBytes += flow.Bytes
+			// Packets: add
+			msgPackets += flow.Packets
+		}
+		msg.Bytes = msgBytes
+		msg.Packets = msgPackets
+		return msg
 	}
-	for _, flow := range f.Flows {
-		proto.Merge(msg, flow)
-		// TODO: how to do this without custom behaviour for each field?
-		// TimeFlowStart: use earlier
-		// TimeFlowEnd: use later
-		// TimeReceived: use earlier
-		// Bytes: add, considering sampling rate
-		// Packets: add, considering sampling rate
-		// copy the rest?
-	}
-	return msg
+	log.Warn().Msg("Flowcache: Trying to export empty flow")
+	return nil
 }
 
 type FlowExporter struct {
@@ -198,6 +221,16 @@ func NewFlowExporter(activeTimeout string, inactiveTimeout string) (*FlowExporte
 	fe.cache = make(map[FlowKey]*FlowRecord)
 
 	return fe, nil
+}
+
+func NewFlowExporterWithTimeoutDurations(activeTimeout time.Duration, inactiveTimeout time.Duration) *FlowExporter {
+	fe := &FlowExporter{activeTimeout: activeTimeout, inactiveTimeout: inactiveTimeout}
+	fe.Flows = make(chan *pb.EnrichedFlow)
+
+	fe.mutex = &sync.RWMutex{}
+	fe.cache = make(map[FlowKey]*FlowRecord)
+
+	return fe
 }
 
 func (f *FlowExporter) Start(samplerAddress net.IP, hardwareAddress net.HardwareAddr) {
@@ -264,6 +297,7 @@ func (f *FlowExporter) Insert(pkt gopacket.Packet) {
 	var exists bool
 
 	f.mutex.Lock()
+	defer f.mutex.Unlock()
 	if record, exists = f.cache[key]; !exists {
 		f.cache[key] = new(FlowRecord)
 		f.cache[key].TimeReceived = pkt.Metadata().Timestamp
@@ -280,7 +314,6 @@ func (f *FlowExporter) Insert(pkt gopacket.Packet) {
 			f.export(key)
 		}
 	}
-	f.mutex.Unlock()
 }
 
 func (f *FlowExporter) InsertFlow(flow *pb.EnrichedFlow) {
@@ -290,12 +323,13 @@ func (f *FlowExporter) InsertFlow(flow *pb.EnrichedFlow) {
 	var exists bool
 
 	f.mutex.Lock()
+	defer f.mutex.Unlock()
 	if record, exists = f.cache[key]; !exists {
 		f.cache[key] = new(FlowRecord)
-		f.cache[key].TimeReceived = time.Unix(int64(flow.TimeFlowStart), 0)
+		f.cache[key].TimeReceived = time.Unix(int64(flow.TimeReceived), 0)
 		record = f.cache[key]
 	}
-	record.LastUpdated = time.Unix(int64(flow.TimeFlowEnd), 0)
+	record.LastUpdated = time.Now()
 	record.SamplerAddress = f.samplerAddress
 	record.Flows = append(record.Flows, flow)
 }

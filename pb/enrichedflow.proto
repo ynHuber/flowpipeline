@@ -11,6 +11,7 @@ message EnrichedFlow {
     NETFLOW_V9 = 3;
     IPFIX = 4;
     EBPF = 5;
+    AGGREGATE = 6;
   }
 
   FlowType type = 1;
