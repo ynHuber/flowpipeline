@@ -1,5 +1,4 @@
 //go:build cgo
-// +build cgo
 
 // **This segment is unavailable in the static binary release due to its CGO dependency.**
 //

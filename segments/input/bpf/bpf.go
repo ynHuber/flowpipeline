@@ -1,5 +1,4 @@
 //go:build linux
-// +build linux
 
 // **This segment is available only on Linux.**
 //

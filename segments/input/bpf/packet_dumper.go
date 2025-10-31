@@ -1,5 +1,4 @@
 //go:build linux
-// +build linux
 
 // based on https://github.com/bwNetFlow/bpf_flowexport/blob/master/packetdump/packetdump.go
 package bpf

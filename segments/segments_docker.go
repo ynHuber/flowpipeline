@@ -1,4 +1,4 @@
-// +build container
+//go:build container
 
 package segments
 
