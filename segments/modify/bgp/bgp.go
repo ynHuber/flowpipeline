@@ -54,10 +54,13 @@ type Bgp struct {
 	FallbackRouter  string // optional, default is "" (i.e., none or disabled), this will determine the BGP session that is used when SamplerAddress has no corresponding session
 	UseFallbackOnly bool   // optional, default is false, this will disable looking for SamplerAddress BGP sessions
 	RouterASN       uint32 // ASN of the local router
+	BgpLogLevel     string // optional, default is "warning" can be any of "trace","debug","info","warning","error","fatal" or "panic"
 
 	routeInfoServer routeinfo.RouteInfoServer
 	routeInfoLogger routeinfoLog.RouteinfoLogger
 }
+
+const DEFAULT_BGP_LOGLEVEL_WARNING = "warning"
 
 func (segment Bgp) New(config map[string]string) segments.Segment {
 	rsconfig, err := os.ReadFile(config["filename"])
@@ -108,9 +111,15 @@ func (segment Bgp) New(config map[string]string) segments.Segment {
 		return nil
 	}
 
+	bgpLogLevel := DEFAULT_BGP_LOGLEVEL_WARNING
+	if config["bgpLogLevel"] != "" {
+		bgpLogLevel = config["bgpLogLevel"]
+	}
+
 	logger := &routeinfoLog.DefaultRouteInfoLogger{}
 	appLogger := routeinfoLog.ApplicationLoggerFromZerolog(&log.Logger)
 	logger.SetApplicationLogger(appLogger)
+	logger.SetLogLevel(&bgpLogLevel)
 
 	newSegment := &Bgp{
 		FileName:        config["filename"],
