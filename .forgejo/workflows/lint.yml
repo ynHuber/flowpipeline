@@ -12,13 +12,15 @@ jobs:
     - name: checkout
       uses: https://code.forgejo.org/actions/checkout@v5
 
-    - name: install libpcap
-      run: sudo apt-get update && sudo apt-get install -y libpcap-dev
-
     - name: setup go
+      id: setup-go
       uses: https://code.forgejo.org/actions/setup-go@v5
       with:
         go-version-file: 'go.mod'
+
+    - name: install libpcap
+      if: ${{ steps.setup-go.outputs.cache-hit != 'true' }}
+      run: sudo apt-get update && sudo apt-get install -y libpcap-dev
 
     - name: golangci-lint
       uses: https://github.com/golangci/golangci-lint-action@v8
