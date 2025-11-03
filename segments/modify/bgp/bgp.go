@@ -43,6 +43,7 @@ import (
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
 	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
+	routeinfoLog "github.com/BelWue/bgp_routeinfo/log"
 	"github.com/BelWue/bgp_routeinfo/routeinfo"
 	"gopkg.in/yaml.v2"
 )
@@ -53,9 +54,13 @@ type Bgp struct {
 	FallbackRouter  string // optional, default is "" (i.e., none or disabled), this will determine the BGP session that is used when SamplerAddress has no corresponding session
 	UseFallbackOnly bool   // optional, default is false, this will disable looking for SamplerAddress BGP sessions
 	RouterASN       uint32 // ASN of the local router
+	BgpLogLevel     string // optional, default is "warning" can be any of "trace","debug","info","warning","error","fatal" or "panic"
 
 	routeInfoServer routeinfo.RouteInfoServer
+	routeInfoLogger routeinfoLog.RouteinfoLogger
 }
+
+const DEFAULT_BGP_LOGLEVEL_WARNING = "warning"
 
 func (segment Bgp) New(config map[string]string) segments.Segment {
 	rsconfig, err := os.ReadFile(config["filename"])
@@ -106,12 +111,23 @@ func (segment Bgp) New(config map[string]string) segments.Segment {
 		return nil
 	}
 
+	bgpLogLevel := DEFAULT_BGP_LOGLEVEL_WARNING
+	if config["bgpLogLevel"] != "" {
+		bgpLogLevel = config["bgpLogLevel"]
+	}
+
+	logger := &routeinfoLog.DefaultRouteInfoLogger{}
+	appLogger := routeinfoLog.ApplicationLoggerFromZerolog(&log.Logger)
+	logger.SetApplicationLogger(appLogger)
+	logger.SetLogLevel(&bgpLogLevel)
+
 	newSegment := &Bgp{
 		FileName:        config["filename"],
 		FallbackRouter:  config["fallbackrouter"],
 		UseFallbackOnly: fallbackonly,
 		RouterASN:       routerASN,
 		routeInfoServer: rs,
+		routeInfoLogger: logger,
 	}
 	return newSegment
 }
@@ -121,8 +137,7 @@ func (segment *Bgp) Run(wg *sync.WaitGroup) {
 		close(segment.Out)
 		wg.Done()
 	}()
-
-	segment.routeInfoServer.Init()
+	segment.routeInfoServer.Logger = segment.routeInfoLogger
 	defer func() {
 		segment.routeInfoServer.Stop()
 	}()
@@ -135,15 +150,15 @@ func (segment *Bgp) Run(wg *sync.WaitGroup) {
 		var srcAsPath []uint32
 		var dstAsPath []uint32
 		if segment.UseFallbackOnly {
-			dstRouteInfos = segment.routeInfoServer.Routers[segment.FallbackRouter].Lookup(msg.DstAddrObj().String())
-			srcRouteInfos = segment.routeInfoServer.Routers[segment.FallbackRouter].Lookup(msg.SrcAddrObj().String())
+			dstRouteInfos = segment.routeInfoServer.Routers[segment.FallbackRouter].Lookup(msg.DstAddrObj().String(), segment.routeInfoLogger.GetApplicationLogger())
+			srcRouteInfos = segment.routeInfoServer.Routers[segment.FallbackRouter].Lookup(msg.SrcAddrObj().String(), segment.routeInfoLogger.GetApplicationLogger())
 		} else {
 			if router, ok := segment.routeInfoServer.Routers[msg.SamplerAddressObj().String()]; ok {
-				dstRouteInfos = router.Lookup(msg.DstAddrObj().String())
-				srcRouteInfos = router.Lookup(msg.SrcAddrObj().String())
+				dstRouteInfos = router.Lookup(msg.DstAddrObj().String(), segment.routeInfoLogger.GetApplicationLogger())
+				srcRouteInfos = router.Lookup(msg.SrcAddrObj().String(), segment.routeInfoLogger.GetApplicationLogger())
 			} else if segment.FallbackRouter != "" {
-				dstRouteInfos = segment.routeInfoServer.Routers[segment.FallbackRouter].Lookup(msg.DstAddrObj().String())
-				srcRouteInfos = segment.routeInfoServer.Routers[segment.FallbackRouter].Lookup(msg.SrcAddrObj().String())
+				dstRouteInfos = segment.routeInfoServer.Routers[segment.FallbackRouter].Lookup(msg.DstAddrObj().String(), segment.routeInfoLogger.GetApplicationLogger())
+				srcRouteInfos = segment.routeInfoServer.Routers[segment.FallbackRouter].Lookup(msg.SrcAddrObj().String(), segment.routeInfoLogger.GetApplicationLogger())
 			} else {
 				segment.Out <- msg
 				continue
