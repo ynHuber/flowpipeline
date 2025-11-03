@@ -21,60 +21,107 @@ env:
 
 
 jobs:
-  flowpipeline:
+  extract-container-labels:
 
     runs-on: codeberg-small
     permissions:
       contents: read
-      packages: write
+    outputs:
+      flowpipeline-tags: ${{ steps.meta-flowpipeline.outputs.tags }}
+      visualization-tags: ${{ steps.meta-visualization.outputs.tags }}
 
     steps:
-      - name: Checkout repository
-        uses: https://code.forgejo.org/actions/checkout@v5
-
       # Extract metadata (tags, labels) for Container
-      - name: Extract Container metadata
-        id: meta
+      - name: Extract flowpipeline container metadata
+        id: meta-flowpipeline
         uses: https://code.forgejo.org/docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           flavor: latest=${{ startsWith(forge.ref, 'refs/tags/') && ! endsWith(forge.ref, '-alpha') && ! endsWith(forge.ref, '-beta') }}
 
-      # Build and push Container image with Kaniko (don't push on PR)
-      - name: Build and push Container image
-        uses: https://codeberg.org/umglurf/kaniko-action@v1.4.3
-        with:
-          docker_file: Containerfile
-          credentials: ${{ env.REGISTRY }}=${{ forge.repository_owner }}:${{ secrets.CODEBERG_PACKAGE_REPOSITORY_TOKEN }}
-          destinations: ${{ steps.meta.outputs.tags }}
-          push: ${{ forge.event_name != 'pull_request' }}
-
-  visualization:
-
-    needs: flowpipeline
-    runs-on: codeberg-small
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Checkout repository
-        uses: https://code.forgejo.org/actions/checkout@v5
-
-      # Extract metadata (tags, labels) for Container
-      - name: Extract Container metadata
-        id: meta
+      # Extract metadata (tags, labels) for visualization container
+      - name: Extract visualization container metadata
+        id: meta-visualization
         uses: https://code.forgejo.org/docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_VISUALIZATION }}
           flavor: latest=${{ startsWith(forge.ref, 'refs/tags/') && ! endsWith(forge.ref, '-alpha') && ! endsWith(forge.ref, '-beta') }}
 
-      # Build and push Container image with Kaniko (don't push on PR)
-      - name: Build and push Container image
-        uses: https://codeberg.org/umglurf/kaniko-action@v1.4.3
-        with:
-          docker_file: examples/visualization/Containerfile
-          credentials: ${{ env.REGISTRY }}=${{ forge.repository_owner }}:${{ secrets.CODEBERG_PACKAGE_REPOSITORY_TOKEN }}
-          destinations: ${{ steps.meta.outputs.tags }}
-          push: ${{ forge.event_name != 'pull_request' }}
-          extra_args: '--compressed-caching=false'
+  flowpipeline:
+
+    needs:
+      - extract-container-labels
+    runs-on: codeberg-small
+    container:
+      image: docker.io/martizih/kaniko:v1.26.0-debug
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      # Build and push container image with Kaniko (don't push on PR)
+      - name: Build and push container image
+        run: |
+          # Write authentication data in config file
+          AUTH=$(echo -n ${{ forge.repository_owner }}:${{ secrets.CODEBERG_PACKAGE_REPOSITORY_TOKEN }} | base64 -w0)
+          echo "{\"auths\": {\"${{ env.REGISTRY }}\": {\"auth\": \"${AUTH}\"}}}" > /kaniko/.docker/config.json
+
+          # Configure git for pull
+          export GIT_USERNAME="git"
+          export GIT_PASSWORD="${{ secrets.FORGEJO_TOKEN }}"
+
+          # Create Kaniko cmdline
+          set -- /kaniko/executor --dockerfile="./Containerfile" --context="git://${{ env.REGISTRY }}/${{ forge.repository }}#${{ forge.ref }}#${{ forge.sha }}" --compressed-caching=false
+
+          for destination in ${{ needs.extract-container-labels.outputs.flowpipeline-tags }}; do
+            set -- "$@" --destination "$destination"
+          done
+
+          if ${{ forge.event_name == 'pull_request' }}; then
+            set -- "$@" --no-push
+          fi
+
+          echo "$@"
+
+          # Build and push image
+          exec "$@"
+
+  visualization:
+
+    needs:
+      - extract-container-labels
+      - flowpipeline
+    runs-on: codeberg-small
+    container:
+      image: docker.io/martizih/kaniko:v1.26.0-debug
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      # Build and push container image with Kaniko (don't push on PR)
+      - name: Build and push container image
+        run: |
+          # Write authentication data in config file
+          AUTH=$(echo -n ${{ forge.repository_owner }}:${{ secrets.CODEBERG_PACKAGE_REPOSITORY_TOKEN }} | base64 -w0)
+          echo "{\"auths\": {\"${{ env.REGISTRY }}\": {\"auth\": \"${AUTH}\"}}}" > /kaniko/.docker/config.json
+
+          # Configure git for pull
+          export GIT_USERNAME="git"
+          export GIT_PASSWORD="${{ secrets.FORGEJO_TOKEN }}"
+
+          # Create Kaniko cmdline
+          set -- /kaniko/executor --dockerfile="./examples/visualization/Containerfile" --context="git://${{ env.REGISTRY }}/${{ forge.repository }}#${{ forge.ref }}#${{ forge.sha }}" --compressed-caching=false
+
+          for destination in ${{ needs.extract-container-labels.outputs.visualization-tags }}; do
+            set -- "$@" --destination "$destination"
+          done
+
+          if ${{ forge.event_name == 'pull_request' }}; then
+            set -- "$@" --no-push
+          fi
+
+          echo "$@"
+
+          # Build and push image
+          exec "$@"
