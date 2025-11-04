@@ -23,7 +23,7 @@ env:
 jobs:
   extract-container-labels:
 
-    runs-on: codeberg-small
+    runs-on: BelWü
     permissions:
       contents: read
     outputs:

@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         include:
-        - os: codeberg-small
+        - os: BelWü
           goos: linux
         #- os: macos-latest
           #goos: darwin
@@ -25,7 +25,7 @@ jobs:
 
     - name: install libpcap
       if: matrix.goos == 'linux'
-      run: sudo apt-get update && sudo apt-get install -y libpcap-dev
+      run: apt-get update && apt-get install -y libpcap-dev
 
     - name: setup go
       uses: https://code.forgejo.org/actions/setup-go@v6
@@ -40,7 +40,7 @@ jobs:
     strategy:
       matrix:
         include:
-        - os: codeberg-small
+        - os: BelWü
           goos: linux
         #- os: macos-latest
           #goos: darwin
@@ -50,7 +50,7 @@ jobs:
 
     - name: install libpcap
       if: matrix.goos == 'linux'
-      run: sudo apt-get update && sudo apt-get install -y libpcap-dev
+      run: apt-get update && apt-get install -y libpcap-dev
 
     - name: setup go
       uses: https://code.forgejo.org/actions/setup-go@v6

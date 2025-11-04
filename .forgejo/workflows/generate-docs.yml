@@ -15,7 +15,7 @@ jobs:
     permissions:
       contents: write
     if: forge.event.pull_request.merged == true
-    runs-on: codeberg-small
+    runs-on: BelWü
     steps:
       - name: Checkout Code
         uses: https://code.forgejo.org/actions/checkout@v5

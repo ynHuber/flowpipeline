@@ -7,7 +7,7 @@ jobs:
   lint-go:
     permissions:
       contents: read
-    runs-on: codeberg-small
+    runs-on: BelWü
     steps:
     - name: checkout
       uses: https://code.forgejo.org/actions/checkout@v5
@@ -20,7 +20,7 @@ jobs:
 
     - name: install libpcap
       if: ${{ steps.setup-go.outputs.cache-hit != 'true' }}
-      run: sudo apt-get update && sudo apt-get install -y libpcap-dev
+      run: apt-get update && apt-get install -y libpcap-dev
 
     - name: golangci-lint
       uses: https://github.com/golangci/golangci-lint-action@v8

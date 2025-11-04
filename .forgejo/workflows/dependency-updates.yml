@@ -14,7 +14,7 @@ env:
 jobs:
   renovate:
     if: ${{ forge.actor }} != 'flowpipeline-bot' # Prevent potential trigger loops
-    runs-on: codeberg-small
+    runs-on: BelWü
     container:
       image: docker.io/renovate/renovate:41
     steps:
