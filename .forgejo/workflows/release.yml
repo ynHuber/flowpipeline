@@ -57,11 +57,6 @@ jobs:
     runs-on: BelWü
     needs: build
     steps:
-    - name: setup go
-      uses: https://code.forgejo.org/actions/setup-go@v6
-      with:
-        go-version-file: 'go.mod'
-
     - name: get binaries from previous job
       uses: https://code.forgejo.org/forgejo/download-artifact/@v4
 
