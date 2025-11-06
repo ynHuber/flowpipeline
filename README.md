@@ -37,6 +37,11 @@ serve any function:
 
 ## Getting Started
 
+If you want to contribute to the project, thank you very much! Please refer to the
+[contribution guidelines](https://codeberg.org/BelWue/flowpipeline/wiki/Contributing)
+for more information. Otherwise, just read on to get started with setting up your own
+instance of flowpipeline.
+
 To get going, choose one of the following deployment methods.
 
 ### Compile from Source
@@ -139,14 +144,3 @@ for a basic example and instructions on how to compile your plugin.
 
 Note that this requires CGO and thus will not work using the static binary
 releases or in a container.
-
-## Contributing
-
-Contributions in any form (code, issues, feature requests) are very much welcome.
-
-## Making a release
-
-A release is automatically done when creating or pushing a git tag of the form `v*.*.*` ([semver](https://semver.org/)).
-The CI jobs build dynamically and statically linked binaries and add them to the release, and build container images for standalone flowpipeline and the visualization example, pushed with their version number, e.g. `1.2.3`, and as `latest`.
-
-Git tags of the form `v*.*.*-alpha` or `v*.*.*-beta` make the same, but the release is marked as pre-release and the container images don't update the `latest` tag.
