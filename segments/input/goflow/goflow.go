@@ -136,13 +136,13 @@ type channelDriver struct {
 }
 
 func (d *channelDriver) Send(key, data []byte) error {
-	msg := new(pb.ProtoProducerMessage)
+	msg := new(pb.EnrichedFlow)
 	// TODO: can we shave of this Unmarshal here by writing a custom formatter
 	if err := protodelim.UnmarshalFrom(bytes.NewReader(data), msg); err != nil {
 		log.Error().Msg("Goflow: Conversion error for received flow.")
 		return nil
 	}
-	d.out <- msg.EnrichedFlow
+	d.out <- msg
 	return nil
 }
 
