@@ -1,8 +1,11 @@
 package pb
 
 import (
+	"bytes"
 	"fmt"
 	"net"
+
+	"google.golang.org/protobuf/encoding/protodelim"
 )
 
 type MacSeparator int
@@ -206,4 +209,10 @@ func (flow *EnrichedFlow) GetPps() uint64 {
 	}
 	ppns := flow.Packets / duration
 	return ppns
+}
+
+func (m *EnrichedFlow) MarshalBinary() ([]byte, error) {
+	buf := bytes.NewBuffer([]byte{})
+	_, err := protodelim.MarshalTo(buf, m)
+	return buf.Bytes(), err
 }

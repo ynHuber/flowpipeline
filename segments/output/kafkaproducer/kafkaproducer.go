@@ -205,10 +205,8 @@ func (segment *KafkaProducer) Run(wg *sync.WaitGroup) {
 			}
 		} else {
 			if msg != nil {
-				protoProducerMessage := pb.ProtoProducerMessage{}
 				msg.SyncMissingTimeStamps()
-				protoProducerMessage.EnrichedFlow = msg
-				if binary, err = protoProducerMessage.MarshalBinary(); err != nil {
+				if binary, err = msg.MarshalBinary(); err != nil {
 					log.Error().Err(err).Msg("KafkaProducer: Error encoding protobuf. ")
 					continue
 				}
