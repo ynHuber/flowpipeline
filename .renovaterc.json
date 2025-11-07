@@ -13,7 +13,7 @@
       ],
       "enabled": false,
       "matchPackageNames": [
-        "/codeberg.org/belwue/flowpipeline/"
+        "codeberg.org/belwue/flowpipeline"
       ]
     }
   ],
