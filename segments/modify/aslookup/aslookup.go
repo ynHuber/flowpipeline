@@ -16,7 +16,7 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/segments"
 	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
-	"github.com/banviktor/asnlookup/pkg/database"
+	"github.com/viktb/asnlookup/pkg/database"
 )
 
 type AsLookup struct {
