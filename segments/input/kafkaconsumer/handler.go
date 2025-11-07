@@ -49,12 +49,12 @@ func (h *Handler) ConsumeClaim(session sarama.ConsumerGroupSession, claim sarama
 					log.Warn().Err(err).Msg("KafkaConsumer: Error decoding flow, this might be due to the use of Goflow custom fields. Original error:\n  ")
 				}
 			} else {
-				msg := new(pb.ProtoProducerMessage)
+				msg := new(pb.EnrichedFlow)
 				if err := protodelim.UnmarshalFrom(bytes.NewReader(message.Value), msg); err != nil {
 					log.Error().Err(err).Msg("KafkaConsumer: Failed unmarshalling message")
 					continue
 				}
-				h.flows <- msg.EnrichedFlow
+				h.flows <- msg
 			}
 		case <-session.Context().Done():
 			return nil
