@@ -11,7 +11,8 @@ require (
 	github.com/IBM/sarama v1.45.0
 	github.com/Yawning/cryptopan v0.0.0-20170504040949-65bca51288fe
 	github.com/alouca/gosnmp v0.0.0-20170620005048-04d83944c9ab
-	github.com/asecurityteam/rolling v2.0.4+incompatible
+	github.com/asecurityteam/rolling v2.2.2+incompatible
+	github.com/banviktor/asnlookup v0.1.1
 	github.com/bwNetFlow/ip_prefix_trie v0.0.0-20210830112018-b360b7b65c04
 	github.com/dustin/go-humanize v1.0.1
 	github.com/elastic/go-lumber v0.1.1
