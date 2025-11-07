@@ -1,7 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:best-practices"],
-  "semanticCommits": "true",
-  "labels": ["dependencies"],
-  "reviewers": ["team:flowpipeline"]
+  "extends": [
+    "config:best-practices"
+  ],
+  "semanticCommits": "auto",
+  "labels": [
+    "dependencies"
+  ],
+  "reviewers": [
+    "team:flowpipeline"
+  ]
 }
