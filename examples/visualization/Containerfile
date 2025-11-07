@@ -1,8 +1,8 @@
 # use official prometheus container image
-FROM quay.io/prometheus/prometheus:v3.7.2 AS prometheus
+FROM quay.io/prometheus/prometheus:v3.7.2@sha256:23031bfe0e74a13004252caaa74eccd0d62b6c6e7a04711d5b8bf5b7e113adc7 AS prometheus
 
 # use official grafana container image
-FROM docker.io/grafana/grafana:12.2.1 AS grafana
+FROM docker.io/grafana/grafana:12.2.1@sha256:35c41e0fd0295f5d0ee5db7e780cf33506abfaf47686196f825364889dee878b AS grafana
 
 # begin new container based on the standalone flowpipeline one
 FROM codeberg.org/belwue/flowpipeline:latest
