@@ -16,10 +16,10 @@ jobs:
     if: ${{ forge.actor }} != 'flowpipeline-bot' # Prevent potential trigger loops
     runs-on: BelWü
     container:
-      image: docker.io/renovate/renovate:41
+      image: docker.io/renovate/renovate:41@sha256:e998e1218fe572e23278d8808186a310784f7cb2ac8055307183ffc51d3a59e5
     steps:
       - name: Restore Renovate cache
-        uses: https://code.forgejo.org/actions/cache/restore@v4
+        uses: https://code.forgejo.org/actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           key: ${{ env.CACHE_KEY }}
           path: ${{ env.CACHE_DIR }}
@@ -40,7 +40,7 @@ jobs:
           RENOVATE_GITHUB_COM_TOKEN: ${{ secrets.RENOVATE_GITHUB_COM_TOKEN }}
 
       - name: Save Renovate cache
-        uses: https://code.forgejo.org/actions/cache/save@v4
+        uses: https://code.forgejo.org/actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           key: ${{ env.CACHE_KEY }}
           path: ${{ env.CACHE_DIR }}

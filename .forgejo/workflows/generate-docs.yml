@@ -18,20 +18,20 @@ jobs:
     runs-on: BelWü
     steps:
       - name: Checkout Code
-        uses: https://code.forgejo.org/actions/checkout@v5
+        uses: https://code.forgejo.org/actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
         with:
           repository: BelWue/flowpipeline
           path: flowpipeline
 
       - name: Checkout Wiki
-        uses: https://code.forgejo.org/actions/checkout@v5
+        uses: https://code.forgejo.org/actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
         with:
           repository: BelWue/flowpipeline.wiki
           path: wiki
           ref: main
 
       - name: Set up Go
-        uses: https://code.forgejo.org/actions/setup-go@v6
+        uses: https://code.forgejo.org/actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6
         with:
           go-version-file: 'flowpipeline/go.mod'
 
