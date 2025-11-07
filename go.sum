@@ -29,8 +29,12 @@ github.com/andybalholm/brotli v1.1.1 h1:PR2pgnyFznKEugtsUo0xLdDop5SKXd5Qf5ysW+7X
 github.com/andybalholm/brotli v1.1.1/go.mod h1:05ib4cKhjx3OQYUY22hTVd34Bc8upXjOLL2rKwwZBoA=
 github.com/apapsch/go-jsonmerge/v2 v2.0.0 h1:axGnT1gRIfimI7gJifB699GoE/oq+F2MU7Dml6nw9rQ=
 github.com/apapsch/go-jsonmerge/v2 v2.0.0/go.mod h1:lvDnEdqiQrp0O42VQGgmlKpxL1AP2+08jFMw88y4klk=
-github.com/asecurityteam/rolling v2.0.4+incompatible h1:WOSeokINZT0IDzYGc5BVcjLlR9vPol08RvI2GAsmB0s=
-github.com/asecurityteam/rolling v2.0.4+incompatible/go.mod h1:2D4ba5ZfYCWrIMleUgTvc8pmLExEuvu3PDwl+vnG58Q=
+github.com/asecurityteam/rolling/v2 v2.2.2 h1:B3bhh+eTRq1EmTCJvgyslcVLJ3IxbYPB1d+iVBp49QA=
+github.com/asecurityteam/rolling/v2 v2.2.2/go.mod h1:kAqtu4K2ZD1+prO+P/Ycx6WUCrlUiFbqAoudz0g+pDU=
+github.com/banviktor/asnlookup v0.1.1 h1:BEpX/fAj1Bt4pefFrmrXCb5lOOB1fHwWm8Rs8fjjYqQ=
+github.com/banviktor/asnlookup v0.1.1/go.mod h1:RtU2QROIuRacXU1cEuszGu2ptCV0+GhXS8b8FAOTrkg=
+github.com/banviktor/go-mrt v0.0.0-20230515165434-0ce2ad0d8984 h1:hYAMGHJ1li5me808y87FCyFH1j6TNztCgpSP3t8y8mg=
+github.com/banviktor/go-mrt v0.0.0-20230515165434-0ce2ad0d8984/go.mod h1:dIQxafuD3y547WrxbwFp1UAC5L98yAu8I28JRYrDHp4=
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/bmatcuk/doublestar v1.1.1/go.mod h1:UD6OnuiIn0yFxxA2le/rnRU1G4RaI4UvFv1sNto9p6w=

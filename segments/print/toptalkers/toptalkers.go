@@ -30,7 +30,7 @@ import (
 
 	"codeberg.org/BelWue/flowpipeline/segments"
 	"codeberg.org/BelWue/flowpipeline/segments/base/basetextoutputsegment"
-	"github.com/asecurityteam/rolling"
+	"github.com/asecurityteam/rolling/v2"
 	"github.com/dustin/go-humanize"
 )
 
