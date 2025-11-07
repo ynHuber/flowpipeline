@@ -3,6 +3,9 @@
   "extends": [
     "config:best-practices"
   ],
+  "ignorePresets": [
+    ":ignoreModulesAndTests"
+  ],
   "semanticCommits": "auto",
   "labels": [
     "dependencies"
