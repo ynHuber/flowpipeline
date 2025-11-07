@@ -11,10 +11,10 @@
       "matchDatasources": [
         "docker"
       ],
-      "matchPackagePatterns": [
+      "enabled": false,
+      "matchPackageNames": [
         "codeberg.org/belwue/flowpipeline"
-      ],
-      "enabled": false
+      ]
     }
   ],
   "semanticCommits": "auto",
