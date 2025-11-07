@@ -6,6 +6,17 @@
   "ignorePresets": [
     ":ignoreModulesAndTests"
   ],
+  "packageRules": [
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackagePatterns": [
+        "codeberg.org/belwue/flowpipeline"
+      ],
+      "enabled": false
+    }
+  ],
   "semanticCommits": "auto",
   "labels": [
     "dependencies"
