@@ -3,7 +3,7 @@ name: Linting
 on:
   pull_request:
     branches: [ main ]
-    types: [ synchronize ]
+    types: [ opened, synchronize, reopened ]
 
 jobs:
   lint-go:
