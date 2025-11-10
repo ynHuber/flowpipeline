@@ -12,7 +12,6 @@ require (
 	github.com/Yawning/cryptopan v0.0.0-20170504040949-65bca51288fe
 	github.com/alouca/gosnmp v0.0.0-20170620005048-04d83944c9ab
 	github.com/asecurityteam/rolling v2.0.4+incompatible
-	github.com/banviktor/asnlookup v0.1.1
 	github.com/bwNetFlow/ip_prefix_trie v0.0.0-20210830112018-b360b7b65c04
 	github.com/dustin/go-humanize v1.0.1
 	github.com/elastic/go-lumber v0.1.1
@@ -26,6 +25,7 @@ require (
 	github.com/prometheus/client_golang v1.20.5
 	github.com/rs/dnscache v0.0.0-20230804202142-fc85eb664529
 	github.com/rs/zerolog v1.34.0
+	github.com/viktb/asnlookup v0.1.2
 	go.mongodb.org/mongo-driver v1.17.2
 	golang.org/x/text v0.29.0
 	google.golang.org/protobuf v1.36.6
@@ -35,7 +35,6 @@ require (
 require (
 	github.com/Shopify/sarama v1.38.1 // indirect
 	github.com/alecthomas/participle/v2 v2.1.1 // indirect
-	github.com/banviktor/go-mrt v0.0.0-20230515165434-0ce2ad0d8984 // indirect
 	github.com/go-viper/mapstructure/v2 v2.3.0 // indirect
 	github.com/jonboulle/clockwork v0.5.0 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
@@ -50,6 +49,7 @@ require (
 	github.com/sagikazarmark/locafero v0.9.0 // indirect
 	github.com/segmentio/fasthash v1.0.3 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
+	github.com/viktb/go-mrt v0.0.0-20230515165434-0ce2ad0d8984 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.1.2 // indirect
 	github.com/xdg-go/stringprep v1.0.4 // indirect
