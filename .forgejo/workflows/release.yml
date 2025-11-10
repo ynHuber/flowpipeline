@@ -67,5 +67,5 @@ jobs:
       uses: https://github.com/softprops/action-gh-release@5be0e66d93ac7ed76da52eca8bb058f665c3a5fe # v2
       with:
         generate_release_notes: true
-        prerelease: ${{ endsWith(forge.ref, '-alpha') || endsWith(forge.ref, '-beta') }}
+        prerelease: ${{ contains(forge.ref, '-alpha') || contains(forge.ref, '-beta') }}
         files: "flowpipeline-*/flowpipeline-*"

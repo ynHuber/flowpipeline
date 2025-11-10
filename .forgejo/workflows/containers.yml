@@ -37,7 +37,7 @@ jobs:
         uses: https://code.forgejo.org/docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 # v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          flavor: latest=${{ startsWith(forge.ref, 'refs/tags/') && ! endsWith(forge.ref, '-alpha') && ! endsWith(forge.ref, '-beta') }}
+          flavor: latest=${{ startsWith(forge.ref, 'refs/tags/') && ! contains(forge.ref, '-alpha') && ! contains(forge.ref, '-beta') }}
 
       # Extract metadata (tags, labels) for visualization container
       - name: Extract visualization container metadata
@@ -45,7 +45,7 @@ jobs:
         uses: https://code.forgejo.org/docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 # v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_VISUALIZATION }}
-          flavor: latest=${{ startsWith(forge.ref, 'refs/tags/') && ! endsWith(forge.ref, '-alpha') && ! endsWith(forge.ref, '-beta') }}
+          flavor: latest=${{ startsWith(forge.ref, 'refs/tags/') && ! contains(forge.ref, '-alpha') && ! contains(forge.ref, '-beta') }}
 
   flowpipeline:
 
