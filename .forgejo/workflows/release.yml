@@ -3,6 +3,7 @@ name: release version tag
 on:
   push:
     tags: [ "v*.*.*" ]
+  workflow_dispatch: # For manual triggers
 
 jobs:
   build:
