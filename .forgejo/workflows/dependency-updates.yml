@@ -2,8 +2,8 @@ name: Check for dependency updates
 
 on:
   workflow_dispatch: # For manual triggers
-  # schedule: # To regularly get new updates even without activity
-  #   - cron: '47 14 * * */7' # Every seven days at a random daytime
+  schedule: # To regularly get new updates even without activity
+    - cron: '47 14 * * */7' # Every seven days at a random daytime
   # pull_request_target: # Needed so RENOVATE_TOKEN is available
   #   types: [reopened, closed, synchronize, edited] # So Renovate can directly react to merged/closed/modified PRs
 
