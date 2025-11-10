@@ -19,10 +19,10 @@ require (
 	github.com/google/gopacket v1.1.19
 	github.com/influxdata/influxdb-client-go/v2 v2.14.0
 	github.com/mattn/go-sqlite3 v1.14.32
-	github.com/netsampler/goflow2/v2 v2.2.1
+	github.com/netsampler/goflow2/v2 v2.2.3
 	github.com/oschwald/maxminddb-golang v1.13.1
 	github.com/patrickmn/go-cache v2.1.0+incompatible
-	github.com/prometheus/client_golang v1.20.5
+	github.com/prometheus/client_golang v1.22.0
 	github.com/rs/dnscache v0.0.0-20230804202142-fc85eb664529
 	github.com/rs/zerolog v1.34.0
 	github.com/viktb/asnlookup v0.1.2
@@ -88,7 +88,7 @@ require (
 	github.com/jcmturner/gokrb5/v8 v8.4.4 // indirect
 	github.com/jcmturner/rpc/v2 v2.0.3 // indirect
 	github.com/k-sone/critbitgo v1.4.0 // indirect
-	github.com/klauspost/compress v1.17.11
+	github.com/klauspost/compress v1.18.0
 	github.com/libp2p/go-reuseport v0.4.0 // indirect
 	github.com/paulmach/orb v0.11.1 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
