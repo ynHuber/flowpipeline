@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # This matches the following: <type>(<scope>)!: <subject>\n\n<body>
-# - type: fix, ci, feat, chore, docs
+# - type: test, refactor, fix, ci, feat, chore, docs
 # - scope: optional, alphanumeric and underscores
 # - !: optional, indicates a breaking change
 # - subject: non-empty string with only lowercase letters and no colons and periods
 # - body: optional, can be multiple lines
 
 file="$1"
-regex="^(fix|ci|feat|chore|docs)(?:\(([[\w_]+)\))?(!)?: ([^\nA-Z\.:]+)(?:\n\n([^\n][\s\S]+))?\Z"
+regex="^(test|refactor|fix|ci|feat|chore|docs)(?:\(([[\w_]+)\))?(!)?: ([^\nA-Z\.:]+)(?:\n\n([^\n][\s\S]+))?\Z"
 # This regex matches all parts into groups, but there is no way to make grep return
 # only specific groups, so we just check for a full match.
 
@@ -27,7 +27,7 @@ else
 	echo "" >&2
 	echo "  [optional body separated by a blank line]" >&2
 	echo "" >&2
-	echo "  Types:   required: fix, ci, feat, chore, docs" >&2
+	echo "  Types:   required: test, refactor, fix, ci, feat, chore, docs" >&2
 	echo "  Scope:   optional: alphanumeric and underscores" >&2
 	echo "  !:       optional: indicates a breaking change" >&2
 	echo "  Subject: required: non-empty string with only lowercase letters and no colons or periods" >&2
