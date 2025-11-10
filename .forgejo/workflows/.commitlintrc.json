@@ -1,0 +1,7 @@
+{
+  "extends": ["@commitlint/config-conventional"],
+  "rules": {
+    "type-enum": [2, "always", ["refactor", "test", "fix", "ci", "feat", "chore", "docs"]],
+    "subject-full-stop": [2, "never"]
+  }
+}
