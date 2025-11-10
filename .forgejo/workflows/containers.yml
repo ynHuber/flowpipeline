@@ -71,7 +71,7 @@ jobs:
           export GIT_PASSWORD="${{ secrets.FORGEJO_TOKEN }}"
 
           # Create Kaniko cmdline
-          set -- /kaniko/executor --dockerfile="./Containerfile" --context="git://${{ env.REGISTRY }}/${{ forge.repository }}#${{ forge.ref }}#${{ forge.sha }}" --compressed-caching=false
+          set -- /kaniko/executor --dockerfile="./Containerfile" --context="git://${{ env.REGISTRY }}/${{ forge.repository }}#${{ forge.ref }}#${{ forge.sha }}" --compressed-caching=false --reproducible
 
           for destination in ${{ needs.extract-container-labels.outputs.flowpipeline-tags }}; do
             set -- "$@" --destination "$destination"
@@ -111,7 +111,7 @@ jobs:
           export GIT_PASSWORD="${{ secrets.FORGEJO_TOKEN }}"
 
           # Create Kaniko cmdline
-          set -- /kaniko/executor --dockerfile="./examples/visualization/Containerfile" --context="git://${{ env.REGISTRY }}/${{ forge.repository }}#${{ forge.ref }}#${{ forge.sha }}" --compressed-caching=false
+          set -- /kaniko/executor --dockerfile="./examples/visualization/Containerfile" --context="git://${{ env.REGISTRY }}/${{ forge.repository }}#${{ forge.ref }}#${{ forge.sha }}" --compressed-caching=false --reproducible
 
           for destination in ${{ needs.extract-container-labels.outputs.visualization-tags }}; do
             set -- "$@" --destination "$destination"
