@@ -19,6 +19,9 @@ jobs:
     container:
       image: docker.io/renovate/renovate:41@sha256:e998e1218fe572e23278d8808186a310784f7cb2ac8055307183ffc51d3a59e5
     steps:
+      - name: Echo actor name
+        run: echo actor ${{ forge.actor }}
+
       - name: Restore Renovate cache
         uses: https://code.forgejo.org/actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
