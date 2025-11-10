@@ -18,7 +18,7 @@ require (
 	github.com/go-co-op/gocron/v2 v2.18.0
 	github.com/google/gopacket v1.1.19
 	github.com/influxdata/influxdb-client-go/v2 v2.14.0
-	github.com/mattn/go-sqlite3 v1.14.24
+	github.com/mattn/go-sqlite3 v1.14.32
 	github.com/netsampler/goflow2/v2 v2.2.1
 	github.com/oschwald/maxminddb-golang v1.13.1
 	github.com/patrickmn/go-cache v2.1.0+incompatible
