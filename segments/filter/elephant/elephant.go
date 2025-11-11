@@ -21,7 +21,7 @@ import (
 	"codeberg.org/BelWue/flowpipeline/segments/base/basefiltersegment"
 	"github.com/rs/zerolog/log"
 
-	"github.com/asecurityteam/rolling"
+	"github.com/asecurityteam/rolling/v2"
 )
 
 type Elephant struct {

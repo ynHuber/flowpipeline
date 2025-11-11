@@ -11,7 +11,7 @@ require (
 	github.com/IBM/sarama v1.45.0
 	github.com/Yawning/cryptopan v0.0.0-20170504040949-65bca51288fe
 	github.com/alouca/gosnmp v0.0.0-20170620005048-04d83944c9ab
-	github.com/asecurityteam/rolling v2.0.4+incompatible
+	github.com/asecurityteam/rolling/v2 v2.2.2
 	github.com/bwNetFlow/ip_prefix_trie v0.0.0-20210830112018-b360b7b65c04
 	github.com/dustin/go-humanize v1.0.1
 	github.com/elastic/go-lumber v0.1.1
@@ -55,7 +55,6 @@ require (
 	github.com/xdg-go/stringprep v1.0.4 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/exp v0.0.0-20250819193227-8b4c13bb791b // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250707201910-8d1bb00bc6a7 // indirect
 )
 
