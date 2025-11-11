@@ -19,6 +19,7 @@ jobs:
         uses: https://code.forgejo.org/actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5
         with:
           go-version-file: 'go.mod'
+          cache: ${{ vars.CACHING }}
 
       - name: Install libpcap-dev
         if: ${{ steps.setup-go.outputs.cache-hit != 'true' }}

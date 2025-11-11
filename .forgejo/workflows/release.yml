@@ -31,6 +31,7 @@ jobs:
       uses: https://code.forgejo.org/actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6
       with:
         go-version-file: 'go.mod'
+        cache: false
 
     - name: Test before release
       run: go test ./...
