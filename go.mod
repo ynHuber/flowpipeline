@@ -7,8 +7,8 @@ replace codeberg.org/BelWue/flowpipeline => .
 require (
 	github.com/BelWue/bgp_routeinfo v0.3.1
 	github.com/BelWue/flowfilter v0.0.0-20250129140213-b11ce00e4643
-	github.com/ClickHouse/clickhouse-go/v2 v2.40.3
-	github.com/IBM/sarama v1.45.0
+	github.com/ClickHouse/clickhouse-go/v2 v2.30.1
+	github.com/IBM/sarama v1.46.3
 	github.com/Yawning/cryptopan v0.0.0-20170504040949-65bca51288fe
 	github.com/alouca/gosnmp v0.0.0-20170620005048-04d83944c9ab
 	github.com/asecurityteam/rolling/v2 v2.2.2
@@ -98,7 +98,7 @@ require (
 	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/common v0.66.1 // indirect
 	github.com/prometheus/procfs v0.16.1 // indirect
-	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
+	github.com/rcrowley/go-metrics v0.0.0-20250401214520-65e299d6c5c9 // indirect
 	github.com/segmentio/asm v1.2.0 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
