@@ -17,7 +17,7 @@ jobs:
     timeout-minutes: 10
     runs-on: BelWü
     container:
-      image: docker.io/renovate/renovate:41@sha256:e998e1218fe572e23278d8808186a310784f7cb2ac8055307183ffc51d3a59e5
+      image: docker.io/renovate/renovate:42@sha256:1930e96aff929f3a3caaf69c932daba340143791958d348c5032ecd25dad8dc5
     steps:
       - name: Echo actor name
         run: echo actor ${{ forge.actor }}
