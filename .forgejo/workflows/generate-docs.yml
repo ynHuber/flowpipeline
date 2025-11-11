@@ -17,20 +17,20 @@ jobs:
     if: forge.event.pull_request.merged == true
     runs-on: BelWü
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: https://code.forgejo.org/actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
         with:
           repository: BelWue/flowpipeline
           path: flowpipeline
 
-      - name: Checkout Wiki
+      - name: Checkout wiki
         uses: https://code.forgejo.org/actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
         with:
           repository: BelWue/flowpipeline.wiki
           path: wiki
           ref: main
 
-      - name: Set up Go
+      - name: Setup Go
         uses: https://code.forgejo.org/actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6
         with:
           go-version-file: 'flowpipeline/go.mod'
@@ -43,7 +43,7 @@ jobs:
         working-directory: flowpipeline
         run: $GENERATOR_EXEC -out "$CONFIG_FILE"
 
-      - name: Commit and Push Changes
+      - name: Commit and push changes
         working-directory: wiki
         run: |
           git config --global user.name "codeberg-actions[bot]"

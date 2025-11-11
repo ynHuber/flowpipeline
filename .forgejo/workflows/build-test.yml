@@ -1,4 +1,4 @@
-name: build and test
+name: Build and Test
 
 on:
   push:
@@ -20,19 +20,19 @@ jobs:
         #- os: macos-latest
           #goos: darwin
     steps:
-    - name: checkout
+    - name: Checkout
       uses: https://code.forgejo.org/actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
-    - name: install libpcap
+    - name: Install libpcap-dev
       if: matrix.goos == 'linux'
       run: apt-get update && apt-get install -y libpcap-dev
 
-    - name: setup go
+    - name: Setup go
       uses: https://code.forgejo.org/actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6
       with:
         go-version-file: 'go.mod'
 
-    - name: test
+    - name: Run go tests
       run: go test ./...
 
   build:
@@ -45,34 +45,34 @@ jobs:
         #- os: macos-latest
           #goos: darwin
     steps:
-    - name: checkout
+    - name: Checkout
       uses: https://code.forgejo.org/actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
-    - name: install libpcap
+    - name: Install libpcap-dev
       if: matrix.goos == 'linux'
       run: apt-get update && apt-get install -y libpcap-dev
 
-    - name: setup go
+    - name: Setup go
       uses: https://code.forgejo.org/actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6
       with:
         go-version-file: 'go.mod'
 
-    - name: build dynamically linked
+    - name: Build dynamically linked
       run: go build -o flowpipeline -ldflags "-X main.Version=${{ forge.sha }}" .
 
-    - name: save binary
+    - name: Save dynamically linked binary
       uses: https://code.forgejo.org/forgejo/upload-artifact/@16871d9e8cfcf27ff31822cac382bbb5450f1e1e # v4
       with:
         name: flowpipeline-${{ matrix.goos }}
         path: ./flowpipeline
         overwrite: true
 
-    - name: build statically linked
+    - name: Build statically linked
       run: go build -o flowpipeline-static -ldflags "-X main.Version=${{ forge.sha }}" .
       env:
         CGO_ENABLED: 0
 
-    - name: save statically linked binary
+    - name: Save statically linked binary
       uses: https://code.forgejo.org/forgejo/upload-artifact/@16871d9e8cfcf27ff31822cac382bbb5450f1e1e # v4
       with:
         name: flowpipeline-${{ matrix.goos }}-static
