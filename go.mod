@@ -28,7 +28,7 @@ require (
 	github.com/viktb/asnlookup v0.1.2
 	go.mongodb.org/mongo-driver v1.17.6
 	golang.org/x/text v0.29.0
-	google.golang.org/protobuf v1.36.6
+	google.golang.org/protobuf v1.36.10
 	gopkg.in/yaml.v2 v2.4.0
 )
 
