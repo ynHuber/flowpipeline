@@ -8,7 +8,7 @@
 # - body: optional, can be multiple lines
 
 file="$1"
-regex="^(test|refactor|fix|ci|feat|chore|docs)(?:\(([[\w_]+)\))?(!)?: ([^\nA-Z\.:]+)(?:\n\n([^\n][\s\S]+))?\Z"
+regex="^(test|refactor|fix|ci|feat|chore|docs)(?:\(([[\w_]+)\))?(!)?: ([^\n\.:]+)(?:\n\n([^\n][\s\S]+))?\Z"
 # This regex matches all parts into groups, but there is no way to make grep return
 # only specific groups, so we just check for a full match.
 
