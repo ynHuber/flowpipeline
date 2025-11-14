@@ -38,6 +38,7 @@ import (
 	"strconv"
 	"sync"
 
+	"github.com/osrg/gobgp/v4/pkg/packet/bgp"
 	"github.com/rs/zerolog/log"
 
 	"codeberg.org/BelWue/flowpipeline/pb"
@@ -57,7 +58,6 @@ type Bgp struct {
 	BgpLogLevel     string // optional, default is "warning" can be any of "trace","debug","info","warning","error","fatal" or "panic"
 
 	routeInfoServer routeinfo.RouteInfoServer
-	routeInfoLogger routeinfoLog.RouteinfoLogger
 }
 
 const DEFAULT_BGP_LOGLEVEL_WARNING = "warning"
@@ -120,6 +120,7 @@ func (segment Bgp) New(config map[string]string) segments.Segment {
 	appLogger := routeinfoLog.ApplicationLoggerFromZerolog(&log.Logger)
 	logger.SetApplicationLogger(appLogger)
 	logger.SetLogLevel(&bgpLogLevel)
+	rs.Logger = logger
 
 	newSegment := &Bgp{
 		FileName:        config["filename"],
@@ -127,7 +128,6 @@ func (segment Bgp) New(config map[string]string) segments.Segment {
 		UseFallbackOnly: fallbackonly,
 		RouterASN:       routerASN,
 		routeInfoServer: rs,
-		routeInfoLogger: logger,
 	}
 	return newSegment
 }
@@ -137,7 +137,6 @@ func (segment *Bgp) Run(wg *sync.WaitGroup) {
 		close(segment.Out)
 		wg.Done()
 	}()
-	segment.routeInfoServer.Logger = segment.routeInfoLogger
 	defer func() {
 		segment.routeInfoServer.Stop()
 	}()
@@ -150,15 +149,15 @@ func (segment *Bgp) Run(wg *sync.WaitGroup) {
 		var srcAsPath []uint32
 		var dstAsPath []uint32
 		if segment.UseFallbackOnly {
-			dstRouteInfos = segment.routeInfoServer.Routers[segment.FallbackRouter].Lookup(msg.DstAddrObj().String(), segment.routeInfoLogger.GetApplicationLogger())
-			srcRouteInfos = segment.routeInfoServer.Routers[segment.FallbackRouter].Lookup(msg.SrcAddrObj().String(), segment.routeInfoLogger.GetApplicationLogger())
+			dstRouteInfos = segment.routeInfoServer.Routers[segment.FallbackRouter].Lookup(msg.DstAddrObj().String())
+			srcRouteInfos = segment.routeInfoServer.Routers[segment.FallbackRouter].Lookup(msg.SrcAddrObj().String())
 		} else {
 			if router, ok := segment.routeInfoServer.Routers[msg.SamplerAddressObj().String()]; ok {
-				dstRouteInfos = router.Lookup(msg.DstAddrObj().String(), segment.routeInfoLogger.GetApplicationLogger())
-				srcRouteInfos = router.Lookup(msg.SrcAddrObj().String(), segment.routeInfoLogger.GetApplicationLogger())
+				dstRouteInfos = router.Lookup(msg.DstAddrObj().String())
+				srcRouteInfos = router.Lookup(msg.SrcAddrObj().String())
 			} else if segment.FallbackRouter != "" {
-				dstRouteInfos = segment.routeInfoServer.Routers[segment.FallbackRouter].Lookup(msg.DstAddrObj().String(), segment.routeInfoLogger.GetApplicationLogger())
-				srcRouteInfos = segment.routeInfoServer.Routers[segment.FallbackRouter].Lookup(msg.SrcAddrObj().String(), segment.routeInfoLogger.GetApplicationLogger())
+				dstRouteInfos = segment.routeInfoServer.Routers[segment.FallbackRouter].Lookup(msg.DstAddrObj().String())
+				srcRouteInfos = segment.routeInfoServer.Routers[segment.FallbackRouter].Lookup(msg.SrcAddrObj().String())
 			} else {
 				segment.Out <- msg
 				continue
@@ -173,11 +172,11 @@ func (segment *Bgp) Run(wg *sync.WaitGroup) {
 			msg.AsPath = path.AsPath
 			srcAsPath = path.AsPath
 			switch path.Validation {
-			case routeinfo.Valid:
+			case bgp.VALIDATION_STATE_VALID:
 				msg.ValidationStatus = pb.EnrichedFlow_Valid
-			case routeinfo.NotFound:
+			case bgp.VALIDATION_STATE_NOT_FOUND:
 				msg.ValidationStatus = pb.EnrichedFlow_NotFound
-			case routeinfo.Invalid:
+			case bgp.VALIDATION_STATE_INVALID:
 				msg.ValidationStatus = pb.EnrichedFlow_Invalid
 			default:
 				msg.ValidationStatus = pb.EnrichedFlow_Unknown
@@ -198,11 +197,11 @@ func (segment *Bgp) Run(wg *sync.WaitGroup) {
 			msg.Med = path.Med
 			msg.LocalPref = path.LocalPref
 			switch path.Validation {
-			case routeinfo.Valid:
+			case bgp.VALIDATION_STATE_VALID:
 				msg.ValidationStatus = pb.EnrichedFlow_Valid
-			case routeinfo.NotFound:
+			case bgp.VALIDATION_STATE_NOT_FOUND:
 				msg.ValidationStatus = pb.EnrichedFlow_NotFound
-			case routeinfo.Invalid:
+			case bgp.VALIDATION_STATE_INVALID:
 				msg.ValidationStatus = pb.EnrichedFlow_Invalid
 			default:
 				msg.ValidationStatus = pb.EnrichedFlow_Unknown
