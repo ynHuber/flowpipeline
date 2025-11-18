@@ -73,9 +73,11 @@ jobs:
           # Create Kaniko cmdline
           set -- /kaniko/executor --dockerfile="./Containerfile" --context="git://${{ env.REGISTRY }}/${{ forge.repository }}#${{ forge.ref }}#${{ forge.sha }}" --compressed-caching=false --reproducible
 
-          for destination in ${{ needs.extract-container-labels.outputs.flowpipeline-tags }}; do
+          while IFS= read -r destination; do
             set -- "$@" --destination "$destination"
-          done
+          done <<END
+          ${{ needs.extract-container-labels.outputs.flowpipeline-tags }}
+          END
 
           if ${{ forge.event_name == 'pull_request' }}; then
             set -- "$@" --no-push
@@ -113,9 +115,11 @@ jobs:
           # Create Kaniko cmdline
           set -- /kaniko/executor --dockerfile="./examples/visualization/Containerfile" --context="git://${{ env.REGISTRY }}/${{ forge.repository }}#${{ forge.ref }}#${{ forge.sha }}" --compressed-caching=false --reproducible
 
-          for destination in ${{ needs.extract-container-labels.outputs.visualization-tags }}; do
+          while IFS= read -r destination; do
             set -- "$@" --destination "$destination"
-          done
+          done <<END
+          ${{ needs.extract-container-labels.outputs.visualization-tags }}
+          END
 
           if ${{ forge.event_name == 'pull_request' }}; then
             set -- "$@" --no-push
