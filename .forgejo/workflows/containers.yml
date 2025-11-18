@@ -51,7 +51,7 @@ jobs:
 
     needs:
       - extract-container-labels
-    runs-on: codeberg-small
+    runs-on: BelWü
     container:
       image: docker.io/martizih/kaniko:v1.26.1-debug@sha256:6a01e35fc43218b104cebaa63e1a41c811db7c69a5dcf37b80537ff41a2d08de
     permissions:
@@ -93,7 +93,7 @@ jobs:
     needs:
       - extract-container-labels
       - flowpipeline
-    runs-on: codeberg-small
+    runs-on: BelWü
     container:
       image: docker.io/martizih/kaniko:v1.26.1-debug@sha256:6a01e35fc43218b104cebaa63e1a41c811db7c69a5dcf37b80537ff41a2d08de
     permissions:
