@@ -15,6 +15,17 @@
       "matchPackageNames": [
         "codeberg.org/belwue/flowpipeline"
       ]
+    },
+    {
+      "description": "Automerge Renovate updates (frequent dev dependency updates)",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "docker.io/renovate/renovate"
+      ],
+      "automerge": true,
+      "automergeType": "branch"
     }
   ],
   "semanticCommits": "auto",
