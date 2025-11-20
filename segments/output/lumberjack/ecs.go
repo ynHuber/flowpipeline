@@ -26,7 +26,7 @@ type ElasticCommonSchema struct {
 	Labels    map[string]string `json:"labels,omitempty"`
 
 	// ECS Categorization Fields (https://www.elastic.co/guide/en/ecs/current/ecs-category-field-values-reference.html)
-	Event ECSEvent `json:"event"`
+	Event *ECSEvent `json:"event"`
 
 	// Source (https://www.elastic.co/guide/en/ecs/current/ecs-source.html) and
 	// Destination (https://www.elastic.co/guide/en/ecs/current/ecs-destination.html)
@@ -175,7 +175,7 @@ func ECSFromEnrichedFlow(enrichedFlow *pb.EnrichedFlow) *ElasticCommonSchema {
 	result := &ElasticCommonSchema{
 		Timestamp: enrichedFlow.GetTimeFlowStartMs(),
 		ECS:       &ECSECS{Version: ElasticCommonSchemaVersion},
-		Event: ECSEvent{
+		Event: &ECSEvent{
 			Kind:     ECSEventKindEvent,
 			Category: []ECSEventCategory{ECSEventCategoryNetwork},
 			Type:     []ECSEventType{ECSEventTypeConnection},
