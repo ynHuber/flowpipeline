@@ -19,7 +19,7 @@ type ECSECS struct {
 
 type ElasticCommonSchema struct {
 	// Base Fields (https://www.elastic.co/guide/en/ecs/current/ecs-principles-implementation.html#_base_fields)
-	Timestamp uint64            `json:"@timestamp,omitempty"`
+	Timestamp string            `json:"@timestamp,omitempty"`
 	ECS       *ECSECS           `json:"ecs,omitempty"`
 	Message   string            `json:"message,omitempty"`
 	Tags      []string          `json:"tags,omitempty"`
@@ -60,6 +60,7 @@ type ECSRelatedICMP struct {
 func ECSFromEnrichedFlow(enrichedFlow *pb.EnrichedFlow) *ElasticCommonSchema {
 	var (
 		ok                          bool
+		Timestamp                                     = ""
 		SourceAS                    *AutonomousSystem = nil
 		DestinationAS               *AutonomousSystem = nil
 		srcIP                       netip.Addr
@@ -171,9 +172,16 @@ func ECSFromEnrichedFlow(enrichedFlow *pb.EnrichedFlow) *ElasticCommonSchema {
 	case 34525:
 		networkType = "ipv6"
 	}
+	if timeNs := int64(enrichedFlow.GetTimeFlowStartNs()); timeNs > 0 {
+		Timestamp = time.Unix(0, timeNs).Format(time.RFC3339Nano)
+	} else if timeMs := int64(enrichedFlow.GetTimeFlowStartMs()); timeMs > 0 {
+		Timestamp = time.UnixMilli(timeMs).Format(time.RFC3339Nano)
+	} else if timeS := int64(enrichedFlow.GetTimeFlowStart()); timeS > 0 {
+		Timestamp = time.Unix(timeS, 0).Format(time.RFC3339)
+	}
 
 	result := &ElasticCommonSchema{
-		Timestamp: enrichedFlow.GetTimeFlowStartMs(),
+		Timestamp: Timestamp,
 		ECS:       &ECSECS{Version: ElasticCommonSchemaVersion},
 		Event: &ECSEvent{
 			Kind:     ECSEventKindEvent,
