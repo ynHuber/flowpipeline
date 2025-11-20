@@ -1,6 +1,8 @@
 package lumberjack
 
 import (
+	"strconv"
+
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/utils"
 
@@ -49,6 +51,7 @@ type ECSNetwork struct {
 	Bytes      uint64 `json:"bytes"`
 	Packets    uint64 `json:"packets"`
 	Type       string `json:"type,omitempty"`
+	Name       string `json:"name,omitempty"`
 }
 
 // needed for https://www.elastic.co/docs/reference/enrich-processor/community-id-processor
@@ -70,6 +73,7 @@ func ECSFromEnrichedFlow(enrichedFlow *pb.EnrichedFlow) *ElasticCommonSchema {
 		SourceDomain                = ""
 		SourceRegisteredDomain      = ""
 		SourceTopLevelDomain        = ""
+		SourceNetworkName           = ""
 		dstIP                       netip.Addr
 		DestinationIPString         string
 		DestinationAddress          = ""
@@ -77,6 +81,7 @@ func ECSFromEnrichedFlow(enrichedFlow *pb.EnrichedFlow) *ElasticCommonSchema {
 		DestinationDomain           = ""
 		DestinationRegisteredDomain = ""
 		DestinationTopLevelDomain   = ""
+		DestinationNetworkName      = ""
 		RelatedHosts                = make([]string, 0, 2)
 	)
 	// source ip & address
@@ -155,6 +160,23 @@ func ECSFromEnrichedFlow(enrichedFlow *pb.EnrichedFlow) *ElasticCommonSchema {
 			Number: dstAS,
 		}
 	}
+	// Network ID
+	srcNetId := enrichedFlow.GetSrcId()
+	if srcNetId != 0 {
+		SourceNetworkName = strconv.Itoa(int(srcNetId))
+	}
+	srcNetString := enrichedFlow.GetSrcIdString()
+	if srcNetString != "" {
+		SourceNetworkName = srcNetString
+	}
+	dstNetId := enrichedFlow.GetDstId()
+	if dstNetId != 0 {
+		DestinationNetworkName = strconv.Itoa(int(dstNetId))
+	}
+	dstNetString := enrichedFlow.GetDstIdString()
+	if dstNetString != "" {
+		DestinationNetworkName = dstNetString
+	}
 
 	var icmp *ECSRelatedICMP = nil
 	// only set if proto is ICMPv4 or ICMPv6
@@ -205,6 +227,7 @@ func ECSFromEnrichedFlow(enrichedFlow *pb.EnrichedFlow) *ElasticCommonSchema {
 			Domain:           SourceDomain,
 			RegisteredDomain: SourceRegisteredDomain,
 			//Subdomain:        SourceSubdomain,
+			Network:          &ECSNetwork{Name: SourceNetworkName},
 			TopLevelDomain:   SourceTopLevelDomain,
 			AutonomousSystem: SourceAS,
 		},
@@ -218,6 +241,7 @@ func ECSFromEnrichedFlow(enrichedFlow *pb.EnrichedFlow) *ElasticCommonSchema {
 			Domain:           DestinationDomain,
 			RegisteredDomain: DestinationRegisteredDomain,
 			//Subdomain:        DestinationSubdomain,
+			Network:          &ECSNetwork{Name: DestinationNetworkName},
 			TopLevelDomain:   DestinationTopLevelDomain,
 			AutonomousSystem: DestinationAS,
 		},

@@ -45,4 +45,5 @@ type ECSSourceOrDest struct {
 	RegisteredDomain string            `json:"registered_domain,omitempty"`
 	TopLevelDomain   string            `json:"top_level_domain,omitempty"`
 	AutonomousSystem *AutonomousSystem `json:"as,omitempty"`
+	Network          *ECSNetwork       `json:"network,omitempty"`
 }
