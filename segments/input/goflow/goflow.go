@@ -16,11 +16,6 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/zerolog/log"
 
-	"errors"
-
-	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/rs/zerolog/log"
-
 	"math"
 	"net/http"
 	"net/url"
@@ -59,7 +54,7 @@ type Goflow struct {
 	Listen                 []url.URL // optional, default config value for this slice is "sflow://:6343,netflow://:2055"
 	Workers                uint64    // optional, amount of workers to spawn for each endpoint, default is 1
 	Blocking               bool      //optional, default is false
-	QueueSize              int       //default is 1000000
+	QueueSize              int       //default default see variable defaultQueueLength
 	NumSockets             int       //default is 1
 	PrometheusStatsAddress string    // optional, if set to a valid URL, goflow2 prometheus stats will be served here
 	goflowInputChannel     chan *pb.EnrichedFlow
@@ -132,6 +127,7 @@ func (segment Goflow) New(config map[string]string) segments.Segment {
 	return &Goflow{
 		Listen:                 listenAddressesSlice,
 		Workers:                workers,
+		QueueSize:              queueSize,
 		PrometheusStatsAddress: config["prometheus_stats_address"],
 	}
 }
@@ -143,17 +139,13 @@ func (segment *Goflow) Run(wg *sync.WaitGroup) {
 	}()
 	segment.goflowInputChannel = make(chan *pb.EnrichedFlow)
 	segment.startGoFlow(&channelDriver{segment.goflowInputChannel})
-	segment.goflowInputChannel = make(chan *pb.EnrichedFlow)
-	segment.startGoFlow(&channelDriver{segment.goflowInputChannel})
 	for {
 		select {
-		case msg, ok := <-segment.goflowInputChannel:
 		case msg, ok := <-segment.goflowInputChannel:
 			if !ok {
 				// do not return here, as this might leave the
 				// segment.In channel blocking in our
 				// predecessor segment
-				segment.goflowInputChannel = nil // make unavailable for select
 				segment.goflowInputChannel = nil // make unavailable for select
 				// TODO: think about restarting goflow?
 			}
@@ -185,41 +177,6 @@ func (d *channelDriver) Send(key, data []byte) error {
 func (d *channelDriver) Close(context.Context) error {
 	close(d.out)
 	return nil
-}
-
-type ReceiverCallback struct {
-	Name           string
-	ReceiverMetric *metrics.ReceiverMetric
-	DroppedPackets uint64
-	CurrentTimer   *time.Timer
-}
-
-func NewReceiverCallback(name string, prometheusEnabled bool) *ReceiverCallback {
-	var receiverMetric *metrics.ReceiverMetric = nil
-	if prometheusEnabled {
-		receiverMetric = metrics.NewReceiverMetric()
-	}
-
-	return &ReceiverCallback{
-		Name:           name,
-		ReceiverMetric: receiverMetric,
-	}
-}
-
-func (rcb *ReceiverCallback) Dropped(pkt utils.Message) {
-	rcb.DroppedPackets++
-	if rcb.ReceiverMetric != nil {
-		rcb.ReceiverMetric.Dropped(pkt)
-	}
-
-	oneSecond := time.Duration(1) * time.Second
-	if rcb.CurrentTimer == nil {
-		rcb.CurrentTimer = time.AfterFunc(oneSecond, func() {
-			log.Warn().Msgf("Goflow: Listener %s dropped %d packets in the last second.", rcb.Name, rcb.DroppedPackets)
-			rcb.CurrentTimer = nil
-			rcb.DroppedPackets = 0
-		})
-	}
 }
 
 type ReceiverCallback struct {
@@ -292,7 +249,6 @@ func (segment *Goflow) startGoFlow(transport transport.TransportInterface) {
 				QueueSize:        segment.QueueSize,
 				Blocking:         segment.Blocking,
 				ReceiverCallback: NewReceiverCallback(listenAddrUrl.String(), segment.PrometheusStatsAddress != ""),
-				ReceiverCallback: NewReceiverCallback(listenAddrUrl.String(), segment.PrometheusStatsAddress != ""),
 			}
 
 			recv, err := utils.NewUDPReceiver(cfg)
@@ -311,10 +267,6 @@ func (segment *Goflow) startGoFlow(transport transport.TransportInterface) {
 			if err != nil {
 				log.Fatal().Err(err).Msg("Goflow: Failed creating proto producer")
 				segment.ShutdownParentPipeline()
-			}
-			// enable Prometheus stats
-			if segment.PrometheusStatsAddress != "" {
-				flowProducer = metrics.WrapPromProducer(flowProducer)
 			}
 			// enable Prometheus stats
 			if segment.PrometheusStatsAddress != "" {
@@ -357,18 +309,6 @@ func (segment *Goflow) startGoFlow(transport transport.TransportInterface) {
 			}
 
 		}(listenAddrUrl)
-	}
-
-	// Start prometheus server if requested
-	if segment.PrometheusStatsAddress != "" {
-		http.Handle("/metrics", promhttp.Handler())
-		srv := http.Server{Addr: segment.PrometheusStatsAddress}
-		go func() {
-			err := srv.ListenAndServe()
-			if err != nil && !errors.Is(err, http.ErrServerClosed) {
-				log.Fatal().Err(err).Msg("Goflow: Failed to start goflow2 prometheus server: ")
-			}
-		}()
 	}
 
 	// Start prometheus server if requested

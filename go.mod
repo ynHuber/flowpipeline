@@ -39,8 +39,10 @@ require (
 )
 
 require (
+	github.com/0ne-zero/goTraceroute v0.0.3 // indirect
 	github.com/ClickHouse/ch-go v0.69.0 // indirect
 	github.com/Shopify/sarama v1.38.1 // indirect
+	github.com/aeden/traceroute v0.0.0-20210211061815-03f5f7cb7908 // indirect
 	github.com/alecthomas/participle/v2 v2.1.4 // indirect
 	github.com/alouca/gologger v0.0.0-20120904114645-7d4b7291de9c // indirect
 	github.com/andybalholm/brotli v1.2.0 // indirect

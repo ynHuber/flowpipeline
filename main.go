@@ -37,6 +37,7 @@ import (
 	_ "codeberg.org/BelWue/flowpipeline/segments/input/replay"
 	_ "codeberg.org/BelWue/flowpipeline/segments/input/stdin"
 	_ "codeberg.org/BelWue/flowpipeline/segments/ungrouped/diskbuffer"
+	_ "codeberg.org/BelWue/flowpipeline/segments/ungrouped/maptrifficflows"
 
 	_ "codeberg.org/BelWue/flowpipeline/segments/meta/delay_monitoring"
 

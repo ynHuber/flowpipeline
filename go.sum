@@ -1,3 +1,5 @@
+github.com/0ne-zero/goTraceroute v0.0.3 h1:5V8fDWnhxLv9Y9LgqJkj8f+2na+it8iJg48GYB9gMgs=
+github.com/0ne-zero/goTraceroute v0.0.3/go.mod h1:1f41ABXT/HargML4taE1rngdx3JvI6CjFgfjdEv7T/A=
 github.com/BelWue/bgp_routeinfo v1.0.0 h1:S0bk87JQ7g14FXA25qQFRVvZPTgrmFbKXyKAMgvpj/s=
 github.com/BelWue/bgp_routeinfo v1.0.0/go.mod h1:qkvoocF/Xe4h4TN+/EU0PPt1p6QJfvZUbEKK9QjVotc=
 github.com/BelWue/flowfilter v1.0.0 h1:h02XS5hEekRGaq7A2ufj8SHzaPe5GCULE4hbZ3wWqzE=
@@ -15,6 +17,8 @@ github.com/Shopify/toxiproxy/v2 v2.5.0 h1:i4LPT+qrSlKNtQf5QliVjdP08GyAH8+BUIc9gT
 github.com/Shopify/toxiproxy/v2 v2.5.0/go.mod h1:yhM2epWtAmel9CB8r2+L+PCmhH6yH2pITaPAo7jxJl0=
 github.com/Yawning/cryptopan v0.0.0-20170504040949-65bca51288fe h1:SKdmPMOww/faIbffys2UgnZHlQJETCw7N18AaYUYf2M=
 github.com/Yawning/cryptopan v0.0.0-20170504040949-65bca51288fe/go.mod h1:tGK+sH41V0mnyFBVWQoRyj7neHPwQwPM1KJ3PfS6dTI=
+github.com/aeden/traceroute v0.0.0-20210211061815-03f5f7cb7908 h1:6suDyKbvZ5r2G/gblQLV9Cdv7rdqNlUxsRXpLOF0rKM=
+github.com/aeden/traceroute v0.0.0-20210211061815-03f5f7cb7908/go.mod h1:HPBB/4vaPt7NcN9l72/+IwsmDVQsa6AWM6ZDKJCLB9U=
 github.com/alecthomas/assert/v2 v2.11.0 h1:2Q9r3ki8+JYXvGsDyBXwH3LcJ+WK5D0gc5E8vS6K3D0=
 github.com/alecthomas/assert/v2 v2.11.0/go.mod h1:Bze95FyfUr7x34QZrjL+XP+0qgp/zg8yS+TtBj1WA3k=
 github.com/alecthomas/participle/v2 v2.1.4 h1:W/H79S8Sat/krZ3el6sQMvMaahJ+XcM9WSI2naI7w2U=
