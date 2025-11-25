@@ -67,131 +67,119 @@ type ToptalkerDatabaseEntries interface {
 	init()
 }
 
+type TypedEntryMap[T comparable] struct {
+	data *map[string]*TypedRecordMap[T]
+}
+
+type TypedRecordMap[T comparable] struct {
+	sync.RWMutex
+	recordMap map[T]Record
+}
+
 type SingleIpEntries struct {
-	data *map[string]*map[[16]byte]Record
+	TypedEntryMap[[16]byte]
 }
 
 type DoubleIpEntries struct {
-	data *map[string]*map[[32]byte]Record
+	TypedEntryMap[[32]byte]
 }
 
 func (d *SingleIpEntries) getTypedRecord(key []byte, trafficType string) (Record, bool) {
 	var key16 [16]byte
 	copy(key16[:], key)
-	return getTypedRecord(d.data, key16, trafficType)
+	return d.getTypedEntryRecord(key16, trafficType)
 }
 
 func (d *DoubleIpEntries) getTypedRecord(key []byte, trafficType string) (Record, bool) {
 	var key32 [32]byte
 	copy(key32[:], key)
-	return getTypedRecord(d.data, key32, trafficType)
+	return d.getTypedEntryRecord(key32, trafficType)
 }
 
-func getTypedRecord[IntType comparable](entryMaps *map[string]*map[IntType]Record, uintkey IntType, trafficType string) (Record, bool) {
-	if entryMaps == nil {
+func (t *TypedEntryMap[T]) getTypedEntryRecord(key T, trafficType string) (Record, bool) {
+	if t.data == nil {
 		return nil, false
 	}
-	trafficMap := (*entryMaps)[trafficType]
+	trafficMap := (*t.data)[trafficType]
 	if trafficMap == nil {
 		return nil, false
 	}
-	record, found := (*trafficMap)[uintkey]
+	trafficMap.RLock()
+	record, found := trafficMap.recordMap[key]
+	trafficMap.RUnlock()
 	return record, found
 }
 
 func (d *SingleIpEntries) upsertRecord(key []byte, value Record, trafficType string) {
 	var key16 [16]byte
 	copy(key16[:], key)
-	upsertRecord(d.data, key16, value, trafficType)
+	d.TypedEntryMap.upsertRecord(key16, value, trafficType)
 }
 
 func (d *DoubleIpEntries) upsertRecord(key []byte, value Record, trafficType string) {
 	var key32 [32]byte
 	copy(key32[:], key)
-	upsertRecord(d.data, key32, value, trafficType)
+	d.TypedEntryMap.upsertRecord(key32, value, trafficType)
 }
 
-func upsertRecord[IntType comparable](entryMaps *map[string]*map[IntType]Record, uintkey IntType, value Record, trafficType string) {
-	trafficMap := (*entryMaps)[trafficType]
+func (t *TypedEntryMap[T]) upsertRecord(key T, value Record, trafficType string) {
+	trafficMap := (*t.data)[trafficType]
 	if trafficMap == nil {
-		trafficMap = &map[IntType]Record{}
-		(*entryMaps)[trafficType] = trafficMap
+		trafficMap = &TypedRecordMap[T]{recordMap: map[T]Record{}}
+		(*t.data)[trafficType] = trafficMap
 	}
-	(*trafficMap)[uintkey] = value
+
+	trafficMap.Lock()
+	trafficMap.recordMap[key] = value
+	defer trafficMap.Unlock()
 }
 
-func (d *SingleIpEntries) count() int {
-	return count(d.data)
-}
-
-func (d *DoubleIpEntries) count() int {
-	return count(d.data)
-}
-
-func count[IntType comparable](recordMaps *map[string]*map[IntType]Record) int {
+func (t *TypedEntryMap[T]) count() int {
 	entryCount := 0
-	for _, recordMap := range *recordMaps {
-		entryCount += len(*recordMap)
+	for _, recordMap := range *t.data {
+		entryCount += len(recordMap.recordMap)
 	}
 	return entryCount
 }
 
-func (d *SingleIpEntries) cleanup() {
-	cleanup(d.data)
-}
-
-func (d *DoubleIpEntries) cleanup() {
-	cleanup(d.data)
-}
-
-func (d *SingleIpEntries) init() {
-	d.data = &map[string]*map[[16]byte]Record{}
-}
-
-func (d *DoubleIpEntries) init() {
-	d.data = &map[string]*map[[32]byte]Record{}
-}
-
-func cleanup[IntType comparable](recordMaps *map[string]*map[IntType]Record) {
-	for _, recordMap := range *recordMaps {
-		go cleanupRecordMap(recordMap)
+func (t *TypedEntryMap[T]) cleanup() {
+	for _, recordMap := range *t.data {
+		go recordMap.cleanup()
 	}
 }
 
-func (d *SingleIpEntries) getAllEntries() <-chan Record {
-	return getAllEntries(d.data)
+func (t *TypedEntryMap[T]) init() {
+	t.data = &map[string]*TypedRecordMap[T]{}
 }
 
-func (d *DoubleIpEntries) getAllEntries() <-chan Record {
-	return getAllEntries(d.data)
-}
-
-func getAllEntries[IntType comparable](recordMaps *map[string]*map[IntType]Record) <-chan Record {
+func (t *TypedEntryMap[T]) getAllEntries() <-chan Record {
 	out := make(chan Record)
 	go func() {
 		defer func() {
 			close(out)
 		}()
-		if recordMaps == nil {
+		if t.data == nil {
 			return
 		}
-		for _, trafficMap := range *recordMaps {
+		for _, trafficMap := range *t.data {
 			if trafficMap != nil {
-				for _, record := range *trafficMap {
+				trafficMap.RLock()
+				for _, record := range trafficMap.recordMap {
 					out <- record
 				}
+				trafficMap.RUnlock()
 			}
 		}
 	}()
 	return out
 }
 
-func cleanupRecordMap[K comparable](recordMap *map[K]Record) {
-	if recordMap != nil {
-		for key, record := range *recordMap {
-			if record.isEmpty() {
-				delete(*recordMap, key)
-			}
+func (t *TypedRecordMap[T]) cleanup() {
+	t.Lock()
+	defer t.Unlock()
+	for key, record := range t.recordMap {
+		if record.isEmpty() {
+			delete(t.recordMap, key)
 		}
 	}
 }

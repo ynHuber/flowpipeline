@@ -2,6 +2,7 @@ package toptalkersmetrics
 
 import (
 	"testing"
+	"time"
 
 	"codeberg.org/BelWue/flowpipeline/pipeline"
 	"codeberg.org/BelWue/flowpipeline/pipeline/config/evaluation_mode"
@@ -43,5 +44,47 @@ func TestSegment_EvaluationMode_initialization_connection(t *testing.T) {
 		} else {
 			t.Error("Segment toptalkersmetrics not initializing correctly")
 		}
+	}
+}
+
+func TestSegment_cleanup_single_func(t *testing.T) {
+	testEntries := SingleIpEntries{}
+	testEntries.init()
+	key := []byte("1")
+	record := DefaultRecord{
+		Display: "test",
+	}
+	testEntries.upsertRecord(key, &record, "empty")
+
+	if testEntries.count() != 1 {
+		t.Error("Entry not added correctly")
+	}
+	testEntries.cleanup()
+	// cleanup is async -> having to wait
+	time.Sleep(time.Second * 1)
+
+	if testEntries.count() != 0 {
+		t.Error("Entry not cleaned up correctly")
+	}
+}
+
+func TestSegment_cleanup_multi_func(t *testing.T) {
+	testEntries := DoubleIpEntries{}
+	testEntries.init()
+	key := []byte("1")
+	record := DefaultRecord{
+		Display: "test",
+	}
+	testEntries.upsertRecord(key, &record, "empty")
+
+	if testEntries.count() != 1 {
+		t.Error("Entry not added correctly")
+	}
+	testEntries.cleanup()
+	// cleanup is async -> having to wait
+	time.Sleep(time.Second * 1)
+
+	if testEntries.count() != 0 {
+		t.Error("Entry not cleaned up correctly")
 	}
 }
