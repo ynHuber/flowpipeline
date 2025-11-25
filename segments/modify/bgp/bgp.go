@@ -136,10 +136,9 @@ func (segment *Bgp) Run(wg *sync.WaitGroup) {
 	defer func() {
 		close(segment.Out)
 		wg.Done()
-	}()
-	defer func() {
 		segment.routeInfoServer.Stop()
 	}()
+	segment.routeInfoServer.Init()
 
 	for msg := range segment.In {
 		// The following conversions to String are stupid, but it is
