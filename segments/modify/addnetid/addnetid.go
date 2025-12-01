@@ -1,19 +1,3 @@
-package addnetid
-
-import (
-	"encoding/csv"
-	"io"
-	"net"
-	"os"
-	"strconv"
-	"sync"
-
-	"codeberg.org/BelWue/flowpipeline/segments"
-	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
-	"github.com/bwNetFlow/ip_prefix_trie"
-	"github.com/rs/zerolog/log"
-)
-
 // The `addnetid` segment can add a network ID to flows according to the IP prefix
 // the flow is matched to. These prefixes are sourced from a simple csv file
 // consisting of lines in the format `ip prefix,id`. For example:
@@ -40,6 +24,21 @@ import (
 // field, actually no matching entry in database).
 // if `enforceint` is set to true all networkids must be valid integers and will be
 // written to the SrcId Field in the enriched flow.
+package addnetid
+
+import (
+	"encoding/csv"
+	"io"
+	"net"
+	"os"
+	"strconv"
+	"sync"
+
+	"codeberg.org/BelWue/flowpipeline/segments"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
+	"github.com/bwNetFlow/ip_prefix_trie"
+	"github.com/rs/zerolog/log"
+)
 
 type AddNetId struct {
 	basesegment.BaseSegment
