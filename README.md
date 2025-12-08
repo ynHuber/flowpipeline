@@ -89,7 +89,7 @@ The example container starts with:
  - prometheus running on port 9090
 
 ```sh
-docker run -p 3000:3000 -p 2055:2055/udp -p 6343:6343 -p 9090:9090 /udp codeberg.org/belwue/flowpipeline-grafana
+docker run -p 3000:3000 -p 2055:2055/udp -p 6343:6343/udp -p 9090:9090 codeberg.org/belwue/flowpipeline-grafana
 ```
 ![Grafana dashboard showing some flowpipeline statistics](https://github.com/user-attachments/assets/d2fa3dd1-cc57-4cd7-a034-78a926ed509c)
 
