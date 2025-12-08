@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 1,
   "links": [],
   "panels": [
     {
@@ -73,7 +73,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "disableTextWrap": false,
@@ -142,7 +142,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "disableTextWrap": false,
@@ -193,6 +193,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -240,7 +241,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "disableTextWrap": false,
@@ -337,6 +338,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -384,7 +386,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "disableTextWrap": false,
@@ -455,16 +457,43 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "continuous-GrYlRd"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
             }
           },
-          "mappings": []
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
         },
         "overrides": []
       },
@@ -476,32 +505,28 @@
       },
       "id": 8,
       "options": {
-        "displayLabels": [
-          "name"
-        ],
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
         "legend": {
+          "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false,
-          "values": [
-            "percent"
-          ]
+          "showLegend": true
         },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "min"
-          ],
-          "fields": "/^Total Bytes \\(last 5 min\\)$/",
-          "values": true
-        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
-        }
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "datasource": {
@@ -511,7 +536,7 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "increase(all_flow_bits{SrcAddr=~\"$Addresses\"}[5m])",
+          "expr": "all_flow_bits{SrcAddr=~\"$Addresses\"} or all_flow_bits{DstAddr=~\"$Addresses\"}",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -519,25 +544,6 @@
           "legendFormat": "__auto",
           "range": false,
           "refId": "Matching Source",
-          "useBackend": false
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "few60q8ooo0e8c"
-          },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "increase(all_flow_bits{DstAddr=~\"$Addresses\"}[5m])",
-          "format": "table",
-          "fullMetaSearch": false,
-          "hide": true,
-          "includeNullMetadata": true,
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "Matching Destination",
           "useBackend": false
         }
       ],
@@ -636,7 +642,7 @@
             "includeByName": {},
             "indexByName": {},
             "renameByName": {
-              "Bytes * Value (sum)": "Total Bytes (last 5 min)",
+              "Bytes * Value (sum)": "Total Bytes",
               "DstPort": ""
             }
           }
@@ -644,15 +650,9 @@
         {
           "id": "transpose",
           "options": {}
-        },
-        {
-          "id": "transpose",
-          "options": {
-            "firstFieldName": "Port"
-          }
         }
       ],
-      "type": "piechart"
+      "type": "barchart"
     },
     {
       "datasource": {
@@ -702,13 +702,14 @@
           "fields": "/^Total Bytes \\(last 5min\\)$/",
           "values": true
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "datasource": {
@@ -718,7 +719,7 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "increase(all_flow_bits{SrcAddr=~\"$Addresses\"}[5m])",
+          "expr": "all_flow_bits{SrcAddr=~\"$Addresses\"} or all_flow_bits{DstAddr=~\"$Addresses\"}",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -726,25 +727,6 @@
           "legendFormat": "__auto",
           "range": false,
           "refId": "Matching Source",
-          "useBackend": false
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "few60q8ooo0e8c"
-          },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "increase(all_flow_bits{DstAddr=~\"$Addresses\"}[5m])",
-          "format": "table",
-          "fullMetaSearch": false,
-          "hide": true,
-          "includeNullMetadata": true,
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "Matching Destination",
           "useBackend": false
         }
       ],
@@ -922,13 +904,14 @@
           "fields": "/^Total Bytes \\(last 5 min\\)$/",
           "values": true
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "datasource": {
@@ -938,7 +921,7 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "increase(all_flow_bits{SrcAddr=~\"$Addresses\"}[5m])",
+          "expr": "all_flow_bits{SrcAddr=~\"$Addresses\"} or all_flow_bits{DstAddr=~\"$Addresses\"}",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -946,25 +929,6 @@
           "legendFormat": "__auto",
           "range": false,
           "refId": "Matching Source",
-          "useBackend": false
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "few60q8ooo0e8c"
-          },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "increase(all_flow_bits{DstAddr=~\"$Addresses\"}[5m])",
-          "format": "table",
-          "fullMetaSearch": false,
-          "hide": true,
-          "includeNullMetadata": true,
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "Matching Destination",
           "useBackend": false
         }
       ],
@@ -1101,6 +1065,9 @@
             "cellOptions": {
               "type": "auto"
             },
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
           "mappings": [],
@@ -1129,24 +1096,16 @@
       "id": 3,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
         "frameIndex": 1,
         "showHeader": true,
         "sortBy": [
           {
-            "desc": false,
+            "desc": true,
             "displayName": "Nr. of appearances last (last min)"
           }
         ]
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "datasource": {
@@ -1156,7 +1115,7 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "increase(all_flow_bits{SrcAddr=~\"$Addresses\"}[1m])",
+          "expr": "all_flow_bits{SrcAddr=~\"$Addresses\"} or all_flow_bits{DstAddr=~\"$Addresses\"}",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -1164,24 +1123,6 @@
           "legendFormat": "__auto",
           "range": true,
           "refId": "Matching Source",
-          "useBackend": false
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "few60q8ooo0e8c"
-          },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "increase(all_flow_bits{DstAddr=~\"$Addresses\"}[1m])",
-          "format": "table",
-          "fullMetaSearch": false,
-          "hide": true,
-          "includeNullMetadata": true,
-          "instant": false,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "Matching Destination",
           "useBackend": false
         }
       ],
@@ -1225,7 +1166,7 @@
   ],
   "preload": false,
   "refresh": "",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [
     "kubernetes"
   ],
