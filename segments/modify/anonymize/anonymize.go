@@ -36,12 +36,13 @@ type SubnetAnonymizer struct {
 
 type Anonymize struct {
 	basesegment.BaseSegment
-	EncryptionKey     string   // required if AnonymizationMode == cryptopan or AnonymizationMode == All, key for anonymization by Crypto-PAn.
-	Fields            []string // optional, list of Fields to anonymize their IP address. Default if not set are all available fields: SrcAddr, DstAddr, SamplerAddress
-	AnonymizationMode Mode     //optional, define which mode should be used for anonymizing ips. Default is Crypto-PAn
-
+	Key                 string   // Used as key. Required if Mode == cryptopan or Mode == All, key for anonymization by Crypto-PAn.
+	Fields              []string // optional, list of Fields to anonymize their IP address. Default if not set are all available fields: SrcAddr, DstAddr, SamplerAddress
+	Mode                Mode     // optional, define which mode should be used for anonymizing ips. Options are Crypto-PAn, subnet, and all .Default is Crypto-PAn.
+	MaskV4              int      // optional, Mask to ananoymize to when using subnet anonymization. Default is 16
+	MaskV6              int      // optional, Mask to ananoymize to when using subnet anonymization. Default is 52
 	cryptopanAnonymizer *cryptopan.Cryptopan
-	subnetAnonymizer    *SubnetAnonymizer //requires config fields if AnonymizationMode == subnet or AnonymizationMode == All
+	subnetAnonymizer    *SubnetAnonymizer //requires config fields if Mode == subnet or Mode == All
 }
 
 func (segments Anonymize) New(config map[string]string) segments.Segment {
@@ -58,9 +59,9 @@ func (segments Anonymize) New(config map[string]string) segments.Segment {
 		return nil
 	}
 
+	maskV4 := 16
+	maskV6 := 52
 	if mode == ModeSubNet || mode == ModeAll {
-		maskV4 := 16
-		maskV6 := 52
 
 		if config["maskV4"] == "" {
 			log.Info().Msg("Anonymize: No maskV4 provided for subnet anonymization - using default 16")
@@ -126,11 +127,13 @@ func (segments Anonymize) New(config map[string]string) segments.Segment {
 	}
 
 	return &Anonymize{
-		EncryptionKey:       encryptionKey,
+		Key:                 encryptionKey,
 		cryptopanAnonymizer: cryptoPanAnonymizer,
 		subnetAnonymizer:    subnetAnonymizer,
 		Fields:              fields,
-		AnonymizationMode:   mode,
+		Mode:                mode,
+		MaskV4:              maskV4,
+		MaskV6:              maskV6,
 	}
 }
 
@@ -187,7 +190,7 @@ func (segment *Anonymize) Run(wg *sync.WaitGroup) {
 }
 
 func (s *Anonymize) anonymize(ip net.IP, addrPreservedLen uint32) (net.IP, pb.EnrichedFlow_AnonymizedType, uint32) {
-	switch s.AnonymizationMode {
+	switch s.Mode {
 	case ModeCryptoPan:
 		return s.cryptopanAnonymizer.Anonymize(ip), pb.EnrichedFlow_CryptoPAN, addrPreservedLen
 	case ModeSubNet:
