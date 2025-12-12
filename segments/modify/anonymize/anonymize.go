@@ -38,7 +38,7 @@ type Anonymize struct {
 	basesegment.BaseSegment
 	Key                 string   // Used as key. Required if Mode == cryptopan or Mode == All, key for anonymization by Crypto-PAn.
 	Fields              []string // optional, list of Fields to anonymize their IP address. Default if not set are all available fields: SrcAddr, DstAddr, SamplerAddress
-	Mode                Mode     // optional, define which mode should be used for anonymizing ips. Options are Crypto-PAn, subnet, and all .Default is Crypto-PAn.
+	Mode                Mode     // optional, define which mode should be used for anonymizing ips. Options are cryptopan, subnet, and all .Default is Crypto-PAn.
 	MaskV4              int      // optional, Mask to ananoymize to when using subnet anonymization. Default is 16
 	MaskV6              int      // optional, Mask to ananoymize to when using subnet anonymization. Default is 52
 	cryptopanAnonymizer *cryptopan.Cryptopan
