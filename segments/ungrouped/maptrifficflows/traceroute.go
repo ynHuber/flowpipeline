@@ -6,14 +6,22 @@ import (
 	"fmt"
 	"net"
 	"strings"
+	"sync"
 	"time"
 
-	"github.com/rs/zerolog/log"
 	"golang.org/x/net/icmp"
 	"golang.org/x/net/ipv4"
+	"golang.org/x/net/ipv6"
 )
 
 const DEBUGMODE = false
+
+type Protocol string
+
+const (
+	UDP4 Protocol = "udp4"
+	UDP6 Protocol = "udp6"
+)
 
 // TracerouteConfig holds the configuration for the traceroute operation
 type TracerouteConfig struct {
@@ -27,28 +35,36 @@ type TracerouteConfig struct {
 }
 
 // runTraceroute runs the traceroute operation based on the given configuration
-func runTraceroute(config *TracerouteConfig) (error, []net.IP) {
-	log.Trace().Msgf("traceroute to %s, %d hops max, %d byte packets\n", config.DestIP, config.MaxTTL, config.PacketSize)
+func runTraceroute(config *TracerouteConfig, mx *sync.Mutex) (error, []net.IP) {
 	ipPath := []net.IP{}
 	// Create ICMP packet listener
 	var (
-		destString string
-		recvConn   *icmp.PacketConn
-		err        error
+		destString    string
+		recvConn      *icmp.PacketConn
+		err           error
+		endpoint      string
+		protocol      Protocol
+		receiverProto string
 	)
 	v4 := config.DestIP.To4()
 	if v4 != nil {
-		recvConn, err = icmp.ListenPacket("ip4:icmp", "0.0.0.0")
+		endpoint = "0.0.0.0"
+		protocol = UDP4
 		destString = v4.String()
+		receiverProto = "ip4:icmp"
 	} else {
 		v6 := config.DestIP.To16()
 		if v6 == nil {
 			return fmt.Errorf("Invalid IP-Address: %s", config.DestIP.String()), nil
 		}
-		recvConn, err = icmp.ListenPacket("ip6:icmp", "::")
+		endpoint = "::"
+		protocol = UDP6
+		receiverProto = "ip6:icmp"
 		destString = v6.String()
 	}
-
+	mx.Lock()
+	defer mx.Unlock()
+	recvConn, err = icmp.ListenPacket(receiverProto, endpoint)
 	if err != nil {
 		return fmt.Errorf("could not create receive socket: %v", err), nil
 	}
@@ -59,7 +75,7 @@ func runTraceroute(config *TracerouteConfig) (error, []net.IP) {
 
 	// Iterate through TTL values
 	for ttl := config.FirstTTL; ttl < config.FirstTTL+config.MaxTTL && !destinationReached; ttl++ {
-		respondingIP, allFailed, err := sendProbes(ttl, config, recvConn, destString)
+		respondingIP, allFailed, err := sendProbes(ttl, config, recvConn, destString, protocol)
 		if err != nil {
 			return err, ipPath
 		}
@@ -91,26 +107,33 @@ func runTraceroute(config *TracerouteConfig) (error, []net.IP) {
 }
 
 // sendProbes sends probes for a given TTL and returns the responding IP and results
-func sendProbes(ttl int, config *TracerouteConfig, recvConn *icmp.PacketConn, destString string) (net.IP, bool, error) {
+func sendProbes(ttl int, config *TracerouteConfig, recvConn *icmp.PacketConn, destString string, protocol Protocol) (net.IP, bool, error) {
 	respondingIP := net.IP{}
 	failed := true
 
-	dstAddr, err := net.ResolveUDPAddr("udp4", fmt.Sprintf("%s:%d", config.DestIP, config.BasePort+ttl))
+	addr := &net.UDPAddr{
+		IP:   config.DestIP,
+		Port: config.BasePort + ttl,
+	}
+	sendConn, err := net.DialUDP(string(protocol), nil, addr)
 	if err != nil {
 		return respondingIP, failed, err
 	}
 
-	sendConn, err := net.DialUDP("udp4", nil, dstAddr)
-	if err != nil {
-		return respondingIP, failed, err
+	switch protocol {
+	case UDP4:
+		p4 := ipv4.NewPacketConn(sendConn)
+		if err := p4.SetTTL(ttl); err != nil {
+			sendConn.Close()
+			return respondingIP, failed, err
+		}
+	case UDP6:
+		p6 := ipv6.NewPacketConn(sendConn)
+		if err := p6.SetHopLimit(ttl); err != nil {
+			sendConn.Close()
+			return respondingIP, failed, err
+		}
 	}
-
-	p := ipv4.NewPacketConn(sendConn)
-	if err := p.SetTTL(ttl); err != nil {
-		sendConn.Close()
-		return respondingIP, failed, err
-	}
-
 	_, err = sendConn.Write(make([]byte, config.PacketSize))
 	sendConn.Close()
 	if err != nil {

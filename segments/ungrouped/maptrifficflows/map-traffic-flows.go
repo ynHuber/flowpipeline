@@ -5,31 +5,37 @@ package maptrifficflows
 import (
 	"context"
 	"encoding/csv"
-	"errors"
+	"fmt"
 	"net"
 	"os"
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 
 	"codeberg.org/BelWue/flowpipeline/pb"
 	"codeberg.org/BelWue/flowpipeline/segments"
-	"codeberg.org/BelWue/flowpipeline/segments/base/basetextoutputsegment"
+	"codeberg.org/BelWue/flowpipeline/segments/base/basesegment"
 	"github.com/rs/zerolog/log"
 )
 
 // Used to generate simple BelWü specific traffic maps in csv-form (SrcRouter,DestRouter,Amount,Number of Packets,Duration,Protocol)
 type MapTrafficFlows struct {
-	basetextoutputsegment.BaseTextOutputSegment
+	basesegment.BaseSegment
 	sync.Mutex
 
-	writer          *csv.Writer
-	resolver        *net.Resolver
-	coreRouterNames []string
-	resolverCache   *ResolverCache
+	filePath                string
+	file                    *os.File
+	writer                  *csv.Writer
+	resolver                *net.Resolver
+	coreRouterNames         []string
+	resolverCache           *ResolverCache
+	coreRouterResolverCache *FinalCoreRouterResolverCache
+	linecount               int
+	TraceRouteMutex         *sync.Mutex
 
-	linecount       int
 	writeBufferSize int
+	stopChan        chan struct{}
 }
 
 type ResolverCache struct {
@@ -38,23 +44,103 @@ type ResolverCache struct {
 	cache map[[16]byte]*ResolverCacheResult
 }
 
-func (r *ResolverCache) LookupAddr(addr net.IP) *ResolverCacheResult {
-	addrkey := addr.To16()
-	if len(addrkey) != 16 {
-		return &ResolverCacheResult{Err: errors.New("Conversion to ipv6 failed")}
-	}
-	var addrkeyO [16]byte
-	copy(addrkeyO[:], addrkey)
+type FinalCoreRouterResolverCache struct {
+	sync.RWMutex
+	cacheLocks map[[16]byte]*sync.Mutex
+	cache      *RouterNameCacheMap
+}
 
+type RouterNameCacheMap struct {
+	sync.RWMutex
+	cacheMap map[[16]byte]string
+}
+
+func (r *RouterNameCacheMap) getValue(key [16]byte) (string, bool) {
 	r.RLock()
-	res := r.cache[addrkeyO]
+	v, b := r.cacheMap[key]
+	r.RUnlock()
+	return v, b
+}
+
+func (r *RouterNameCacheMap) addValue(key [16]byte, value string) {
+	r.Lock()
+	r.cacheMap[key] = value
+	r.Unlock()
+}
+
+func (s *MapTrafficFlows) getFinalCoreRouterName(iP net.IP) string {
+	addrKey := ByteKeyForAddr(iP)
+	addrLock := s.coreRouterResolverCache.getLockForKey(addrKey)
+	addrLock.Lock()
+	finalCoreRouterName, ok := s.coreRouterResolverCache.cache.getValue(addrKey)
+	if ok {
+		addrLock.Unlock()
+		return finalCoreRouterName
+	}
+
+	finalCoreRouterName = s.resolveFinalCoreRouterName(iP)
+	s.coreRouterResolverCache.cache.addValue(addrKey, finalCoreRouterName)
+	addrLock.Unlock()
+	return finalCoreRouterName
+}
+
+func (s *MapTrafficFlows) resolveFinalCoreRouterName(iP net.IP) string {
+	err, route := runTraceroute(&TracerouteConfig{
+		DestIP:            iP,
+		PacketSize:        40,
+		FirstTTL:          1,
+		MaxTTL:            64,
+		BasePort:          33434,
+		WaitTimeMs:        250,
+		MaxEmptyResponses: 3,
+	}, s.TraceRouteMutex)
+	if err != nil {
+		log.Warn().Err(err).Msg("Failed to run traceroute")
+	}
+
+	//iterate backwards over list:
+	maxHopsIndex := len(route) - 1
+	for addressId := range route {
+		//	check if host name is in router.csv
+		hop := route[maxHopsIndex-(addressId)]
+		if isCoreRouter, coreRouterName := s.checkIfIsCoreRouter(hop); isCoreRouter {
+			return *coreRouterName
+		}
+	}
+
+	// -> return first match router name
+	return "Unknown"
+}
+
+func (f *FinalCoreRouterResolverCache) getLockForKey(addrKey [16]byte) *sync.Mutex {
+	f.RLock()
+	addrLock, ok := f.cacheLocks[addrKey]
+	f.RUnlock()
+	if ok {
+		return addrLock
+	}
+
+	f.Lock()
+	//retry in case it was resolved while waiting for the lock
+	addrLock, ok = f.cacheLocks[addrKey]
+	if !ok {
+		addrLock = &sync.Mutex{}
+		f.cacheLocks[addrKey] = addrLock
+	}
+	f.Unlock()
+	return addrLock
+}
+func (r *ResolverCache) LookupAddr(addr net.IP) *ResolverCacheResult {
+	addrKey := ByteKeyForAddr(addr)
+	r.RLock()
+	res := r.cache[addrKey]
 	r.RUnlock()
 	if res != nil {
 		return res
 	}
 	r.Lock()
 	//retry in case multiple want to wlock at once
-	res = r.cache[addrkeyO]
+	res = r.cache[addrKey]
 	if res != nil {
 		r.Unlock()
 		return res
@@ -64,9 +150,16 @@ func (r *ResolverCache) LookupAddr(addr net.IP) *ResolverCacheResult {
 		Addr: lookupResultAddr,
 		Err:  lookupResultErr,
 	}
-	r.cache[addrkeyO] = &resolverCacheResult
+	r.cache[addrKey] = &resolverCacheResult
 	r.Unlock()
-	return r.cache[addrkeyO]
+	return &resolverCacheResult
+}
+
+func ByteKeyForAddr(addr net.IP) [16]byte {
+	addr16 := addr.To16()
+	var addrkey [16]byte
+	copy(addrkey[:], addr16)
+	return addrkey
 }
 
 type ResolverCacheResult struct {
@@ -82,30 +175,34 @@ func (segment *MapTrafficFlows) New(config map[string]string) segments.Segment {
 
 	newsegment := &MapTrafficFlows{
 		resolver:        &net.Resolver{},
-		writeBufferSize: 500,
-		linecount:       0,
+		writeBufferSize: 250,
 		resolverCache: &ResolverCache{
 			cache: map[[16]byte]*ResolverCacheResult{},
 		},
+		coreRouterResolverCache: NewFinalCoreRouterResolverCache(),
+		stopChan:                make(chan struct{}),
+		TraceRouteMutex:         &sync.Mutex{},
 	}
-	file, err := segment.GetOutput(config)
-	if err != nil {
-		log.Error().Err(err).Msg("MapTrafficFlow: File specified in 'filename' is not accessible: ")
-		return nil
+	if config["filename"] != "" {
+		newsegment.filePath = config["filename"]
+	} else {
+		newsegment.filePath = "trafficmappings"
 	}
-	log.Info().Msgf("MapTrafficFlow: configured output to %s", file.Name())
+	os.MkdirAll(newsegment.filePath, 0755)
+
+	log.Info().Msgf("MapTrafficFlow: configured output to %s", newsegment.filePath)
 
 	newsegment.initCoreRouterList()
-
-	heading := []string{"SrcRouter", "DestRouter", "Amount", "Number of Packets", "Duration", "Protocol", "TimeFlowStart"}
-	newsegment.writer = csv.NewWriter(file)
-	if err := newsegment.writer.Write(heading); err != nil {
-		log.Error().Err(err).Msg("Csv: Failed to write to destination:")
-		return nil
-	}
-	newsegment.writer.Flush()
-
 	return newsegment
+}
+
+func NewFinalCoreRouterResolverCache() *FinalCoreRouterResolverCache {
+	return &FinalCoreRouterResolverCache{
+		cacheLocks: map[[16]byte]*sync.Mutex{},
+		cache: &RouterNameCacheMap{
+			cacheMap: map[[16]byte]string{},
+		},
+	}
 }
 
 func (segment *MapTrafficFlows) initCoreRouterList() {
@@ -142,9 +239,17 @@ func (segment *MapTrafficFlows) Run(wg *sync.WaitGroup) {
 	}()
 
 	//Best to use aggregated flows
+	segment.initNewWriter()
+	go segment.StartBackgroundWriterRefresh()
 
-	for msg := range segment.In {
-		go func() {
+	for msgIn := range segment.In {
+		go func(msg *pb.EnrichedFlow) {
+			defer func() {
+				if processingCrash := recover(); processingCrash != nil {
+					log.Error().Msgf("ProcessFlowSrcDst crashed: %v", processingCrash)
+					panic(processingCrash)
+				}
+			}()
 			srcRouterName := segment.getSrcRouterName(msg)
 			destRouterName := segment.getDstRouterName(msg)
 			flowDuration := getFlowDuration(msg)
@@ -154,22 +259,75 @@ func (segment *MapTrafficFlows) Run(wg *sync.WaitGroup) {
 				strconv.FormatUint(msg.Bytes, 10),
 				strconv.FormatUint(msg.Packets, 10),
 				strconv.FormatUint(flowDuration, 10),
-				strconv.FormatUint(uint64(msg.Proto), 10)}
+				strconv.FormatUint(uint64(msg.Proto), 10),
+				strconv.FormatUint(msg.TimeFlowStart, 10),
+			} //"SrcRouter", "DestRouter", "Amount", "Number of Packets", "Duration", "Protocol", "TimeFlowStart", "SrcAddr", "DstAddr"
 			segment.write(record)
-			segment.Out <- msg
-		}()
+		}(msgIn)
+		segment.Out <- msgIn
+	}
+}
+
+func (s *MapTrafficFlows) StartBackgroundWriterRefresh() {
+	ticker := time.NewTicker(20 * time.Second)
+	for {
+		select {
+		case <-ticker.C:
+			s.Lock()
+			// Flush the old writer
+			s.writer.Flush()
+			if err := s.writer.Error(); err != nil {
+				log.Error().Err(err).Msg("CSV writing error:")
+			}
+			err := s.file.Close()
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error closing file: %v\n", err)
+			}
+			s.initNewWriter()
+			s.Unlock()
+
+		case <-s.stopChan:
+			ticker.Stop()
+			s.Lock()
+			s.writer.Flush()
+			s.file.Close()
+			s.Unlock()
+			return
+		}
+	}
+}
+
+// Create new file with new timestamp
+func (s *MapTrafficFlows) initNewWriter() {
+	var err error
+	s.linecount = 0
+	currentFilename := fmt.Sprintf("%s/%s.csv", s.filePath, time.Now().Format("2006-01-02_15-04-05"))
+	s.file, err = os.Create(currentFilename)
+	if err != nil {
+		panic(err)
+	}
+
+	// Create new buffered writer
+	s.writer = csv.NewWriter(s.file)
+	heading := []string{"SrcRouter", "DestRouter", "Amount", "Number of Packets", "Duration", "Protocol", "TimeFlowStart"}
+	if err := s.writer.Write(heading); err != nil {
+		log.Error().Err(err).Msg("Csv: Failed to write to destination:")
+		panic(err)
 	}
 }
 
 func (segment *MapTrafficFlows) write(record []string) {
 	segment.Lock()
-	defer segment.Unlock()
 	segment.writer.Write(record)
 	segment.linecount++
 	if segment.linecount > segment.writeBufferSize {
 		segment.linecount = 0
 		segment.writer.Flush()
+		if err := segment.writer.Error(); err != nil {
+			log.Error().Err(err).Msg("CSV writing error:")
+		}
 	}
+	segment.Unlock()
 }
 
 func getFlowDuration(msg *pb.EnrichedFlow) uint64 {
@@ -193,40 +351,9 @@ func (s *MapTrafficFlows) getDstRouterName(msg *pb.EnrichedFlow) string {
 	}
 }
 
-func (s *MapTrafficFlows) getFinalCoreRouterName(iP net.IP) string {
-	//ToDo: caching??
-	//traceroute ip
-	err, route := runTraceroute(&TracerouteConfig{
-		DestIP:            iP,
-		PacketSize:        40,
-		FirstTTL:          1,
-		MaxTTL:            64,
-		BasePort:          33434,
-		WaitTimeMs:        250,
-		MaxEmptyResponses: 3,
-	})
-	if err != nil {
-		log.Warn().Err(err).Msg("Failed to run traceroute")
-	}
-
-	//iterate backwards over list:
-	maxHopsIndex := len(route) - 1
-	for addressId := range route {
-		//	check if host name is in router.csv
-		hop := route[maxHopsIndex-(addressId)]
-		if isCoreRouter, coreRouterName := s.checkIfIsCoreRouter(hop); isCoreRouter {
-			return *coreRouterName
-		}
-	}
-
-	// -> return first match router name
-	return "Unknown"
-}
-
 func (s *MapTrafficFlows) checkIfIsCoreRouter(address net.IP) (bool, *string) {
 	names, err := s.LookupAddr(address)
 	if err != nil {
-		log.Trace().Err(err).Msgf("Failed to look up address %s", address.String())
 		return false, nil
 	}
 	for _, name := range names {
@@ -283,4 +410,9 @@ func (s *MapTrafficFlows) getRouterNames(address net.IP) []string {
 func init() {
 	segment := &MapTrafficFlows{}
 	segments.RegisterSegment("maptrafficflows", segment)
+}
+
+func (segment *MapTrafficFlows) Close() {
+	segment.stopChan <- struct{}{}
+	close(segment.stopChan)
 }
